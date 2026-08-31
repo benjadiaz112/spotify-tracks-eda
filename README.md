@@ -30,16 +30,22 @@ spotify-tracks-eda/
 |       `-- spotify_tracks_clean.csv
 |-- docs/
 |   |-- problema_negocio.md
-|   `-- limpieza_datos.md
+|   |-- limpieza_datos.md
+|   `-- resultados_eda.md
 |-- images/
+|   `-- eda/
 |-- models/
 |-- notebooks/
 |   |-- 01_eda_inicial.ipynb
-|   `-- 02_limpieza_datos.ipynb
+|   |-- 02_limpieza_datos.ipynb
+|   `-- 03_eda_completo.ipynb
 |-- reports/
-|   `-- data_quality/
-|       `-- cleaning_summary.csv
+|   |-- data_quality/
+|   |   `-- cleaning_summary.csv
+|   `-- eda/
 |-- src/
+|   |-- analysis/
+|   |   `-- eda_complete.py
 |   `-- data/
 |       `-- clean_data.py
 |-- .gitignore
@@ -64,6 +70,12 @@ La limpieza tambien puede ejecutarse directamente con:
 python src/data/clean_data.py
 ```
 
+El EDA completo y sus gráficos pueden regenerarse con:
+
+```bash
+python src/analysis/eda_complete.py
+```
+
 ## Hallazgos iniciales
 
 - El dataset contiene 114.000 filas y 21 columnas.
@@ -75,4 +87,4 @@ python src/data/clean_data.py
 
 ## Alcance actual
 
-El repositorio incluye la comprension del problema de negocio, el EDA inicial y una etapa reproducible de limpieza. El EDA completo, la transformacion de variables y el modelamiento se desarrollaran en etapas posteriores.
+El repositorio incluye la comprension del problema de negocio, limpieza reproducible y EDA completo. La preparación de variables y el modelamiento se desarrollarán en etapas posteriores.
