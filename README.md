@@ -24,12 +24,24 @@ El notebook incluye:
 ```text
 spotify-tracks-eda/
 |-- data/
-|   `-- raw/
-|       `-- Spotify_Tracks_Dataset.csv
+|   |-- raw/
+|   |   `-- Spotify_Tracks_Dataset.csv
+|   `-- processed/
+|       `-- spotify_tracks_clean.csv
 |-- docs/
-|   `-- problema_negocio.md
+|   |-- problema_negocio.md
+|   `-- limpieza_datos.md
+|-- images/
+|-- models/
 |-- notebooks/
-|   `-- 01_eda_inicial.ipynb
+|   |-- 01_eda_inicial.ipynb
+|   `-- 02_limpieza_datos.ipynb
+|-- reports/
+|   `-- data_quality/
+|       `-- cleaning_summary.csv
+|-- src/
+|   `-- data/
+|       `-- clean_data.py
 |-- .gitignore
 |-- README.md
 `-- requirements.txt
@@ -44,7 +56,13 @@ spotify-tracks-eda/
    ```
 
 2. Abrir `notebooks/01_eda_inicial.ipynb`.
-3. Ejecutar las celdas en orden.
+3. Ejecutar los notebooks en orden.
+
+La limpieza tambien puede ejecutarse directamente con:
+
+```bash
+python src/data/clean_data.py
+```
 
 ## Hallazgos iniciales
 
@@ -57,4 +75,4 @@ spotify-tracks-eda/
 
 ## Alcance actual
 
-El repositorio incluye la comprension inicial del problema de negocio y la primera parte del EDA. La limpieza avanzada, transformacion de variables y modelamiento se desarrollaran en etapas posteriores.
+El repositorio incluye la comprension del problema de negocio, el EDA inicial y una etapa reproducible de limpieza. El EDA completo, la transformacion de variables y el modelamiento se desarrollaran en etapas posteriores.
