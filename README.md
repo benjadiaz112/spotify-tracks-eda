@@ -1,6 +1,10 @@
-# Spotify Tracks - EDA inicial
+# Spotify Tracks - Prediccion de popularidad
 
-Este repositorio contiene la primera parte del analisis exploratorio de datos (EDA) para el caso **Spotify Tracks** de la asignatura Machine Learning.
+Este repositorio desarrolla un proyecto de Machine Learning para estudiar y estimar la popularidad de canciones de Spotify a partir de sus caracteristicas musicales.
+
+## Problema de negocio
+
+El proyecto busca responder si es posible estimar la popularidad de una cancion utilizando sus caracteristicas de audio y su genero musical. La definicion completa, los objetivos, KPIs, usuarios y herramientas se encuentran en [`docs/problema_negocio.md`](docs/problema_negocio.md).
 
 ## Objetivo de esta etapa
 
@@ -22,6 +26,8 @@ spotify-tracks-eda/
 |-- data/
 |   `-- raw/
 |       `-- Spotify_Tracks_Dataset.csv
+|-- docs/
+|   `-- problema_negocio.md
 |-- notebooks/
 |   `-- 01_eda_inicial.ipynb
 |-- .gitignore
@@ -49,6 +55,6 @@ spotify-tracks-eda/
 - La columna `Unnamed: 0` funciona como indice exportado y no aporta informacion analitica.
 - Se detectan duraciones iguales a cero y valores muy altos, que pueden ser anomalias.
 
-## Alcance
+## Alcance actual
 
-Esta entrega cubre solamente el EDA inicial. La limpieza avanzada, transformacion de variables y modelamiento se desarrollaran en etapas posteriores.
+El repositorio incluye la comprension inicial del problema de negocio y la primera parte del EDA. La limpieza avanzada, transformacion de variables y modelamiento se desarrollaran en etapas posteriores.
