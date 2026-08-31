@@ -27,25 +27,33 @@ spotify-tracks-eda/
 |   |-- raw/
 |   |   `-- Spotify_Tracks_Dataset.csv
 |   `-- processed/
-|       `-- spotify_tracks_clean.csv
+|       |-- spotify_tracks_clean.csv
+|       |-- train.csv
+|       `-- test.csv
 |-- docs/
 |   |-- problema_negocio.md
 |   |-- limpieza_datos.md
-|   `-- resultados_eda.md
+|   |-- resultados_eda.md
+|   `-- preparacion_datos.md
 |-- images/
 |   `-- eda/
 |-- models/
+|   `-- preprocessing_pipeline.joblib
 |-- notebooks/
 |   |-- 01_eda_inicial.ipynb
 |   |-- 02_limpieza_datos.ipynb
-|   `-- 03_eda_completo.ipynb
+|   |-- 03_eda_completo.ipynb
+|   `-- 04_preparacion_datos.ipynb
 |-- reports/
 |   |-- data_quality/
 |   |   `-- cleaning_summary.csv
-|   `-- eda/
+|   |-- eda/
+|   `-- preparation/
 |-- src/
 |   |-- analysis/
 |   |   `-- eda_complete.py
+|   |-- features/
+|   |   `-- prepare_features.py
 |   `-- data/
 |       `-- clean_data.py
 |-- .gitignore
@@ -76,6 +84,12 @@ El EDA completo y sus gráficos pueden regenerarse con:
 python src/analysis/eda_complete.py
 ```
 
+La separación y el pipeline de preparación pueden regenerarse con:
+
+```bash
+python src/features/prepare_features.py
+```
+
 ## Hallazgos iniciales
 
 - El dataset contiene 114.000 filas y 21 columnas.
@@ -87,4 +101,4 @@ python src/analysis/eda_complete.py
 
 ## Alcance actual
 
-El repositorio incluye la comprension del problema de negocio, limpieza reproducible y EDA completo. La preparación de variables y el modelamiento se desarrollarán en etapas posteriores.
+El repositorio incluye la comprensión del problema de negocio, limpieza reproducible, EDA completo y preparación de datos para regresión. El modelamiento se desarrollará en una etapa posterior.
