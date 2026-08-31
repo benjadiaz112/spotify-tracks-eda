@@ -34,7 +34,8 @@ spotify-tracks-eda/
 |   |-- problema_negocio.md
 |   |-- limpieza_datos.md
 |   |-- resultados_eda.md
-|   `-- preparacion_datos.md
+|   |-- preparacion_datos.md
+|   `-- etica_privacidad.md
 |-- images/
 |   `-- eda/
 |-- models/
@@ -101,4 +102,8 @@ python src/features/prepare_features.py
 
 ## Alcance actual
 
-El repositorio incluye la comprensión del problema de negocio, limpieza reproducible, EDA completo y preparación de datos para regresión. El modelamiento se desarrollará en una etapa posterior.
+El repositorio incluye la comprensión del problema de negocio, limpieza reproducible, EDA completo, preparación de datos para regresión y evaluación de ética, sesgos y privacidad. El modelamiento se desarrollará en una etapa posterior.
+
+## Ética y privacidad
+
+Los riesgos de representación, privacidad, impacto sobre artistas emergentes y uso responsable están documentados en [`docs/etica_privacidad.md`](docs/etica_privacidad.md).
