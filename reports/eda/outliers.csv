@@ -1,0 +1,9 @@
+variable,limite_inferior,limite_superior,valores_extremos,porcentaje
+energy,-0.132,1.444,0,0.0
+danceability,0.0895,1.0535,346,0.39
+loudness,-18.0945,2.6935,4926,5.5
+valence,-0.397,1.331,0,0.0
+acousticness,-0.8932,1.5343,0,0.0
+tempo,38.6772,200.9353,368,0.41
+duration_ms,36543.5,400807.5,4159,4.65
+popularity,-26.0,94.0,11,0.01
