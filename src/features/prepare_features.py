@@ -69,8 +69,6 @@ def split_dataset(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame, pd.Seri
     features["explicit"] = features["explicit"].astype("int8")
     target = df[TARGET].copy()
 
-    # Los deciles permiten conservar una distribución semejante de popularidad
-    # sin convertir el objetivo de regresión en una categoría permanente.
     stratification_bins = pd.qcut(
         target.rank(method="first"), q=10, labels=False
     )
