@@ -1,0 +1,304 @@
+PAGINA 1
+MLY1101
+Machine Learning
+
+PAGINA 2
+MLY1101
+Act 2.1 Gestión de Proyectos con CRISP-
+DM
+
+
+PAGINA 3
+Ciencia de datos
+AGENDA
+Metodología CRISP-DM
+Actividad prácticaEl origen
+01
+ 04
+02
+03
+
+PAGINA 4
+Resultado de aprendizaje
+RA2 Aplica modelos estadísticos, al conjunto de datos procesados 
+para interpretarlos, utilizando metodologías ágiles con la finalidad 
+de obtener conocimientos relevantes que permita responder a las 
+necesidades del contexto negocio, considerando aspectos éticos.
+Indicador de logro
+IL 2.1 Implementa metodologías de trabajo (como CRISP-DM) para 
+estructurar el desarrollo del modelo.
+
+
+PAGINA 5
+Fundamentos y Evolución de las Metodologías de Datos
+La necesidad de estructurar los proyectos de datos nació de la transición entre la investigación académica y la necesidad
+operativa de las grandes corporaciones. No se puede hacer ingeniería de modelos robusta de forma caótica; se requiere un marco
+metodológico que asegure la reproducibilidad y el éxito del proyecto.
+Los Tres Grandes Pilares
+KDD (Knowledge Discovery in Databases - 1996): El Enfoque Académico y Científico
+Origen: Nacido en la comunidad científica y estadística para formalizar el proceso de encontrar patrones válidos, novedosos y 
+comprensibles en bases de datos masivas.
+Limitación: Carece por completo de una fase que conecte el modelo con el retorno de inversión (ROI) o las necesidades del 
+negocio.
+SEMMA (2005): El Enfoque de Prototipado Técnico
+Origen: Desarrollado por el instituto SAS (Statistical Analysis System) como una guía de desarrollo para su software analítico.
+Limitación: Es una excelente metodología técnica para el científico de datos dentro del laboratorio, pero sigue aislada de las 
+decisiones estratégicas de la empresa y del despliegue en producción.
+CRISP-DM (1999): El Estándar Industrial y de Negocio
+Origen: Creado por un consorcio de empresas líderes (NCR, Daimler-Chrysler, SPSS) financiado por la Unión Europea.
+Impacto: Convierte el desarrollo de modelos en un proyecto de ingeniería de software con objetivos financieros y comerciales
+claros.
+
+PAGINA 6
+KDD: El Proceso Científico de 
+Descubrimiento de Conocimiento
+KDD es el marco metodológico tradicional que formaliza la extracción de conocimiento útil, válido y oculto a partir de grandes
+volúmenes de datos crudos.
+¿Qué hace?
+Su objetivo principal es el análisis automatizado de datos para descubrir patrones que sirvan como base para el aprendizaje
+automático (Machine Learning) y el análisis predictivo. Se enfoca en tres familias de tareas:
+• Segmentación y Relaciones: Análisis clúster y reglas de asociación.
+•Detección de Anomalías: Identificación de registros inusuales o fallos.
+•Modelamiento Predictivo: Clasificación y regresión matemática.
+Las 5 Etapas del Pipeline Técnico
+El flujo de trabajo es estrictamente secuencial e iterativo:
+1. Selección: Identificación y aislamiento del subconjunto de datos relevante.
+2. Preprocesamiento: Limpieza del dato (remoción de ruido e inconsistencias).
+3. Transformación: Conversión y normalización de formatos aptos para algoritmos.
+4. Minería de Datos: Aplicación de modelos estadísticos e Inteligencia Artificial para extraer los patrones.
+5. Evaluación / Interpretación: Validación de los resultados para transformar los patrones matemáticos en conocimiento real de
+negocio.
+
+PAGINA 7
+KDD: El Proceso Científico de 
+Descubrimiento de Conocimiento
+
+
+PAGINA 8
+SEMMA: El Enfoque Ciclo-Técnico de SAS
+SEMMA es una metodología de desarrollo analítico creada por el SAS Institute. Está diseñada como un ciclo iterativo enfocado en
+la experimentación técnica y el laboratorio de datos.
+¿Qué hace?
+SAS la define formalmente como el proceso de selección, exploración y modelamiento de grandes volúmenes de información para 
+descubrir patrones de negocio ocultos. Su propósito es estructurar el trabajo del científico de datos dentro de las herramientas de 
+desarrollo.
+Las 5 Fases del Acrónimo
+1. Sample (Muestrear): Selección de la base de datos relevante. Se extrae una muestra representativa del dataset masivo para 
+optimizar los tiempos de cómputo sin perder poder estadístico.
+2. Explore (Explorar): Análisis exploratorio de datos (EDA) visual y descriptivo. Se buscan tendencias, anomalías, nulos y 
+relaciones iniciales entre variables.
+3. Modify (Modificar): Ingeniería de datos. Fase de transformación donde se crean nuevas variables (Feature Engineering), se 
+limpian outliers y se preparan las matrices de entrada.
+4. Model (Modelar): Aplicación de algoritmos de Machine Learning (redes neuronales, árboles de decisión, regresiones) para que
+el software identifique patrones de forma automatizada.
+5. Assess (Evaluar): Evaluación del rendimiento técnico del modelo utilizando datos no vistos, validando su precisión mediante
+métricas estadísticas (Accuracy, curvas ROC, etc.).
+
+PAGINA 9
+SEMMA: El Enfoque Ciclo-Técnico de SAS
+
+
+PAGINA 10
+CRISP-DM: El Estándar de la Industria Global
+CRISP-DM (Cross-Industry Standard Process for Data Mining) es un 
+marco de trabajo cíclico nacido de un consorcio empresarial financiado
+por la Unión Europea. Su gran revolución fue integrar los objetivos
+comerciales directamente con el desarrollo analítico.
+¿Por qué es el estándar?
+A diferencia de KDD o SEMMA, CRISP-DM asume que un proyecto de 
+Machine Learning no termina con una métrica matemática excelente. 
+Termina cuando el modelo se despliega y genera valor económico real.
+Nota: Debido a que es un modelo intuitivo, altamente robusto y el más
+utilizado en la industria tecnológica a nivel mundial, este será el marco
+metodológico con el que estructuraremos todos nuestros proyectos de 
+Machine Learning durante el semestre.
+
+
+PAGINA 11
+Evolución de las metodologías
+Fuente: A survey of data mining and knowledge discovery process models and methodologies
+
+PAGINA 12
+Ciencia de datos
+La Ciencia de Datos es una combinación de:
+● Matemáticas y estadística
+● Programación especializada
+● Análisis avanzados
+● Inteligencia artificial (IA)
+● Machine learning
+● Experiencia en distintas materias.
+El objetivo es descubrir información práctica,
+verídica, relevante oculta en los datos de una
+organización.
+Esta información se puede utilizar como guía para
+la toma de decisiones y la planificación estratégica
+de los equipos y empresas.
+
+
+PAGINA 13
+Ciencia de datos
+La Ciencia de Datos, requiere equipos
+multidisciplinarios. Estos incluyen:
+Ingenieros de Datos, que trabajan con big data y
+tecnologías en la nube, saben cómo construir
+canalizaciones de datos, diseñar bases de datos y
+extraer datos de ellas.
+Analistas de Datos, que son personas que puedan
+tomar esos datos, limpiarlos, analizarlos, ejecutar
+experimentos con ellos y comunicar los
+resultados.
+Ingenieros de Machine Learning, desarrolladores
+de software que están familiarizados con varias
+bibliotecas de ciencia de datos y saben cómo
+implementar modelos matemáticos a los datos.
+Especialista en visualización, centrado en el
+diseño para crear gráficos e informes altamente
+refinados.
+Científico de Datos, quien es un experto en el
+dominio del problema.
+
+
+PAGINA 14
+Metodología CRISP-DM
+CRISP-DM fue concebida a fines de 1996.
+El modelo contiene seis fases con flechas que indican las
+dependencias más importantes y frecuentes entre fases. La
+secuencia de las fases no es estricta. De hecho, la mayoría
+de los proyectos avanzan y retroceden entre fases si es
+necesario
+
+
+PAGINA 15
+CRISP DM: comprender el negocio
+Comprensión del problema o negocio: Esta es la etapa más 
+importante, ya que, si no se comprende correctamente el 
+negocio, o problema, no servirá pasar a las siguientes etapas. 
+Sus actividades principales son:
+● Identificación del problema: Aborda el entendimiento y 
+delimitación de la problemática, así como la identificación 
+de los requisitos, restricciones, supuestos y beneficios del 
+proyecto.
+● Determinación de objetivos: Establece los posibles 
+resultados a obtener al proponer la solución.
+● Evaluación de la situación actual : Describe el estado actual 
+antes de ser implementada la solución propuesta, con el fin 
+de tener un objeto de comparación que permita medir el 
+grado de éxito del proyecto.
+
+
+PAGINA 16
+CRISP DM: comprender los datos
+Comprensión de los datos: Comprende la recolección inicial de 
+datos, con el objetivo de establecer un primer acercamiento 
+con el problema, conociendo a los datos, identificando su 
+calidad y estableciendo las primeras relaciones que permitan 
+definir correlaciones entre variables.
+Sus actividades principales son:
+• Recolección de datos: Consiste en obtener los datos a 
+utilizar en el proyecto a partir de algunas fuentes de datos, e 
+identificando las técnicas utilizadas para su recolección.
+• Exploración de datos: Se basa en aplicar pruebas 
+estadísticas que permitan conocer las propiedades de los 
+datos.
+
+
+PAGINA 17
+CRISP DM: preparación de datos
+Preparación de datos: Esta es la etapa que demanda más 
+tiempo en el proyecto, aquí se seleccionan los datos que serán 
+transformados de acuerdo con los resultados de la etapa 
+anterior a fin de ser utilizados en la etapa de modelado. 
+Sus actividades principales son:
+• Limpieza de datos: Para este fin se aplican diferentes 
+técnicas, por ejemplo, normalización de datos, tratamiento 
+de valores nulos, tratamiento de duplicados e imputación de 
+datos.
+• Transformación de datos: Aquí se cambia la estructura o el 
+formato de ciertos datos sin alterar su significado, a fin de 
+poder ser utilizados en la etapa de modelado.
+
+
+PAGINA 18
+CRISP DM: modelado
+Modelado: En esta etapa se obtiene el modelo propuesto.
+Sus actividades principales son:
+• Selección de técnica de modelado: Se elige la técnica 
+apropiada de acuerdo con el problema a resolver, los datos 
+disponibles, las herramientas de minería de datos 
+disponibles.
+• Selección de datos de prueba: En algunos modelos se 
+necesita segmentar la muestra en datos de entrenamiento y 
+de prueba.
+• Obtención del modelo: Aquí se genera el mejor modelo 
+mediante un proceso iterativo con los datos de prueba y de 
+entrenamiento.
+
+PAGINA 19
+CRISP DM: evaluación
+Evaluación del modelo: En esta etapa se determina la calidad 
+del modelo teniendo en cuenta el análisis de determinadas 
+métricas y criterios estadísticos del mismo, comparando los 
+resultados que se van obteniendo con resultados previos. 
+De acuerdo con los resultados de esta etapa se decide 
+continuar con la última fase de la metodología, revisar alguna 
+de las etapas anteriores para reformular o incluso iniciar desde 
+cero con un nuevo objetivo.
+
+PAGINA 20
+CRISP DM: implementación
+Implementación: Aquí el modelo ya ha sido construido y 
+evaluado. Esta etapa lleva a producción el modelo 
+desarrollado, mediante acciones específicas, el conocimiento 
+adquirido mediante las etapas previas, pudiendo ser aplicado a 
+diversos y nuevos conjuntos de datos o también dentro de un 
+proceso del negocio. 
+Por ejemplo, en detección de fraudes, análisis de 
+endeudamiento crediticio, entre otros casos. Todo esto por lo 
+general finalizando con la documentación y presentación de 
+resultados del modelo para el usuario, con el fin de obtener un 
+incremento del conocimiento sobre un problema o proceso del 
+negocio.
+
+PAGINA 21
+Actividad práctica
+El Escenario: Una importante aplicación de delivery en Chile te contrata como científico de datos. El Gerente de Operaciones te
+dice: "Tenemos un problema caótico: los repartidores están cancelando el 25% de los pedidos en comunas de alta congestión
+los viernes por la noche, perdiendo millones de pesos y clientes molestos. Toma este acceso a la base de datos de los últimos 2 
+años y arréglalo con Inteligencia Artificial".
+El Desafío:
+Mapea tus primeros pasos utilizando la estructura de CRISP-DM respondiendo estas 3 preguntas clave:
+1.Fase de Negocio: Si el éxito técnico del modelo se mide en Accuracy o AUC, ¿cómo le mides el éxito de negocio al Gerente? 
+(¿Cuál es el KPI real?).
+2.El Peligro del Salto al Vacío: Un ingeniero novato en el equipo sugiere: "Abramos Colab al tiro, carguemos el dataset y 
+entrenemos un Random Forest para predecir cancelaciones hoy mismo". Según el flujo de CRISP-DM, ¿qué fases críticas se 
+está saltando este ingeniero y por qué es peligroso para el proyecto?
+3.Fase de Evaluación: Tu modelo final tiene un 95% de precisión matemática, pero descubres que para lograrlo, el algoritmo
+decidió "bloquear" preventivamente y por defecto a todos los repartidores nuevos de ciertas comunas periféricas los viernes. 
+¿El proyecto está listo para pasar a la fase de Despliegue o debes iterar hacia atrás? Justifica éticamente.
+
+PAGINA 22
+Reflexión final
+La diferencia entre un programador y un científico de datos radica en la capacidad de gestionar la 
+incertidumbre mediante metodologías robustas.
+• El modelamiento es solo una de las seis fases. El éxito del proyecto no se mide en la complejidad del 
+código, sino en la capacidad de la solución para responder a la necesidad del contexto de negocio.
+• CRISP-DM no es un camino lineal; es un ciclo. Retroceder de la Evaluación a la Preparación de Datos no 
+es un error, es la metodología funcionando para evitar el despliegue de modelos fallidos o sesgados.
+• La metodología nos otorga los puntos de control necesarios para auditar sesgos y garantizar la privacidad
+en cada iteración, asegurando que el conocimiento generado sea relevante y responsable.
+
+PAGINA 23
+Resumen
+• Comprendimos cómo la disciplina migró desde el rigor científico de KDD y la experimentación técnica de SEMMA, hacia el 
+estándar industrial CRISP-DM, que prioriza el valor de negocio.
+• Aprendimos que ningún proyecto de Machine Learning tiene éxito si no comienza por el Business Understanding. Definir el 
+KPI de negocio es tan importante como elegir el algoritmo.
+• Validamos que la Preparación de Datos sigue siendo la fase más crítica y demandante, consumiendo la mayor parte del 
+tiempo del ingeniero para garantizar que el modelo reciba información de calidad.
+• Establecimos que la fase de Evaluation es el puente entre el mundo técnico (Accuracy, Precision) y el mundo real (Retorno
+de Inversión, Impacto Social, Ética).
+• El ciclo solo se cierra con el Deployment. Un modelo que no se pone en producción para resolver el problema inicial es 
+solo un experimento, no una solución de ingeniería.
+
+PAGINA 24
+ 

@@ -4,3 +4,8 @@ __pycache__/
 venv/
 *.pyc
 .DS_Store
+tmp/
+output/
+*.log
+models/eva2/*.joblib
+.pytest_cache/

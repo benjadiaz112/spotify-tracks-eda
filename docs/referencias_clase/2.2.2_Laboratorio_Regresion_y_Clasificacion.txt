@@ -1,0 +1,88 @@
+PAGINA 1
+ 
+ 
+Actividad 2.2.2 
+Laboratorio de Modelamiento Supervisado - 
+Regresión y Clasificación 
+ESCUELA DE INFORMÁTICA Y TELECOMUNICACIONES 
+
+PAGINA 2
+ 
+ 
+1 
+2025 
+Nombre especifico de la guía 
+ 
+ 
+Sigla/Asignatura 
+ 
+ 
+Semana Disponible EFT 
+ 
+Experiencia de Aprendizaje 
+MLY1101 17 
+ 
+EA2 Implementación y Análisis 
+de Modelos de Machine 
+Learning 
+ 
+Tiempo 
+ 
+ 
+Modalidad de Trabajo 
+ 
+Indicadores de Logro 
+3 horas 
+ Individual / Colaborativo 
+IL 2.2 Construye modelos de 
+aprendizaje supervisado para 
+problemas de regresión y 
+clasificación según la 
+naturaleza del caso. 
+ 
+ 
+ 
+ 
+RA2 Aplica modelos estadísticos, al conjunto de datos procesados para interpretarlos, utilizando 
+metodologías ágiles con la finalidad de obtener conocimientos relevantes que permita responder a 
+las necesidades del contexto negocio, considerando aspectos éticos. 
+ 
+ 
+ 
+El departamento de Business Intelligence del Banco necesita automatizar dos procesos críticos en 
+su sistema financiero central. Primero, identificar con precisión matemática qué clientes se 
+encuentran en riesgo de abandonar la institución corporativa para inyectarles una campaña de 
+fidelización. Segundo, proyectar de manera precisa el volumen de fondos o balance financiero 
+(Balance) que un cliente mantendrá en su cuenta basándose en su comportamiento demográfico, 
+con el fin de optimizar las estrategias de inversión interna. 
+ 
+Paso 1: Carga, Preparación Básica y Encoding de Variables 
+1. Inicia un entorno en Google Colab y carga el set de datos ecommerce_customer_data.csv. 
+2. Separa las variables y aplica transformaciones de variables cualitativas a numéricas para que 
+los algoritmos puedan procesar las matrices. 
+ 
+Resultados de aprendizaje 
+Contenidos 
+Actividades 
+
+PAGINA 3
+ 
+ 
+2 
+2025 
+Paso 2: Tarea de Clasificación (Predecir la Fuga) 
+El objetivo es construir un modelo que clasifique si un cliente abandonará la empresa (Exited = 1) o 
+permanecerá activo (Exited = 0). 
+1. Define la variable objetivo y como Exited y la matriz de características X con el resto de las 
+variables. 
+2. Realiza la partición de datos (entrenamiento y prueba). 
+3. Entrena al menos un modelo de clasificación. 
+ 
+Paso 3: Tarea de Regresión (Estimar Fondos) 
+Ahora, cambiaremos la naturaleza del problema. El objetivo de negocio es predecir un valor 
+numérico continuo: el saldo estimado en la cuenta del cliente (Balance). 
+1. Define la variable objetivo y como Balance y la matriz de características X excluyendo dicha 
+columna. 
+2. Realiza la división de muestras correspondientes. 
+3. Instancia y ajusta al menos un modelo de regresión. 
+ 

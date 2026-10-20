@@ -1,0 +1,184 @@
+PAGINA 1
+MLY1101
+Machine Learning
+
+PAGINA 2
+MLY1101
+Act 2.4 Interpretación y Métricas de 
+Desempeño
+
+
+PAGINA 3
+Métricas de clasificación
+AGENDA
+Actividad prácticaMétricas de 
+regresión
+01
+ 04
+02
+03
+Impacto ético
+
+PAGINA 4
+Resultado de aprendizaje
+RA2 Aplica modelos estadísticos, al conjunto de datos procesados 
+para interpretarlos, utilizando metodologías ágiles con la finalidad 
+de obtener conocimientos relevantes que permita responder a las 
+necesidades del contexto negocio, considerando aspectos éticos.
+Indicador de logro
+IL 2.4 Interpreta los resultados del desempeño del modelo, 
+traduciendo métricas técnicas a conocimientos relevantes para la 
+organización.
+
+
+PAGINA 5
+Métricas de Evaluación
+Entrenar un modelo de Machine Learning es solo la mitad del desafío. La verdadera ingeniería radica en medir con precisión
+matemática qué tan bien generaliza el algoritmo frente a escenarios desconocidos y cómo sus errores impactan al negocio.
+• Un modelo no se evalúa por "cómo se ve" o porque compile sin errores. Necesitamos indicadores cuantitativos estandarizados
+para auditar su rendimiento, comparar diferentes arquitecturas y decidir si el sistema está listo para pasar a producción.
+• No medimos el éxito de la misma manera en todos los problemas.
+o En Regresión, cuantificamos la magnitud física de la desviación o distancia entre el valor real y el estimado (¿Por cuánto
+dinero nos equivocamos al predecir el sueldo?).
+o En Clasificación, medimos la capacidad del modelo para acertar en categorías discretas y la proporción de sus aciertos versus 
+sus falsos positivos y falsos negativos.
+• En Machine Learning, el error es inevitable. El objetivo de las métricas no es buscar un 100% de perfección (lo cual suele ser 
+síntoma de Overfitting), sino entender qué tipo de error está cometiendo el modelo y si la organización puede tolerar ese costo
+operativo.
+
+PAGINA 6
+Métricas de Regresión
+Verificar un modelo de regresión lineal, nos permite ver en forma rápida, con algunos cálculos 
+estadísticos, si es modelo es “bueno” respecto a su ajuste. Es decir, podemos verificar cuán certero es su 
+desempeño.
+Este desempeño, podemos expresarlo en base a métricas.
+Coeficiente de Determinación (R²)
+Indica qué porcentaje de la varianza explica el modelo.
+0: El modelo no explica nada.
+1: El modelo explica toda la varianza.
+
+PAGINA 7
+Errores: MSE y MAE
+MAE
+Mean Absolute Error. 
+Promedio de los errores
+absolutos. Es intuitivo: 
+"Nos equivocamos en
+promedio X unidades".
+MSE
+Mean Squared Error. 
+Eleva el error al 
+cuadrado. Penaliza
+fuertemente los errores
+grandes o outliers.
+RMSE
+Raíz de MSE. Devuelve el 
+error a las unidades
+originales del target (ej: 
+Pesos, Años, Metros).
+
+PAGINA 8
+Regresión en Código
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score 
+import numpy as np 
+mae = mean_absolute_error(y_true, y_pred) 
+mse = mean_squared_error(y_true, y_pred) 
+rmse = np.sqrt(mse) 
+r2 = r2_score(y_true, y_pred) 
+print(f"MAE: {mae} | RMSE: {rmse} | R2: {r2}") 
+
+PAGINA 9
+Métricas de clasificación
+Matriz de confusión
+La matriz de confusión produce el conjunto de métricas para evaluar el rendimiento de un algoritmo de clasificación. 
+Por lo general, se usa para problemas de clasificación binaria, pero se puede usar para problemas de clasificación de múltipl es 
+etiquetas.
+
+
+PAGINA 10
+Análisis del Error de Clasificación
+Falso Positivo (Error Tipo I)
+El modelo predice una alarma o 
+anomalía que no existe en la realidad.
+Impacto de negocio: Gastos
+innecesarios en campañas o alertas
+falsas de fraude.
+Falso Negativo (Error Tipo II)
+El modelo asume estabilidad pero el 
+evento de interés sí ocurre de forma 
+silenciosa.
+Impacto de negocio: Pérdida crítica
+del cliente o fraudes no detectados.
+
+PAGINA 11
+Métricas de clasificación
+Exactitud (Accuracy): Porcentaje total de predicciones 
+correctas (tanto positivas como negativas).
+Precisión (Precision): De todos los que el modelo etiquetó 
+como "Fuga", ¿cuántos realmente se fugaron? Mide la 
+calidad de la predicción positiva.
+Sensibilidad (Recall / Exhaustividad): De todos los clientes 
+que realmente se fugaron, ¿cuántos logró capturar el 
+modelo? Mide la cobertura del algoritmo.
+F1-Score: La media armónica entre la Precisión y el Recall. 
+Da un balance óptimo entre ambas fuerzas cuando las clases 
+están desbalanceadas.
+
+
+PAGINA 12
+Curvas ROC y AUC
+La curva ROC mide la capacidad de separación
+de clases del modelo en diferentes umbrales.
+AUC (Área bajo la curva):
+0.5: Clasificador aleatorio (suerte).
+1.0: Clasificador perfecto.
+
+
+PAGINA 13
+Clasificación en Código
+from sklearn.metrics import confusion_matrix, classification_report
+# 1. Obtener la matriz numérica de confusión
+matriz = confusion_matrix(y_true, y_pred)
+# 2. Desplegar reporte unificado (Precision, Recall, F1)
+print(classification_report(y_true, y_pred))
+La salida de Scikit-Learn entrega de forma automatizada las métricas desglosadas por cada clase individual.
+
+PAGINA 14
+Taller: Interpretación
+Contexto
+El modelo de Churn tiene un 92% de Accuracy, pero solo un 
+15% de Recall para la clase "Exited".
+Desafío
+¿El banco está realmente detectando a los clientes que se 
+van?
+Si el costo de perder un cliente es $500.000 y el bono de 
+retención es $20.000, ¿qué métrica ajustarías?
+
+PAGINA 15
+Impacto Ético
+Una métrica técnica excelente puede esconder una injusticia social profunda.
+Sesgo de Grupo
+¿El Accuracy es igual para hombres y mujeres? ¿O el modelo es solo preciso para un grupo?
+Privacidad
+Al analizar errores, ¿estamos exponiendo datos sensibles de individuos específicos?
+Responsabilidad
+La IA no toma decisiones; el ingeniero que interpreta las métricas es el responsable.
+
+PAGINA 16
+Reflexión final
+En Machine Learning, el éxito no es lograr que el error sea cero, sino entender qué significa ese 
+error para la organización y para las personas detrás de los datos.
+
+PAGINA 17
+Resumen
+• Comprendimos la estructura cruzada de la Matriz de Confusión para el análisis de aciertos y errores
+lógicos
+• Estudiamos el balance de compromiso operativo entre Precision (calidad) y Recall (cobertura) unificados
+por el F1-Score.
+• Validamos la diferencia técnica entre MAE (error promedio lineal) y RMSE (penalización cuadrática a 
+desviaciones críticas).
+• Consolidamos el Coeficiente R² como el estándar analítico para evaluar la varianza explicada por un 
+regresor lineal.
+
+PAGINA 18
+ 

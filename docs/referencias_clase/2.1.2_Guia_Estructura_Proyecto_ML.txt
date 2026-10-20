@@ -1,0 +1,102 @@
+PAGINA 1
+ 
+ 
+Actividad 2.1.2 
+Guía de Estructuración de Proyectos de Machine 
+Learning con CRISP-DM 
+ESCUELA DE INFORMÁTICA Y TELECOMUNICACIONES 
+
+PAGINA 2
+ 
+ 
+1 
+2025 
+Nombre especifico de la guía 
+ 
+ 
+Sigla/Asignatura 
+ 
+ 
+Semana Disponible EFT 
+ 
+Experiencia de Aprendizaje 
+MLY1101 17 
+ 
+EA2 Implementación y Análisis 
+de Modelos de Machine 
+Learning 
+ 
+Tiempo 
+ 
+ 
+Modalidad de Trabajo 
+ 
+Indicadores de Logro 
+3 horas 
+ Individual / Colaborativo 
+IL 2.1 Implementa 
+metodologías de trabajo 
+(como CRISP-DM) para 
+estructurar el desarrollo del 
+modelo. 
+ 
+ 
+ 
+ 
+RA2 Aplica modelos estadísticos, al conjunto de datos procesados para interpretarlos, utilizando 
+metodologías ágiles con la finalidad de obtener conocimientos relevantes que permita responder a 
+las necesidades del contexto negocio, considerando aspectos éticos. 
+ 
+ 
+ 
+El Banco Continental ha detectado una fuga acelerada de clientes en su división de cuentas 
+corrientes durante el último año. La gerencia general estima que adquirir un cliente nuevo cuesta 5 
+veces más que retener a uno existente. Para mitigar esta pérdida,  te han encomendado liderar el 
+proyecto predictivo. Utilizando la metodología CRISP -DM, deberás estructurar el flujo de trabajo 
+antes de entrenar cualquier modelo, asegurando que cada paso técnico responda directamente al 
+retorno de inversión (ROI) del banco. 
+ 
+Paso 1: Comprensión del Negocio (Business Understanding) 
+Sin escribir código, el equipo de ingeniería debe responder y documentar en su entorno los 
+siguientes pilares estratégicos: 
+1. Objetivo de Negocio: ¿Cuál es el problema financiero y operativo real del banco? Redacta 
+una meta comercial (Ej: "Reducir la tasa de fuga en un 15% durante el próximo trimestre"). 
+2. Traducción Analítica: ¿Qué tipo de problema de Machine Learning es este? (¿Clasificación o 
+Regresión?). ¿Cuál es nuestra variable objetivo (Target) dentro del dataset 
+ecommerce_customer_data.csv? 
+Resultados de aprendizaje 
+Contenidos 
+Actividades 
+
+PAGINA 3
+ 
+ 
+2 
+2025 
+3. Métrica de Impacto: Si el modelo genera predicciones falsas: 
+• Falso Positivo (FP): El algoritmo dice que el cliente se irá, pero es leal. El banco gasta un 
+bono de retención innecesario. 
+• Falso Negativo (FN): El algoritmo dice que el cliente es leal, pero se fuga sin recibir 
+alertas. 
+• Pregunta: Desde el punto de vista del negocio, ¿cuál de los dos errores es más costoso 
+financieramente para el banco? ¿Qué métrica técnica deberíamos maximizar entonces 
+(Precision, Recall o F1-Score)? 
+ 
+Paso 2: Inicialización del Entorno y Comprensión de los Datos (Data Understanding) 
+1. Crea un nuevo cuaderno en Google Colab con el título de la guía. 
+2. Carga el conjunto de datos Churn_Modelling.csv y realiza una verificación de los tipos de 
+datos en función de las necesidades del algoritmo. 
+3. Pregunta: Analiza la distribución del target (Exited). ¿El dataset se encuentra balanceado o 
+desbalanceado? ¿Qué implicancia metodológica tiene este hallazgo para el posterior 
+entrenamiento del modelo? 
+ 
+Paso 3: Preparación de Datos Basal (Data Preparation) 
+De acuerdo con las fases de CRISP-DM, debemos limpiar la matriz retirando aquellos identificadores 
+que no aportan variabilidad estadística y separando las variables predictoras del objetivo antes de 
+realizar la división del set de datos. 
+1. Remueve las columnas innecesarias para el modelado identifica das en la Experiencia 1 (ej: 
+RowNumber, CustomerId, Surname). 
+2. Divide el dataset en la matriz de características (X) y el vector objetivo (y). 
+3. Realiza la partición de datos reservando un 20% para la evaluación final (Test), asegurando 
+que la proporción del target se mantenga mediante una división estratificada. 
+ 
