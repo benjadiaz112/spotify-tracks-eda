@@ -1,0 +1,275 @@
+PAGINA 1
+MLY1101
+Machine Learning
+
+PAGINA 2
+MLY1101
+Act 2.2 Modelamiento Supervisado: 
+Regresión y Clasificación
+
+
+PAGINA 3
+Modelos de regresión
+AGENDA
+Modelos de clasificación
+Árboles de decisiónModelamiento 
+supervisado
+01
+ 04
+02
+03
+K-NN
+05
+
+PAGINA 4
+Resultado de aprendizaje
+RA2 Aplica modelos estadísticos, al conjunto de datos procesados 
+para interpretarlos, utilizando metodologías ágiles con la finalidad 
+de obtener conocimientos relevantes que permita responder a las 
+necesidades del contexto negocio, considerando aspectos éticos.
+Indicador de logro
+IL 2.2 Construye modelos de aprendizaje supervisado para 
+problemas de regresión y clasificación según la naturaleza del caso.
+
+
+PAGINA 5
+El Concepto del Aprendizaje
+El machine learning supervisado aprende patrones y 
+relaciones entre los datos de entrada y de salida. Se 
+define por el uso de datos etiquetados. 
+El aprendizaje supervisado utiliza algoritmos que
+aprenden la relación de las características y el 
+objetivo a partir del conjunto de datos. Este 
+proceso se denomina entrenamiento o ajuste.
+Inputs (X): Características de los datos.
+Target (y): La respuesta correcta esperada.
+
+
+PAGINA 6
+¿Regresión o Clasificación?
+• Clasificación: Aquí, la tarea es asignar una etiqueta discreta a cada entrada. Ejemplos comunes incluyen la clasificación de 
+correos electrónicos como spam o no spam, la identificación de objetos en imágenes (como distinguir entre un gato y un 
+perro), y la detección de enfermedades en imágenes médicas.
+• Regresión: En este caso, la tarea es predecir un valor continuo. Ejemplos incluyen la predicción de precios de viviendas, la 
+estimación de la demanda de productos, y la previsión de valores bursátiles.
+
+
+PAGINA 7
+Modelos de Regresión
+Los modelos de regresión son usados para predecir variables objetivos en una escala continua. En particular
+interesa predecir un resultado cuantitativo.
+Tiene diversas aplicaciones en la industria, como entender las relaciones entre variables, evaluar tendencias o
+hacer pronósticos. Un ejemplo de estos es predecir las ventas de una empresa en los meses futuros.
+En términos generales, en los modelos de regresión:
+▪ Las variables pueden ser categóricas o continuas.
+▪ Interesa predecir un resultado cuantitativo.
+▪ La calidad de la predicción será una medida de la distancia entre el valor real y la predicción.
+▪ No olvidar aplicar el concepto de conjuntos de entrenamiento y prueba.
+
+PAGINA 8
+Regresión lineal
+En estadísticas, regresión lineal es una aproximación para modelar la 
+relación entre una variable escalar dependiente “Y” y una o más 
+variables explicativas nombradas con “X”.
+La ecuación que representa este modelo, se puede expresar de la 
+siguiente forma :
+Donde :
+▪ Y , es el resultado
+▪ X, es la variable
+▪ ω, (W1 en el gráfico) es la pendiente o coeficiente de la recta
+▪ b (Wo en el gráfico), es la constante, conocida como ”punto de corte 
+con el eje Y” o intercepto
+
+
+PAGINA 9
+Regresión lineal
+En Machine Learning, la regresión lineal es un algoritmo de
+aprendizaje supervisado.
+En su versión más sencilla, conocido como “lineal simple”, lo que hace
+es dibujar una recta que nos indica la tendencia de un conjunto de
+puntos continuos.
+En este gráfico, el proceso de aprendizaje consiste en estimar los
+parámetros bo y b1.
+Así, para este conjunto de datos, los mejores valores serían :
+Y = 0.0918 X + 1.2859
+
+PAGINA 10
+Regresión lineal
+Los algoritmos de Machine Learning supervisados, aprenden por sí
+mismos a obtener automáticamente la recta que se busca con la
+tendencia de la predicción.
+Para hacerlo se mide el error con respecto a los puntos de entrada y
+el valor de “Y” de salida real.
+La diferencia entre el valor “Y” de un punto real y el valor predicho de
+“Y”, se denomina residuo (vertical-offset en el gráfico).
+Los parámetros del modelo se obtienen a partir de la minimización de
+la suma de los cuadrados de los residuos.
+El método de los mínimos cuadrados se usa para estimar los
+coeficientes de la ecuación (bo y b1), minimizando la suma de los
+errores cuadráticos de los datos observados.
+
+
+PAGINA 11
+Técnicas de Regularización
+El objetivo de la ingeniería de modelos es construir algoritmos que resuelvan el problema de negocio minimizando el error total.
+Para lograrlo, debemos balancear dos fuerzas opuestas.
+El Dilema: Sesgo vs. Varianza (Bias-Variance Trade-off)
+El error de un modelo predictivo se compone principalmente de dos variables con relación inversa (cuando una baja, la otra sube):
+• Sesgo (Bias): Error por supuestos erróneos o simplificaciones excesivas del algoritmo (provoca Underfitting).
+• Varianza (Variance): Error debido a una alta sensibilidad a las fluctuaciones del set de entrenamiento. El modelo memoriza el
+ruido en lugar de aprender el patrón (provoca Overfitting).
+
+
+PAGINA 12
+Técnicas de Regularización
+La Solución: Regularización
+Es una técnica diseñada para controlar la alta varianza (evitar el Overfitting) mediante la introducción de una penalización a la
+función objetivo del modelo durante su optimización.
+En una regresión lineal clásica, la función objetivo que se busca minimizar es la Suma Residual de Cuadrados (RSS). El
+procedimiento de regularización consiste en agregar información (un término de castigo) a este RSS para reducir la magnitud de
+los coeficientes (beta), evitando que el modelo se vuelva demasiado complejo.
+
+
+PAGINA 13
+Técnicas de Regularización
+REGRESIÓN LASSO
+Es una técnica de regularización que reduce la complejidad de
+un modelo reduciendo algunos de los coeficientes a cero.
+Cuando una característica tiene un coeficiente cero, se excluye
+del modelo.
+Otras características tendrían un coeficiente distinto de cero, lo
+que infiere que están más fuertemente asociadas con lo que se
+predice.
+Por lo tanto, se considera que la regresión de Lasso realiza una
+selección de características.
+REGRESIÓN RIDGE
+Ridge es también una técnica de regularización utilizada para
+reducir la complejidad del modelo al reducir los coeficientes del
+modelo.
+Pero en lugar de hacer que algunos de los coeficientes sean
+cero, Ridge los obliga a ser pequeños.
+Esto reduce la importancia de estas características de modo que
+tienen menos impacto en la predicción de la etiqueta de destino.
+Al igual que en la regresión de Lasso, el término lambda (λ)
+controla la cantidad de reducción del coeficiente y establecerlo
+en 0 es equivalente a la regresión lineal.
+Algo a tener en cuenta al decidir qué técnica usar es que la regresión de 
+Lasso es resistente a los valores atípicos, mientras que la regresión de Ridge 
+no lo es. 
+
+PAGINA 14
+Modelos de clasificación
+Clasificación es un tipo de tarea en aprendizaje
+automático supervisado en el que el modelo intenta
+predecir la etiqueta (o clase) correcta de unos datos
+de entrada determinados.
+En la clasificación, tradicionalmente el modelo se
+entrena por completo con los datos de
+entrenamiento y luego se evalúa en datos de prueba
+antes de usarse para realizar predicciones en nuevos
+datos no vistos.
+Por ejemplo, un algoritmo puede aprender a
+predecir si un correo electrónico determinado es
+spam o no, como se ilustra a continuación.
+
+PAGINA 15
+Regresión Logística
+La regresión logística es uno de los algoritmos de
+aprendizaje automático más comunes.
+Se puede usar para predecir la probabilidad de que
+ocurra un evento, como si un correo electrónico
+entrante es correo no deseado o no, o si un tumor es
+maligno o no, en función de un conjunto de datos
+etiquetados determinado.
+Debido a su simplicidad, la regresión logística a menudo
+se usa como línea de base contra la cual se evalúan otros
+modelos más complejos.
+
+
+PAGINA 16
+Regresión Logística
+El modelo tiene la palabra "logística" en su nombre, ya
+que utiliza la función logística (sigmoide) para
+convertir una combinación lineal de las características
+de entrada en probabilidades.
+También tiene la palabra “regresión” en su nombre, ya
+que su salida es un valor continuo entre 0 y 1, aunque
+normalmente se usa como un clasificador binario al
+elegir un valor de umbral (generalmente 0,5) y
+clasificar las entradas con probabilidad mayor que el
+umbral como la clase positiva, y aquellos por debajo
+del umbral como la clase negativa.
+
+
+PAGINA 17
+Árboles de Decisión
+Los árboles de decisión son representaciones gráficas de 
+posibles soluciones a una decisión basadas en ciertas 
+condiciones.
+Es uno de los algoritmos de aprendizaje supervisado más 
+utilizados en Machine Learning y pueden realizar tareas de 
+clasificación o regresión.
+Los árboles de decisión tienen un primer nodo llamado
+raíz (root) y luego se descomponen el resto de atributos de
+entrada en dos o más ramas planteando una condición que
+puede ser cierta o falsa.
+Cada nodo se vuelve a subdividir hasta llegar a las hojas que
+son los nodos finales y que equivalen a respuestas a la
+solución.
+
+
+PAGINA 18
+Árboles de Decisión: clasificación
+Cuando la variable a predecir es categórica (dos clases para clasificación binaria o más de dos para multiclase), el algoritm o 
+genera recursivamente particiones en el espacio de variables explicativas, con el objetivo de obtener los nodos más puros 
+posibles, es decir, que el nodo quede lo más concentrado posible en una sola clase.
+
+
+PAGINA 19
+Árboles de Decisión: regresión
+Cuando la variable a predecir es continua, el resultado final va a ser un árbol que termine asignando una constante a cada 
+uno de los nodos extremos.
+El promedio de la variable a predecir, al interior de cada región logra la mejor predicción en término de minimizar el error 
+cuadrático (como una regresión lineal).
+
+
+PAGINA 20
+K-Nearest Neighbors
+Puede usarse para clasificar muestras nuevas (valores discretos) o para predecir (regresión, valores continuos).
+Sirve, esencialmente, para clasificar valores buscando los puntos de datos “más similares” (por cercanía) aprendidos en la 
+etapa de entrenamiento y haciendo conjeturas de nuevos puntos basado en esa clasificación.
+Tiende a funcionar bien en datos pequeños con pocas características.
+El algoritmo requiere un método para calcular distancias entre los puntos. La distancia euclídeana es una de las distancias 
+más básicas, pero a la vez, de las más utilizadas en el mundo del Machine Learning. Esta distancia está pensada solo para 
+variables numéricas. Si quisiéramos utilizar una variable categórica, tendríamos que utilizar alguna técnica de encoding, u 
+otra distancia que sí permita este tipo de variables.
+
+
+PAGINA 21
+División del Dataset
+Nunca evaluamos un modelo con los mismos datos con los que aprendió. Eso sería "hacer trampa" (Memorización vs 
+Aprendizaje).
+Train (80%): Datos para ajustar los parámetros.
+Test (20%): Simulación de datos reales no vistos.
+
+
+PAGINA 22
+Reflexión final
+La calidad de un Científico de datos no se mide por la complejidad del modelo matemático que utiliza, sino
+por su criterio para seleccionar el algoritmo correcto, interpretar críticamente sus métricas y alinearlo con 
+las necesidades reales y éticas de la organización.
+
+PAGINA 23
+Resumen
+• Clasificamos los problemas analíticos según la naturaleza de su variable objetivo: Regresión para la 
+predicción de variables numéricas continuas y Clasificación para la asignación de etiquetas discretas o 
+categóricas.
+• Evaluamos el funcionamiento técnico de cuatro modelos clave: la linealidad interpretables de la 
+Regresión Lineal y Logística, la flexibilidad basada en geometría de K-Nearest Neighbors (KNN) y las reglas
+de particionamiento lógico de los Árboles de Decisión.
+• Comprendimos la necesidad metodológica de dividir el dataset original en conjuntos disjuntos de 
+Entrenamiento (Train) y Prueba (Test) para simular escenarios productivos reales y medir el verdadero
+nivel de generalización del modelo.
+
+PAGINA 24
+ 

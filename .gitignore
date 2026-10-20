@@ -4,3 +4,7 @@ __pycache__/
 venv/
 *.pyc
 .DS_Store
+tmp/
+output/
+*.log
+.pytest_cache/

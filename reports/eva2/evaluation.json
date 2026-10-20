@@ -1,0 +1,27 @@
+{
+  "selected_model": "HistGradientBoosting",
+  "metrics": {
+    "mae": 11.242896573671649,
+    "mse": 263.3470976589633,
+    "rmse": 16.227972690972933,
+    "r2": 0.3685962782544362
+  },
+  "improvement_vs_mean_pct": 34.19416879438722,
+  "mae_target_15_met": true,
+  "improvement_target_10pct_met": true,
+  "confidence": {
+    "resamples": 600,
+    "unit": "audio_group",
+    "mae_95_ci": [
+      10.994429476162477,
+      11.462425119628309
+    ],
+    "improvement_pct_95_ci": [
+      33.30068968979791,
+      35.24976587336124
+    ]
+  },
+  "test_rows": 17715,
+  "residual_p95_absolute": 37.3015794255177,
+  "residual_bias": -0.4682341613709065
+}

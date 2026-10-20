@@ -1,3 +1,5 @@
+> **Antecedente de la experiencia 1.** Este documento conserva los resultados de esa etapa. Para la evaluación 2, consultar el [informe técnico vigente](docs/informe_tecnico_eva2.md) y el [informe ejecutivo](docs/informe_ejecutivo.md).
+
 # Informe técnico - Caso C: Spotify Tracks
 
 ## Resumen ejecutivo

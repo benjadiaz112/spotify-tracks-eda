@@ -1,0 +1,31 @@
+{
+  "used_to_change_selection": false,
+  "only_feature_removed": "track_genre",
+  "retained_features": [
+    "duration_ms",
+    "danceability",
+    "energy",
+    "loudness",
+    "speechiness",
+    "acousticness",
+    "instrumentalness",
+    "liveness",
+    "valence",
+    "tempo",
+    "key",
+    "mode",
+    "time_signature",
+    "explicit"
+  ],
+  "same_grouped_folds": true,
+  "fixed_shared_hyperparameters": {
+    "max_iter": 220,
+    "learning_rate": 0.08,
+    "max_leaf_nodes": 31,
+    "l2_regularization": 10.0,
+    "early_stopping": false,
+    "random_state": 42
+  },
+  "note": "Ablación corregida: retira solo género y conserva tonalidad, modo y compás. Reutiliza configuración, no optimiza ni cambia selección. Diagnóstico de asociación predictiva, no causalidad.",
+  "unseen_genre_fallback": "media de entrenamiento"
+}

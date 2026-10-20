@@ -1,0 +1,106 @@
+PAGINA 1
+ 
+ 
+Actividad 2.4.2 
+Guía de Checklist de Evaluación e Interpretación 
+de Modelos 
+ESCUELA DE INFORMÁTICA Y TELECOMUNICACIONES 
+
+PAGINA 2
+ 
+ 
+1 
+2025 
+Nombre especifico de la guía 
+ 
+ 
+Sigla/Asignatura 
+ 
+ 
+Semana Disponible EFT 
+ 
+Experiencia de Aprendizaje 
+MLY1101 17 
+ 
+EA2 Implementación y Análisis 
+de Modelos de Machine 
+Learning 
+ 
+Tiempo 
+ 
+ 
+Modalidad de Trabajo 
+ 
+Indicadores de Logro 
+3 horas 
+ Individual / Colaborativo 
+IL 2.4 Interpreta los resultados 
+del desempeño del modelo, 
+traduciendo métricas técnicas 
+a conocimientos relevantes 
+para la organización. 
+ 
+ 
+ 
+ 
+RA2 Aplica modelos estadísticos, al conjunto de datos procesados para interpretarlos, utilizando 
+metodologías ágiles con la finalidad de obtener conocimientos relevantes que permita responder a 
+las necesidades del contexto negocio, considerando aspectos éticos. 
+ 
+ 
+ 
+Abran el cuaderno de Google Colab desarrollado en el laboratorio anterior (2.2.2) donde entrenaron 
+el Árbol de Decisión (Clasificación de la fuga - Exited) y la Regresión Lineal (Estimación de saldo - 
+Balance). En esta sesión, ejecutarán la fase de Evaluac ión, completando cada uno de los siguientes 
+hitos técnicos. 
+ 
+Hito 1: Evaluación y Auditoría Financiera de la Clasificación (Exited) 
+El algoritmo ya generó predicciones. Ahora debemos medir de qué forma se equivoca y cuánto le 
+cuesta ese error al Banco. 
+Paso 1.1: Generar el Reporte Completo de Scikit-Learn 
+Ejecuten las funciones métricas sobre el conjunto de prueba para obtener la matriz base y el reporte 
+unificado. 
+Resultados de aprendizaje 
+Contenidos 
+Actividades 
+
+PAGINA 3
+ 
+ 
+2 
+2025 
+Paso 1.2: Análisis de Residuos Operativos 
+Identifiquen los valores exactos dentro de su matriz de confusión y resuelvan la siguiente bitácora 
+de negocio en su cuaderno. 
+- Extraigan el número absoluto de Falsos Positivos (FP) y Falsos Negativos (FN) de su modelo. 
+- Si el Banco gasta $50 USD en un bono de retención por cada cliente detectado en riesgo de 
+fuga, y pierde $800 USD en valor neto por cada cliente que se fuga sin ser detectado: 
+o Calculen el costo de los Falsos Positivos: FP x $50 USD. 
+o Calculen el costo de los Falsos Negativos: FN x $800 USD. 
+o ¿Cuál de los dos tipos de error le genera un daño económico más severo a la 
+organización financiera? 
+- Expliciquen detalladamente por qué el Accuracy global del modelo podría ser una métrica 
+peligrosa o engañosa en este caso de negocio si la base de datos tuviera un 90% de clientes 
+leales. 
+ 
+Hito 2: Evaluación y Validación de la Regresión Lineal (Balance) 
+Pasamos a medir la precisión física del modelo encargado de proyectar los fondos contables de los 
+clientes en base a sus predicciones. 
+Paso 2.1: Cálculo de Métricas de Desviación 
+Extraer las tres métricas de control de regresión. 
+Paso 2.2: Traducción Analítica para el Directorio 
+Resuelvan los siguientes puntos de interpretación en base a las salidas: 
+- Traduzcan el significado del MAE en palabras sencillas que un Gerente de Finanzas (no 
+técnico) pueda entender. (Ej: "En promedio, nuestro modelo se equivoca por... "). 
+- Si el valor del RMSE es significativamente más alto que el MAE, expliquen matemáticamente 
+qué le está ocurriendo a las predicciones del modelo (Pista: Analicen el impacto de los 
+errores grandes o outliers). 
+- Interpreten el Coeficiente de Determinació n. Si el valor obtenido fuera menor a 0.30, 
+¿recomendarían usar este modelo para planificar las inversiones millonarias del banco? 
+Justifiquen su respuesta. 
+ 
+Hito 3: Auditoría Ética del Desempeño por Subgrupos 
+El aprendizaje supervisado puede ocultar sesgos históricos. Desglosen o analicen conceptualmente 
+si el modelo de clasificación podría tener un rendimiento inferior (Recall más bajo) en un género 
+específico (Gender) o región geográfica (Geography). ¿Por qué  es una responsabilidad ética del 
+científico de datos auditar las métricas por subgrupos antes de liberar el software a producción? 

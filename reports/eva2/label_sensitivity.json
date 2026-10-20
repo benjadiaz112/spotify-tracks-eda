@@ -1,0 +1,12 @@
+{
+  "scope": "training_only_grouped_cv",
+  "test_used": false,
+  "selection_changed": false,
+  "primary_target_changed": false,
+  "validation_reference": "first_observed_row_by_track_id",
+  "cv_mae_first_training": 11.519260390739172,
+  "cv_mae_median_training": 11.529900020468306,
+  "delta_median_minus_first": 0.010639629729134606,
+  "training_labels_changed": 412,
+  "limitations": "La referencia first no es verdad temporal certificada. Este contraste mide sensibilidad a las etiquetas usadas para entrenar, sin demostrar superioridad de la mediana ni rendimiento futuro."
+}

@@ -1,0 +1,202 @@
+PAGINA 1
+MLY1101
+Machine Learning
+
+PAGINA 2
+MLY1101
+Act 2.3 Modelamiento No Supervisado
+
+
+PAGINA 3
+Tipos de aprendizaje no 
+supervisado
+AGENDA
+Reducción de 
+dimensionalidad
+Modelamiento no 
+supervisado
+01
+ 04
+02
+03
+Clustering
+
+PAGINA 4
+Resultado de aprendizaje
+RA2 Aplica modelos estadísticos, al conjunto de datos procesados 
+para interpretarlos, utilizando metodologías ágiles con la finalidad 
+de obtener conocimientos relevantes que permita responder a las 
+necesidades del contexto negocio, considerando aspectos éticos.
+Indicador de logro
+IL 2.3 Elabora algoritmos de aprendizaje no supervisado para 
+descubrir patrones ocultos en los datos.
+
+
+PAGINA 5
+¿Qué es el Aprendizaje No Supervisado?
+A diferencia del aprendizaje
+supervisado, aquí no existen
+etiquetas (y). El algoritmo debe
+encontrar la estructura por sí solo.
+Exploración: ¿Cómo se agrupan
+mis clientes de forma natural?
+Simplificación: ¿Cuáles son las 
+dimensiones que realmente
+importan?
+Estructura: Revelar asociaciones
+que el ojo humano no percibe.
+El mejor momento para utilizar el 
+Aprendizaje no Supervisado es 
+cuando no se dispone de datos
+sobre los resultados deseados.
+
+
+PAGINA 6
+Aprendizaje supervisado vs no supervisado
+
+
+PAGINA 7
+Aprendizaje no supervisado
+Algunos ejemplos de  aplicación de este tipo de modelos, pueden ser :
+• La agrupación en clústeres divide automáticamente el conjunto de datos en grupos en función de sus 
+similitudes.
+• La detección de anomalías puede descubrir puntos de datos inusuales en su conjunto de datos. Es 
+útil para encontrar transacciones fraudulentas.
+• La minería de asociaciones identifica conjuntos de elementos que a menudo aparecen juntos en su 
+conjunto de datos.
+• Los modelos de variables latentes se utilizan ampliamente para el preprocesamiento de datos. Cómo 
+reducir el número de características en un conjunto de datos o descomponer el conjunto de datos en 
+múltiples componentes.
+
+PAGINA 8
+Clustering: Agrupamiento
+En términos básicos, el objetivo de la agrupación es
+encontrar diferentes grupos dentro de los
+elementos de los datos.
+Para ello, los algoritmos de agrupamiento
+encuentran la estructura en los datos de manera
+que los elementos del mismo clúster (o grupo) sean
+más similares entre sí que con los de clústeres
+diferentes.
+
+
+PAGINA 9
+Análisis de asociación
+Se refiere a descubrir patrones y relaciones comunes entre
+los distintos atributos de un conjunto de datos.
+La atención se centra en qué atributos o características del
+conjunto de datos aparecen juntos con frecuencia y cuáles
+no.
+El objetivo es identificar reglas o asociaciones que indiquen
+qué combinaciones de características o atributos se dan con
+más frecuencia.
+Un ejemplo habitual de análisis de asociación es el análisis
+del comportamiento de compra en un supermercado,
+llamado “análisis de la cesta de compra”, el objetivo es
+averiguar qué productos suelen comprarse juntos
+
+
+PAGINA 10
+Reducción de la dimensionalidad
+Se refiere a reducir características de los datos
+conservando la información más importante. Es decir,
+transformar el conjunto de datos a uno de menor
+dimensión.
+Por ejemplo, la reducción de la dimensionalidad en un
+conjunto de datos de clientes de un supermercado ayuda
+a reducir la variedad de características, como la edad, el
+sexo, los ingresos y los gastos. Esto ayuda a identificar las
+características más importantes y a explicar mejor la
+variación de los datos.
+Así los clientes similares se sitúan cerca unos de otros, lo
+que puede indicar patrones y agrupaciones.
+
+
+PAGINA 11
+El Algoritmo K-Means
+Es el estándar para clustering. 
+Funciona iterativamente 
+asignando puntos a centroides.
+1. Seleccionar un número K de 
+clusters.
+2. Ubicar K centroides aleatorios.
+3. Asignar cada dato al centroide 
+más cercano.
+4. Recalcular la posición de los 
+centroides.
+5. Repetir hasta que no haya 
+cambios.
+
+
+PAGINA 12
+Selección del K óptimo
+Método del Codo (Elbow)
+• Calculamos la Inercia (suma de distancias al cuadrado dentro del cluster) para distintos valores de K.
+• El punto donde la reducción de la inercia deja de ser drástica es nuestro "K óptimo".
+• Un K muy alto genera clusters sin sentido de negocio.
+
+
+PAGINA 13
+Coeficiente de Silueta (Silhouette)
+Mide qué tan similar es un objeto a su propio grupo en comparación con otros grupos.
+• Cerca de +1: El dato está muy bien agrupado.
+• Cerca de 0: El dato está en la frontera entre grupos.
+• Cerca de -1: El dato probablemente está en el cluster equivocado.
+
+
+PAGINA 14
+Ánalisis de componentes principales
+El método de Principal Component Analysis (PCA) gira los datos de forma que, desde un punto de vista estadístico, no exista una 
+correlación entre las características rotadas pero que conserven la mayor cantidad posible de la varianza de los datos origin ales.
+PCA reduce la dimensionalidad de un conjunto de datos proyectándolos sobre un subespacio de menor dimensionalidad. 
+•Por ejemplo, datos con dos características (dispuestos en un plano) pueden ser proyectados sobre una línea. 
+•O un conjunto de datos de tres características (dispuestos en un espacio de tres dimensiones) pueden ser proyectados en un 
+plano (de dos dimensiones). En incluso aquí, los datos resultantes en el plano podrían ser reducidos a una única línea, pasan do 
+de las tres dimensiones originales a una sola.
+
+
+PAGINA 15
+Varianza Explicada
+Al aplicar PCA, cada "Componente Principal" (PC)
+captura una cantidad decreciente de la varianza
+total del dataset.
+• Regla: Seleccionamos el número de componentes
+necesarios para explicar al menos el 80-90% de la
+varianza original.
+• PC1 siempre captura la mayor variabilidad
+posible de los datos.
+
+
+PAGINA 16
+División del Dataset
+Nunca evaluamos un modelo con los mismos datos con los que aprendió. Eso sería "hacer trampa" (Memorización vs 
+Aprendizaje).
+Train (80%): Datos para ajustar los parámetros.
+Test (20%): Simulación de datos reales no vistos.
+
+
+PAGINA 17
+Reflexión final
+• Los algoritmos no supervisados actúan como un espejo de la realidad de los datos, desafiando a menudo 
+los sesgos e intuiciones de la organización.
+• El valor del clustering radica en su capacidad para romper las segmentaciones tradicionales de negocio
+(como agrupar solo por edad o comuna) y construir perfiles basados en comportamientos
+transaccionales complejos y correlaciones no lineales.
+• Agrupar automáticamente a los usuarios conlleva un alto compromiso ético. Como ingenieros, debemos
+vigilar que los clusters generados no repliquen sesgos históricos que discriminen, excluyan o vulneren la 
+privacidad de grupos de clientes.
+
+PAGINA 18
+Resumen
+• Comprendimos que ante la ausencia de una variable objetivo (y), el rol del algoritmo consiste en descubrir
+de forma autónoma patrones, relaciones y geometrías ocultas dentro de las características (X).
+• Dominamos el funcionamiento del algoritmo de agrupamiento por excelencia, aprendiendo cómo asigna y 
+optimiza iterativamente la posición de los centroides basándose en distancias euclidianas.
+• Analizamos que para determinar el número óptimo de grupos (K) no se debe adivinar, sino aplicar el rigor 
+técnico del Método del Codo y validar la cohesión/separación mediante el Coeficiente de Silueta.
+• Estudiamos el Análisis de Componentes Principales como una herramienta matemática clave para reducir
+la alta dimensionalidad, permitiendo proyectar datos complejos en espacios de 2 o 3 dimensiones
+preservando la mayor varianza posible.
+
+PAGINA 19
+ 

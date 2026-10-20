@@ -1,0 +1,94 @@
+PAGINA 1
+ 
+ 
+Actividad 2.3.2 
+Guía de Clustering y Reducción de 
+Dimensionalidad 
+ESCUELA DE INFORMÁTICA Y TELECOMUNICACIONES 
+
+PAGINA 2
+ 
+ 
+1 
+2025 
+Nombre especifico de la guía 
+ 
+ 
+Sigla/Asignatura 
+ 
+ 
+Semana Disponible EFT 
+ 
+Experiencia de Aprendizaje 
+MLY1101 17 
+ 
+EA2 Implementación y Análisis 
+de Modelos de Machine 
+Learning 
+ 
+Tiempo 
+ 
+ 
+Modalidad de Trabajo 
+ 
+Indicadores de Logro 
+3 horas 
+ Individual / Colaborativo 
+IL 2.3 Elabora algoritmos de 
+aprendizaje no supervisado 
+para descubrir patrones 
+ocultos en los datos. 
+ 
+ 
+ 
+ 
+RA2 Aplica modelos estadísticos, al conjunto de datos procesados para interpretarlos, utilizando 
+metodologías ágiles con la finalidad de obtener conocimientos relevantes que permita responder a 
+las necesidades del contexto negocio, considerando aspectos éticos. 
+ 
+ 
+ 
+La vicepresidencia de Marketing y Experiencia de Clientes del Banco ha determinado que las 
+campañas masivas genéricas ya no son rentables. En lugar de tratar a todos los usuarios de la misma 
+manera, la institución requiere una estrategia de personalización  avanzada. Tu misión como 
+Científico de datos es descubrir estructuras ocultas y agrupar de manera puramente geométrica a 
+los clientes según su comportamiento financiero (Balance, EstimatedSalary, NumOfProducts, etc.), 
+permitiendo diseñar planes de fidelización quirúrgicos y éticos. 
+ 
+Paso 1: Carga de Datos y Preparación para Modelos Geométricos 
+1. Inicia tu entorno en Google Colab. 
+2. Carga el dataset corporativo ecommerce_customer_data.csv y selecciona únicamente las 
+variables numéricas que definen el perfil comercial. 
+3. Aplica obligatoriamente un escalado de datos para evitar que las variables de gran magnitud 
+(como el sueldo o el saldo) anulen a las de rango menor (como la edad o el número de 
+productos). 
+ 
+Resultados de aprendizaje 
+Contenidos 
+Actividades 
+
+PAGINA 3
+ 
+ 
+2 
+2025 
+Paso 2: Diagnóstico del Número Óptimo de Clústeres (Método del Codo) 
+No podemos elegir un número de grupos al azar. Utilizaremos la métrica de Inercia (suma de 
+distancias cuadradas internas) para identificar el punto de inflexión óptimo. 
+1. Itera el algoritmo K-Means desde K=1 hasta K=10. 
+2. Almacena las inercias y grafica la curva del codo. 
+3. Pregunta: Observa el gráfico generado. ¿En qué valor de K se aprecia la curvatura más 
+pronunciada ("el codo") a partir de la cual la reducción de la inercia deja de ser significativa? 
+Justifica tu elección para el modelo final. 
+ 
+Paso 3: Entrenamiento Final de K-Means y Reducción Dimensional con PCA 
+Una vez seleccionado el K óptimo, entrenaremos el modelo definitivo. Usaremos PCA para 
+comprimir los datos en 2 dimensiones y mapear visualmente los grupos. 
+ 
+Paso 4: Interpretación del Perfil de Negocio 
+Extrae el promedio de las variables originales según el grupo asignado y resolver el desafío 
+estratégico corporativo: 
+Describe brevemente la identidad de los clústeres descubiertos (Ej: Clúster 0 = Clientes jóvenes de 
+bajos fondos; Clúster 1 = Clientes senior con saldos masivos, etc.). Si el banco lanzara un producto 
+de inversión de alta gama y bajo riesgo, ¿a qué clúster enfocarías éticamente la campaña y por qué? 
+ 

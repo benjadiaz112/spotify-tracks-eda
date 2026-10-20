@@ -1,0 +1,14 @@
+{
+  "policy": "first_observed_row_by_track_id",
+  "policy_changes_primary_target": false,
+  "justification": "Continuidad y definición reproducible de la referencia. Sin fecha ni fuente autoritativa no se infiere que máximo, última fila o mediana sea el valor verdadero. Se reporta sensibilidad solo en entrenamiento.",
+  "conflicting_ids_raw": 720,
+  "conflicting_ids_pct": 0.8023088666272941,
+  "conflicting_ids_retained": 720,
+  "median_range": 1.0,
+  "maximum_range": 44.0,
+  "range_greater_than_20": 10,
+  "first_differs_from_median_retained": 517,
+  "multi_genre_ids": 16299,
+  "sensitivity_scope": "mismos tres folds del entrenamiento; validación contra referencia first; test sin alterar"
+}
