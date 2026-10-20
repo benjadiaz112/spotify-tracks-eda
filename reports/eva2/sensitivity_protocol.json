@@ -1,0 +1,6 @@
+{
+  "used_to_change_selection": false,
+  "note": "Auditoría de dependencia de género posterior a la selección. Audio reutiliza parámetros HGB, no se optimiza. No prueba causalidad.",
+  "same_grouped_folds": true,
+  "unseen_genre_fallback": "media de entrenamiento"
+}

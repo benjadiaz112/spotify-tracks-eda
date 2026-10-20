@@ -1,0 +1,54 @@
+{
+  "selected_model": "HistGradientBoosting",
+  "criterion": "menor MAE medio de CV agrupada de 3 folds",
+  "test_used_for_selection": false,
+  "best_parameters": {
+    "Dummy_media": {},
+    "Dummy_mediana": {},
+    "Regresion_lineal": {},
+    "Arbol_decision": {
+      "model__max_depth": 24,
+      "model__min_samples_leaf": 30
+    },
+    "HistGradientBoosting": {
+      "model__l2_regularization": 10.0,
+      "model__max_leaf_nodes": 31
+    }
+  },
+  "seed": 42,
+  "features": [
+    "duration_ms",
+    "danceability",
+    "energy",
+    "loudness",
+    "speechiness",
+    "acousticness",
+    "instrumentalness",
+    "liveness",
+    "valence",
+    "tempo",
+    "track_genre",
+    "key",
+    "mode",
+    "time_signature",
+    "explicit"
+  ],
+  "prediction_range": [
+    0,
+    100
+  ],
+  "cv_folds": [
+    {
+      "train": 48022,
+      "validation": 23758
+    },
+    {
+      "train": 47693,
+      "validation": 24087
+    },
+    {
+      "train": 47845,
+      "validation": 23935
+    }
+  ]
+}
