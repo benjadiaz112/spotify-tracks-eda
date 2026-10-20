@@ -4,6 +4,7 @@
 
 - [Informe técnico](informe_tecnico_eva2.md): desarrollo completo y matriz de rúbrica.
 - [Informe ejecutivo](informe_ejecutivo.md): evidencia principal y decisión propuesta.
+- [Presentación en PDF](presentacion/Inteligencia-musical-en-Spotify.pdf): diapositivas de la evaluación 2.
 - [Plan CRISP-DM](plan_evaluacion_2.md): alcance, tareas, criterios y controles de calidad.
 - [Hallazgos y decisiones](hallazgos_y_decisiones.md): asociación entre evidencia e interpretación.
 - [Plan de piloto](plan_piloto_negocio.md): KPIs comerciales operativos propuestos, todavía no medidos.

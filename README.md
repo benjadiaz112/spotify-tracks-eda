@@ -9,6 +9,7 @@ Proyecto de MLY1101 que continúa la experiencia 1: estima popularidad observada
 - [Informe ejecutivo](docs/informe_ejecutivo.md): síntesis de negocio, resultados y decisión propuesta.
 - [Informe técnico y matriz de rúbrica](docs/informe_tecnico_eva2.md): desarrollo completo con CRISP-DM, EDA, modelos y ética.
 - [Notebook integral ejecutado](notebooks/05_proyecto_completo_eva2.ipynb): reproduce todo desde raw.
+- [Presentación en PDF](docs/presentacion/Inteligencia-musical-en-Spotify.pdf): diapositivas de la evaluación 2.
 - [Piloto y KPIs de negocio](docs/plan_piloto_negocio.md): fórmulas, metas propuestas, plazo y responsables.
 - [Resultados verificables](reports/eva2/): métricas, parámetros, particiones y predicciones.
 
