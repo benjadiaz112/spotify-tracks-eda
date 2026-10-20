@@ -16,6 +16,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 from src.eva2.data import EXPECTED_SHA256, save_json
 from src.eva2.supervised import metrics
+from src.eva2.integrity import source_integrity
 
 
 def main():
@@ -35,8 +36,8 @@ def main():
     check("deliverables_exist", all((ROOT / p).is_file() for p in required))
     actual_hash = hashlib.sha256((ROOT / "data/raw/Spotify_Tracks_Dataset.csv").read_bytes()).hexdigest()
     check("dataset_sha256", actual_hash == EXPECTED_SHA256)
-    git_csv = subprocess.check_output(["git", "show", "HEAD:data/raw/Spotify_Tracks_Dataset.csv"], cwd=ROOT)
-    check("git_preserves_original_csv_bytes", hashlib.sha256(git_csv).hexdigest() == EXPECTED_SHA256)
+    provenance = source_integrity(ROOT, EXPECTED_SHA256)
+    check("source_integrity_valid", provenance["data_hash"] == EXPECTED_SHA256)
     manifest = pd.read_csv(report / "split_manifest.csv", dtype={"audio_group": str})
     train, test = [manifest.query("split == @label") for label in ["train", "test"]]
     check("unique_track_ids", manifest.track_id.is_unique)
@@ -79,11 +80,12 @@ def main():
     check("unittest_passes", test.returncode == 0)
     result = {"passed": True, "checks": checks, "notebook_code_cells": len(cells),
               "test_output": test.stdout + test.stderr, "broken_links": broken,
-              "measured_metrics": calculated, "dataset_sha256": actual_hash}
+              "measured_metrics": calculated, "dataset_sha256": actual_hash,
+              "provenance": provenance}
     if not args.check_only:
         save_json(report / "verification.json", result)
     print(json.dumps({"passed": True, "checks": len(checks), "notebook_code_cells": len(cells),
-                      "metrics": calculated}, ensure_ascii=False, indent=2))
+                      "metrics": calculated, "source_mode": provenance["mode"]}, ensure_ascii=False, indent=2))
 
 
 if __name__ == "__main__":
