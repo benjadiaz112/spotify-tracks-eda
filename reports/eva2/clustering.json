@@ -1,0 +1,34 @@
+{
+  "selected_k": 2,
+  "elbow_chord_k": 4,
+  "selection_rule": "mayor silueta en muestra fija de 2500 train entre K=2..10 con todos los grupos >=3% de train; desempate menor K",
+  "silhouette_train_sample": 0.24785807906949103,
+  "silhouette_test_sample": 0.23737085991990833,
+  "features": [
+    "duration_ms",
+    "danceability",
+    "energy",
+    "loudness",
+    "speechiness",
+    "acousticness",
+    "instrumentalness",
+    "liveness",
+    "valence",
+    "tempo"
+  ],
+  "target_used_in_fit": false,
+  "genre_used_in_fit": false,
+  "pca_two_components_variance": 0.4444360810813514,
+  "pca_components_for_80pct": 6,
+  "stability": [
+    {
+      "seed": 7,
+      "ari_vs_42": 0.9973177808421619
+    },
+    {
+      "seed": 2026,
+      "ari_vs_42": 0.9974981684045194
+    }
+  ],
+  "seed": 42
+}
