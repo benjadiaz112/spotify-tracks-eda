@@ -22,7 +22,7 @@ Caso C: continuación de Spotify Tracks, con regresión de `popularity` (0 a 100
 - Notebook integral ejecutado sin errores y pruebas de preparación, partición, serialización e inferencia.
 - Defensa de 10 minutos con preguntas cruzadas para todos.
 
-## Cierre de observaciones de revisión
+## Controles de calidad y reproducibilidad
 
 - ZIP portable: verificar por manifiesto si no existe `.git`, con pruebas de alteración de fuentes y entrada.
 - Ablación: retirar únicamente `track_genre`, conservar las otras 14 variables y la configuración, y registrar el protocolo.

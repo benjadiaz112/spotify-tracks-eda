@@ -9,7 +9,6 @@ Proyecto de MLY1101 que continúa la experiencia 1: estima popularidad observada
 - [Informe ejecutivo](docs/informe_ejecutivo.md): síntesis de negocio, resultados y decisión propuesta.
 - [Informe técnico y matriz de rúbrica](docs/informe_tecnico_eva2.md): desarrollo completo con CRISP-DM, EDA, modelos y ética.
 - [Notebook integral ejecutado](notebooks/05_proyecto_completo_eva2.ipynb): reproduce todo desde raw.
-- [Guía de defensa](docs/defensa_individual.md): preparación para preguntas cruzadas.
 - [Piloto y KPIs de negocio](docs/plan_piloto_negocio.md): fórmulas, metas propuestas, plazo y responsables.
 - [Resultados verificables](reports/eva2/): métricas, parámetros, particiones y predicciones.
 
@@ -106,7 +105,7 @@ src/eva2/                Pipeline actual de principio a fin
 models/eva2/             Modelos nuevos y metadatos
 images/eva2/             Figuras actuales
 reports/eva2/            Evidencias calculadas y verificación
-docs/                    Informes, fuentes y defensa
+docs/                    Informes, fuentes y planes del proyecto
 scripts/                 Construcción de notebook y verificación
 tests/                   Pruebas de fuga, contrato y persistencia
 ```
@@ -115,11 +114,11 @@ El [README anterior](docs/experiencia1/README_original.md) se conserva como ante
 
 ## Fuentes, riesgos y mantenimiento
 
-[Fuentes y clases](docs/fuentes_eva2.md). [Plan CRISP-DM](docs/plan_evaluacion_2.md). [Equipo y Git](docs/equipo_y_git.md).
+[Fuentes y clases](docs/fuentes_eva2.md). [Plan CRISP-DM](docs/plan_evaluacion_2.md).
 
-[Hallazgos y decisiones](docs/hallazgos_y_decisiones.md). [Acta de verificación](docs/acta_verificacion.md).
+[Hallazgos y decisiones](docs/hallazgos_y_decisiones.md). Las comprobaciones técnicas y sus resultados están en `reports/eva2/verification.json`.
 
-Para generar un ZIP con todos los archivos versionados, dataset, evidencias y un manifiesto de integridad, ejecuta `python scripts/package_delivery.py` después de registrar los cambios. El resultado queda en `output/entrega_spotify_eva2.zip`. El paquete no incluye la carpeta interna `.git`; su manifiesto identifica el commit y el historial de la entrega. Las diapositivas quedan pendientes para elaborarlas en Gamma.
+Para generar el ZIP académico, ejecuta `python scripts/package_delivery.py` después de registrar los cambios. El resultado queda en `output/entrega_spotify_eva2.zip` e incluye dataset, código, informes y evidencias con un manifiesto de hashes SHA-256. La opción `--snapshot` permite revisar una copia de los archivos actuales antes del commit. Los materiales personales de preparación y coordinación permanecen fuera de la entrega.
 
 Desde el repositorio y con el entorno instalado, `python scripts/validate_archive.py --retrain` extrae ese ZIP en una carpeta temporal, retira Git del entorno de prueba y ejecuta instalación validada, entrenamiento, inferencia y controles. Guarda el recibo real en `output/validacion_zip.json`. El empaquetador y este control son herramientas del equipo para preparar la entrega, mientras que el entrenamiento y el verificador funcionan directamente dentro del ZIP extraído.
 

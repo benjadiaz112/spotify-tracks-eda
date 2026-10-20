@@ -4,13 +4,10 @@
 
 - [Informe técnico](informe_tecnico_eva2.md): desarrollo completo y matriz de rúbrica.
 - [Informe ejecutivo](informe_ejecutivo.md): evidencia principal y decisión propuesta.
-- [Plan CRISP-DM](plan_evaluacion_2.md): alcance, tareas, criterios y cierre de observaciones.
+- [Plan CRISP-DM](plan_evaluacion_2.md): alcance, tareas, criterios y controles de calidad.
 - [Hallazgos y decisiones](hallazgos_y_decisiones.md): asociación entre evidencia e interpretación.
 - [Plan de piloto](plan_piloto_negocio.md): KPIs comerciales operativos propuestos, todavía no medidos.
-- [Defensa individual](defensa_individual.md): preguntas cruzadas y límites que deben dominar los tres integrantes.
-- [Acta de verificación](acta_verificacion.md): comprobaciones ejecutadas y alcance.
 - [Fuentes](fuentes_eva2.md): material del profesor, dataset y documentación primaria.
-- [Equipo y Git](equipo_y_git.md): identidades y trazabilidad de los commits.
 
 ## Antecedentes conservados de experiencia 1
 

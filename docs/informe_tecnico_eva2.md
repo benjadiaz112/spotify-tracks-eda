@@ -53,7 +53,7 @@ Continuar el piloto exige las tres metas y revisión de calidad/derechos. Si sol
 | Evaluación | Test reservado, residuos, bootstrap y subgrupos | Secciones 6-8, CSV de predicciones |
 | Despliegue | Inferencia local ejecutable, contrato y plan de monitoreo | CLI de predicción y sección 10 |
 
-CRISP-DM es iterativo. El hallazgo de audio repetido llevó a revisar la partición propuesta en experiencia 1 antes de entrenar. La auditoría por género se añadió para interpretar el resultado después de congelar la elección del modelo, sin usarla para reajustar parámetros. El trabajo se organiza en hitos verificables con Git. El [plan](plan_evaluacion_2.md) define tareas y aceptación; el [registro del equipo](equipo_y_git.md) documenta identidades y orden de commits. No se afirman fechas de trabajo anteriores a la ejecución real.
+CRISP-DM es iterativo. El hallazgo de audio repetido llevó a revisar la partición propuesta en experiencia 1 antes de entrenar. La auditoría por género se añadió para interpretar el resultado después de congelar la elección del modelo, sin usarla para reajustar parámetros. El [plan](plan_evaluacion_2.md) define las tareas y sus criterios de aceptación. Los parámetros, particiones y resultados calculados quedan persistidos para reproducir y revisar cada etapa.
 
 ## 3. Fuentes y comprensión de los datos
 
@@ -357,16 +357,16 @@ K-Means aporta dos perfiles interpretables y estables ante semillas, pero la sep
 
 ## 12. Matriz de trazabilidad de la rúbrica
 
-| Indicador y peso | Evidencia de implementación | Evidencia para defensa |
+| Indicador y peso | Evidencia de implementación | Justificación e interpretación |
 |---|---|---|
-| IE5: metodología, 20% | Secciones 1-4, 9-10; plan CRISP-DM; hash, esquema, limpieza, partición y CLI | Explicar objetivo, KPIs, seis fases y por qué se modificó la partición |
-| IE6: supervisados, 30% | Secciones 5-6; lineal, árbol y ensamble; grillas, CV y selección persistida | Justificar algoritmos, parámetros, tipo de problema y prevención de fuga |
-| IE7: no supervisados, 30% | Sección 7; escalado, K=1..10, codo/silueta, perfiles, estabilidad y PCA | Justificar K=2 pese a codo=4, interpretar perfiles y pérdida de varianza |
-| IE8: interpretación, 20% | Secciones 6, 8 y 11; métricas, residuos, contraste por género y límites | Traducir MAE/RMSE/R², reconocer errores, sesgos y decisión de piloto |
+| IE5: metodología, 20% | Secciones 1-4, 9-10; plan CRISP-DM; hash, esquema, limpieza, partición y CLI | Seis fases conectadas con objetivos y KPIs; partición revisada por audio repetido |
+| IE6: supervisados, 30% | Secciones 5-6; lineal, árbol y ensamble; grillas, CV y selección persistida | Regresión para objetivo numérico, selección por MAE y control de fuga entre grupos |
+| IE7: no supervisados, 30% | Sección 7; escalado, K=1..10, codo/silueta, perfiles, estabilidad y PCA | K=2 maximiza silueta elegible; K=4 es alternativa explorada; perfiles y varianza limitada explícitos |
+| IE8: interpretación, 20% | Secciones 6, 8 y 11; métricas, residuos, contraste por género y límites | Mejora medible para consulta de catálogo; errores altos en extremos limitan decisiones de promoción |
 
-El cierre de revisión agrega evidencias específicas: protocolo de ablación controlada, auditoría de etiquetas y sensibilidad sin modificar el test, KPIs comerciales operativos propuestos y verificación portable del ZIP. El [plan de piloto](plan_piloto_negocio.md), la [guía de defensa](defensa_individual.md) y el [acta](acta_verificacion.md) complementan esta matriz. Las diapositivas quedan pendientes para Gamma por decisión del equipo.
+La matriz se respalda con el protocolo de ablación controlada, la auditoría de etiquetas y sensibilidad sin modificar el test, los KPIs comerciales propuestos en el [plan de piloto](plan_piloto_negocio.md) y las comprobaciones reproducibles de `reports/eva2/verification.json`.
 
-Entregables formales: informe Markdown, síntesis ejecutiva, notebook ejecutado, dataset, modelos, figuras, fuentes, guía de defensa y carpeta organizada. Esta matriz identifica evidencias; no asigna una nota ni sustituye el juicio del docente o la defensa individual.
+Entregables formales: informe Markdown, síntesis ejecutiva, notebook ejecutado, dataset, modelos, figuras, fuentes y carpeta organizada. Esta matriz identifica evidencias; no asigna una nota ni sustituye el juicio del docente o la defensa individual.
 
 ## 13. Referencias
 

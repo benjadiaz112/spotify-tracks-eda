@@ -1,5 +1,6 @@
 """Validar el ZIP fuera del repositorio, con un entorno aislado y sin Git."""
 import argparse
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -65,10 +66,10 @@ def main():
         run(["-m", "src.eva2.predict", "data/examples/tracks_example.csv",
              "--output", "reports/eva2/archive_predictions.csv"])
         verification = json.loads(run(["scripts/verify_delivery.py", "--check-only"]))
-        manifest = json.loads((project / "MANIFIESTO_ENTREGA.json").read_text(encoding="utf-8"))
+        manifest_hash = hashlib.sha256((project / "MANIFIESTO_ENTREGA.json").read_bytes()).hexdigest()
         if verification["source_mode"] != "archive_manifest":
             raise ValueError("La prueba no utilizó el manifiesto del archivo")
-        receipt = {"passed": True, "source_commit": manifest["commit"], "git_available": False,
+        receipt = {"passed": True, "source_manifest_sha256": manifest_hash, "git_available": False,
                    "copy_has_git_folder": False, "retrained_from_extracted_csv": args.retrain,
                    "elapsed_seconds": time.perf_counter() - start, "commands": commands,
                    "verification": verification}

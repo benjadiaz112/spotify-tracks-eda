@@ -47,11 +47,11 @@ from src.eva2.reporting import build_reports
 from src.eva2.predict import predict
 from src.features.prepare_features import MODEL_FEATURES
 start = time.perf_counter()
-print('Raíz:', ROOT)
+print('Proyecto localizado: data/raw y src disponibles')
 print('Python:', sys.version.split()[0])""")
     md("""## 1. Datos, calidad y preparación
 
-Verificamos el hash del archivo recibido y reutilizamos la limpieza de experiencia 1. El descarte por duración es una decisión heredada y puede excluir piezas válidas. Un ID puede aparecer en varios géneros y la regla conserva su primera etiqueta, limitación que debemos defender.
+Verificamos el hash del archivo recibido y reutilizamos la limpieza de experiencia 1. El descarte por duración es una decisión heredada y puede excluir piezas válidas. Un ID puede aparecer en varios géneros y la regla conserva su primera etiqueta, una limitación del conjunto preparado.
 
 La separación usa grupos de audio exactamente igual, para que versiones de distinta ID no crucen conjuntos. Se estratifican los grupos según deciles de su popularidad mediana, con 80/20 de grupos. No se ajusta ningún escalador antes de separar. El objetivo solo interviene en estratificación, nunca en la huella o en los predictores.""")
     code("""data = prepare(ROOT)
@@ -121,7 +121,7 @@ for name in ['01_popularity.png', '02_correlations.png', '03_model_comparison.pn
 
 Creamos una entrada de tres canciones de test sin el objetivo real. La inferencia valida las 15 variables y usa el pipeline persistido. Esta demostración comprueba el funcionamiento de entrada/salida y no es una nueva validación independiente.
 
-Uso recomendado: exploración con revisión humana. Popularidad no equivale a mérito. Faltan fechas, contexto promocional y muestreo representativo. No se justifican decisiones automáticas de inversión. Todos los integrantes deben poder explicar los modelos, los errores y la discrepancia entre codo y silueta.""")
+Uso recomendado: exploración con revisión humana. Popularidad no equivale a mérito. Faltan fechas, contexto promocional y muestreo representativo. No se justifican decisiones automáticas de inversión. Las métricas, los errores y la discrepancia entre codo y silueta delimitan este uso.""")
     code("""example = data['clean'].iloc[data['test_idx'][:3]][['track_id'] + MODEL_FEATURES]
 (ROOT / 'data/examples').mkdir(exist_ok=True)
 example.to_csv(ROOT / 'data/examples/tracks_example.csv', index=False)
@@ -130,7 +130,7 @@ example_result.to_csv(ROOT / 'reports/eva2/example_predictions.csv', index=False
 display(example_result)
 paths = build_reports(ROOT)
 print('Tiempo de cómputo del cuaderno (s):', round(time.perf_counter() - start, 2))
-print('Informes actualizados:', paths)
+print('Informes actualizados:', {name: path.relative_to(ROOT).as_posix() for name, path in paths.items()})
 display(Markdown((ROOT / 'docs/informe_ejecutivo.md').read_text(encoding='utf-8')))""")
     md("""## 7. KPIs de negocio y piloto propuesto
 
