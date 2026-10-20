@@ -5,3 +5,4 @@
 *.ipynb text eol=lf
 *.png binary
 *.joblib binary
+data/raw/*.csv -text

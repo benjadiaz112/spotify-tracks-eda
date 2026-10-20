@@ -28,4 +28,4 @@ CSV: `data/raw/Spotify_Tracks_Dataset.csv`.
 
 SHA-256 calculado: `335e5ee0a07a3f30b20ca9860c87562c98082a032e0ecd90e8ca0a86d965fe58`.
 
-El hash anotado en el README de experiencia 1 era diferente. No se presupone la causa ni se afirma que se verificó aquella versión. El pipeline de esta entrega registra y valida el hash del archivo realmente recibido.
+El README de experiencia 1 anota `b202fa49909b2d5cef71a04b1d21243cfeb36414535f2ca9272aa646721177bd`. Se comprobó que corresponde a los mismos bytes después de normalizar CRLF a LF, como hizo Git al importar la base. La diferencia no demuestra un cambio de datos: son representaciones distintas de los saltos de línea. La copia recibida tiene CRLF y su hash es el mostrado arriba. `.gitattributes` preserva sus bytes en Git desde esta entrega. El pipeline registra y valida el hash del archivo recibido.

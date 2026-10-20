@@ -1,0 +1,6 @@
+{
+  "completed": true,
+  "elapsed_seconds": 129.2559317999985,
+  "source": "CSV raw validado",
+  "entrypoint": "python -m src.eva2.run"
+}

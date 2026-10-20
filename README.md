@@ -1,171 +1,100 @@
-# Spotify Tracks - Análisis y preparación para Machine Learning
+# Spotify Tracks - Evaluación Parcial N°2
 
-Proyecto académico de Machine Learning orientado a estudiar las características de canciones de Spotify y preparar una solución capaz de estimar su popularidad.
+Proyecto de MLY1101 que continúa la experiencia 1: estima popularidad observada con regresión y descubre perfiles musicales con K-Means y PCA.
 
-## Estado del proyecto
+**Equipo:** fluzxks, benjadiaz112 y Freymuth Christopher Isaac. **Caso C.**
 
-El repositorio incluye:
+## Abrir la entrega
 
-- comprensión del problema de negocio;
-- objetivos y KPIs;
-- análisis exploratorio de datos;
-- evaluación de calidad y limpieza;
-- preparación reproducible para modelamiento;
-- evaluación de sesgos, ética y privacidad.
+- [Informe ejecutivo](docs/informe_ejecutivo.md): síntesis de negocio, resultados y decisión propuesta.
+- [Informe técnico y matriz de rúbrica](docs/informe_tecnico_eva2.md): desarrollo completo con CRISP-DM, EDA, modelos y ética.
+- [Notebook integral ejecutado](notebooks/05_proyecto_completo_eva2.ipynb): reproduce todo desde raw.
+- [Guía de defensa](docs/defensa_individual.md): guion de diez minutos y preguntas cruzadas.
+- [Resultados verificables](reports/eva2/): métricas, parámetros, particiones y predicciones.
 
-El informe completo está disponible en [`docs/informe_tecnico.md`](docs/informe_tecnico.md).
+El dataset original **sí está incluido** en `data/raw/Spotify_Tracks_Dataset.csv`. No necesitas descargar otro ni una cuenta de Spotify. SHA-256: `335e5ee0a07a3f30b20ca9860c87562c98082a032e0ecd90e8ca0a86d965fe58`.
 
-## Problema de negocio
+## Resultado medido
 
-El proyecto responde la pregunta:
+| Modelo | MAE CV | MAE prueba | RMSE prueba | R² prueba |
+|---|---:|---:|---:|---:|
+| HistGradientBoosting, seleccionado por CV | 11,519 | 11,243 | 16,228 | 0,369 |
+| Regresión lineal | 12,183 | 11,908 | 16,679 | 0,333 |
+| Árbol de decisión | 14,019 | 13,847 | 17,969 | 0,226 |
+| Referencia de mediana | 17,288 | 17,085 | 20,427 | -0,0005 |
+| Referencia de media | 17,290 | 17,085 | 20,425 | -0,0002 |
 
-> ¿Es posible estimar la popularidad de una canción utilizando sus características de audio y su género musical?
+Prueba de 17.715 canciones separando grupos de audio idéntico. Mejora del MAE: 34,19% frente a la constante global y aproximadamente 5,74% frente a la media por género aprendida en train. El género aporta gran parte de la señal. Los errores crecen mucho para canciones de popularidad alta. El uso respaldado es exploración con revisión humana y no predicción de futuros éxitos.
 
-La variable objetivo es `popularity`, un valor numérico entre 0 y 100. El problema se plantea como regresión.
+K-Means elige dos macroperfiles, energético y acústico, con una regla explícita de silueta y tamaño mínimo. Silueta de prueba: 0,237. El codo orientativo sugiere cuatro grupos. PCA en dos dimensiones conserva 44,44% de varianza. El informe explica estas limitaciones.
 
-## Fuente de datos
+## Instalación local
 
-- Dataset: [Spotify Tracks Dataset](https://www.kaggle.com/datasets/maharshipandya/-spotify-tracks-dataset)
-- Autor en Kaggle: MaharshiPandya.
-- Licencia declarada: `Database: Open Database, Contents: © Original Authors`.
-- Archivo utilizado: `data/raw/Spotify_Tracks_Dataset.csv`.
-- SHA-256 del archivo original: `B202FA49909B2D5CEF71A04B1D21243CFEB36414535F2CA9272AA646721177BD`.
+Entorno ejecutado: **Python 3.14.4 en Windows**, scikit-learn 1.8.0 y dependencias exactas en `requirements.txt`. No se han probado otros sistemas. Desde una terminal abierta en esta carpeta:
 
-La página de Kaggle describe un rango de 125 géneros, mientras la copia local contiene 114 antes de limpiar. Esto indica una posible diferencia de versión y se considera una limitación de trazabilidad.
+```powershell
+python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+```
 
-## Resultados principales
+Se usa el ejecutable del entorno directamente para evitar problemas al activar scripts en PowerShell. No pegues los comandos en una celda Python.
 
-- Datos originales: 114.000 filas y 21 columnas.
-- Datos limpios: 89.495 canciones únicas y 20 columnas.
-- Nulos después de limpiar: 0.
-- Popularidad promedio: 33,20.
-- Popularidad mediana: 33.
-- Canciones explícitas: promedio 36,89; no explícitas: 32,86.
-- Las correlaciones individuales con popularidad son débiles; las mayores corresponden a `loudness` y `danceability`.
-- Entrenamiento: 71.596 registros.
-- Prueba: 17.899 registros.
-- Variables finales después de codificar: 142.
+## Reproducir la evaluación completa
 
-Los resultados describen asociaciones y no demuestran causalidad.
+Desde la raíz y en la misma terminal:
 
-## Estructura
+```powershell
+.\.venv\Scripts\python.exe -m src.eva2.run
+.\.venv\Scripts\python.exe -m unittest discover -s tests -v
+.\.venv\Scripts\python.exe scripts/verify_delivery.py
+```
+
+El primer comando verifica el CSV, limpia, divide, entrena, selecciona por CV, evalúa, agrupa y genera figuras, informes y modelos. El tiempo depende del equipo. Los resultados actuales se escriben en `reports/eva2/`, `images/eva2/` y `models/eva2/`.
+
+Para abrir el cuaderno:
+
+```powershell
+.\.venv\Scripts\python.exe -m jupyterlab
+```
+
+Abre `notebooks/05_proyecto_completo_eva2.ipynb`, selecciona el kernel del entorno y usa **Restart Kernel and Run All Cells**. Los notebooks 01-04 son antecedentes y no son prerrequisitos. Para regenerar el notebook ejecutado desde terminal:
+
+```powershell
+.\.venv\Scripts\python.exe scripts/build_notebook.py --execute
+```
+
+El notebook encuentra la raíz buscando el CSV en el directorio actual y sus padres. En Colab debes subir y descomprimir el proyecto completo y disponer de las dependencias indicadas. Esa plataforma no se probó en esta ejecución.
+
+## Comprobar inferencia
+
+```powershell
+.\.venv\Scripts\python.exe -m src.eva2.predict data/examples/tracks_example.csv --output reports/eva2/example_predictions.csv
+```
+
+El ejemplo incluye tres canciones del holdout sin el objetivo. La salida contiene `predicted_popularity` entre 0 y 100 y `unknown_genre`. Un género nuevo permite ejecutar, pero requiere revisar cobertura. La herramienta rechaza entradas vacías, faltantes y valores inválidos. Carga únicamente los modelos propios del proyecto: joblib no es un formato seguro para archivos de procedencia desconocida.
+
+## Estructura y continuidad
 
 ```text
-spotify-tracks-eda/
-|-- data/
-|   |-- raw/
-|   `-- processed/
-|-- docs/
-|   |-- informe_tecnico.md
-|   |-- problema_negocio.md
-|   |-- limpieza_datos.md
-|   |-- resultados_eda.md
-|   |-- preparacion_datos.md
-|   `-- etica_privacidad.md
-|-- images/
-|   `-- eda/
-|-- models/
-|   `-- preprocessing_pipeline.joblib
-|-- notebooks/
-|   |-- 01_eda_inicial.ipynb
-|   |-- 02_limpieza_datos.ipynb
-|   |-- 03_eda_completo.ipynb
-|   `-- 04_preparacion_datos.ipynb
-|-- reports/
-|   |-- data_quality/
-|   |-- eda/
-|   `-- preparation/
-|-- src/
-|   |-- analysis/
-|   |-- data/
-|   `-- features/
-|-- .gitignore
-|-- README.md
-`-- requirements.txt
+data/raw/                CSV original entregado
+data/processed/          Preparación histórica de experiencia 1
+data/examples/           Entrada de ejemplo sin target
+notebooks/01..04          Antecedentes históricos
+notebooks/05_*.ipynb      Notebook integral vigente
+src/data,analysis,features/ Código original conservado
+src/eva2/                Pipeline actual de principio a fin
+models/eva2/             Modelos nuevos y metadatos
+images/eva2/             Figuras actuales
+reports/eva2/            Evidencias calculadas y verificación
+docs/                    Informes, fuentes y defensa
+scripts/                 Construcción de notebook y verificación
+tests/                   Pruebas de fuga, contrato y persistencia
 ```
 
-## Instalación
+El [README anterior](docs/experiencia1/README_original.md) se conserva como antecedente, incluidas sus cifras históricas. La entrega corrige el hash y sustituye la partición por filas por otra agrupada. Calcula resultados desde raw y no usa los antiguos `data/processed/train.csv`, `test.csv` ni `models/preprocessing_pipeline.joblib`.
 
-Requisitos:
+## Fuentes, riesgos y mantenimiento
 
-- Python 3.11 o superior.
-- Git.
+[Fuentes y clases](docs/fuentes_eva2.md). [Plan CRISP-DM](docs/plan_evaluacion_2.md). [Equipo y Git](docs/equipo_y_git.md).
 
-Crear un entorno virtual e instalar dependencias:
-
-```bash
-python -m venv .venv
-```
-
-En Windows:
-
-```bash
-.venv\Scripts\activate
-pip install -r requirements.txt
-```
-
-En macOS o Linux:
-
-```bash
-source .venv/bin/activate
-pip install -r requirements.txt
-```
-
-## Reproducción
-
-Ejecutar los notebooks en orden:
-
-1. `notebooks/01_eda_inicial.ipynb`
-2. `notebooks/02_limpieza_datos.ipynb`
-3. `notebooks/03_eda_completo.ipynb`
-4. `notebooks/04_preparacion_datos.ipynb`
-
-Las etapas principales también pueden ejecutarse como scripts:
-
-```bash
-python src/data/clean_data.py
-python src/analysis/eda_complete.py
-python src/features/prepare_features.py
-```
-
-Estos comandos generan nuevamente:
-
-- `data/processed/spotify_tracks_clean.csv`;
-- `data/processed/train.csv`;
-- `data/processed/test.csv`;
-- gráficos en `images/eda/`;
-- reportes en `reports/`;
-- `models/preprocessing_pipeline.joblib`.
-
-## Metodología
-
-El proyecto utiliza CRISP-DM:
-
-1. Comprensión del negocio.
-2. Comprensión de los datos.
-3. Preparación de los datos.
-4. Modelamiento, planteado como etapa siguiente.
-5. Evaluación, pendiente de un modelo entrenado.
-6. Despliegue, fuera del alcance de esta entrega.
-
-## Ética y uso responsable
-
-La predicción no debe utilizarse para decidir automáticamente qué artistas reciben promoción o financiamiento. `popularity` no representa calidad musical y puede reflejar desigualdades previas de exposición. Los riesgos y controles se detallan en [`docs/etica_privacidad.md`](docs/etica_privacidad.md).
-
-## Limitaciones
-
-- La fecha de extracción no está documentada.
-- La popularidad cambia con el tiempo.
-- Faltan variables de promoción, seguidores y presencia en listas.
-- La representación de artistas y géneros es desigual.
-- La limpieza conserva un género por canción duplicada.
-- La fuente describe más géneros que la copia local.
-- Todavía no se ha entrenado ni evaluado un modelo predictivo.
-
-## Próximos pasos
-
-- Entrenar un modelo base y modelos de regresión.
-- Comparar MAE y RMSE con los KPIs.
-- Evaluar errores por género y representación del artista.
-- Realizar validación temporal y con artistas no vistos.
-- Preparar la presentación y defensa técnica.
+La fuente pública y licencia son las declaradas en experiencia 1. Su versión y licencia actual no se pudieron confirmar independientemente. Validar derechos antes de publicar el dataset. No se conoce la fecha de extracción. El género conservado depende del orden del archivo. No se estiman costos ni ROI sin campañas. El informe propone monitoreo y una nueva evaluación temporal antes de uso comercial.
