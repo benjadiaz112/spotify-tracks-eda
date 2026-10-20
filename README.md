@@ -110,7 +110,7 @@ scripts/                 Construcción de notebook y verificación
 tests/                   Pruebas de fuga, contrato y persistencia
 ```
 
-El [README anterior](docs/experiencia1/README_original.md) se conserva como antecedente, incluidas sus cifras históricas. La entrega corrige el hash y sustituye la partición por filas por otra agrupada. Calcula resultados desde raw y no usa los antiguos `data/processed/train.csv`, `test.csv` ni `models/preprocessing_pipeline.joblib`.
+El [README anterior](docs/experiencia1/README_original.md) y el [informe técnico de la experiencia 1](INFORME_TECNICO.md) se conservan como antecedentes, incluidas sus cifras históricas. La entrega corrige el hash y sustituye la partición por filas por otra agrupada. Calcula resultados desde raw y no usa los antiguos `data/processed/train.csv`, `test.csv` ni `models/preprocessing_pipeline.joblib`.
 
 ## Fuentes, riesgos y mantenimiento
 

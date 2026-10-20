@@ -11,6 +11,6 @@
 
 ## Antecedentes conservados de experiencia 1
 
-`informe_tecnico.md`, `problema_negocio.md`, `limpieza_datos.md`, `preparacion_datos.md`, `resultados_eda.md`, `etica_privacidad.md` y `experiencia1/README_original.md` se conservan como antecedentes. Describen una etapa previa sin modelos entrenados y no son el informe vigente. Sus particiones, hashes según saltos de línea y algunas interpretaciones históricas no deben mezclarse con la evaluación actual.
+`informe_tecnico.md`, `problema_negocio.md`, `limpieza_datos.md`, `preparacion_datos.md`, `resultados_eda.md`, `etica_privacidad.md`, `experiencia1/README_original.md` y el [informe técnico original del repositorio](../INFORME_TECNICO.md) se conservan como antecedentes. Describen una etapa previa sin modelos entrenados y no son el informe vigente. Sus particiones, hashes según saltos de línea y algunas interpretaciones históricas no deben mezclarse con la evaluación actual.
 
 Los resultados actuales están en `reports/eva2/`, las figuras en `images/eva2/` y el notebook integral es `notebooks/05_proyecto_completo_eva2.ipynb`. Los notebooks 01-04 y `data/processed/` corresponden a la experiencia anterior y no son prerrequisitos de ejecución.
