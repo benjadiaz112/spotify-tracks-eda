@@ -9,7 +9,7 @@ Proyecto de MLY1101 que continúa la experiencia 1: estima popularidad observada
 - [Informe ejecutivo](docs/informe_ejecutivo.md): síntesis de negocio, resultados y decisión propuesta.
 - [Informe técnico y matriz de rúbrica](docs/informe_tecnico_eva2.md): desarrollo completo con CRISP-DM, EDA, modelos y ética.
 - [Notebook integral ejecutado](notebooks/05_proyecto_completo_eva2.ipynb): reproduce todo desde raw.
-- [Guía de defensa](docs/defensa_individual.md): guion de diez minutos y preguntas cruzadas.
+- [Guía de defensa](docs/defensa_individual.md): preparación para preguntas cruzadas.
 - [Resultados verificables](reports/eva2/): métricas, parámetros, particiones y predicciones.
 
 El dataset original **sí está incluido** en `data/raw/Spotify_Tracks_Dataset.csv`. No necesitas descargar otro ni una cuenta de Spotify. SHA-256: `335e5ee0a07a3f30b20ca9860c87562c98082a032e0ecd90e8ca0a86d965fe58`.
@@ -96,5 +96,9 @@ El [README anterior](docs/experiencia1/README_original.md) se conserva como ante
 ## Fuentes, riesgos y mantenimiento
 
 [Fuentes y clases](docs/fuentes_eva2.md). [Plan CRISP-DM](docs/plan_evaluacion_2.md). [Equipo y Git](docs/equipo_y_git.md).
+
+[Hallazgos y decisiones](docs/hallazgos_y_decisiones.md). [Acta de verificación](docs/acta_verificacion.md).
+
+Para generar un ZIP con todos los archivos versionados, dataset, evidencias y un manifiesto de integridad, ejecuta `python scripts/package_delivery.py` después de registrar los cambios. El resultado queda en `output/entrega_spotify_eva2.zip`. El paquete no incluye la carpeta interna `.git`; su manifiesto identifica el commit y el historial de la entrega. Las diapositivas quedan pendientes para elaborarlas en Gamma.
 
 La fuente pública y licencia son las declaradas en experiencia 1. Su versión y licencia actual no se pudieron confirmar independientemente. Validar derechos antes de publicar el dataset. No se conoce la fecha de extracción. El género conservado depende del orden del archivo. No se estiman costos ni ROI sin campañas. El informe propone monitoreo y una nueva evaluación temporal antes de uso comercial.

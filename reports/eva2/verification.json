@@ -1,0 +1,35 @@
+{
+  "passed": true,
+  "checks": {
+    "deliverables_exist": true,
+    "dataset_sha256": true,
+    "git_preserves_original_csv_bytes": true,
+    "unique_track_ids": true,
+    "no_shared_audio_groups": true,
+    "selection_follows_cv": true,
+    "test_not_used_for_selection": true,
+    "no_target_or_identifiers_in_features": true,
+    "metrics_match_saved_predictions": true,
+    "test_manifest_matches_predictions": true,
+    "predictions_finite_and_bounded": true,
+    "k_one_to_ten": true,
+    "clustering_excludes_target_and_genre": true,
+    "cluster_minimum_size": true,
+    "pca_variance_sums_one": true,
+    "all_notebook_code_cells_executed": true,
+    "notebook_has_no_error_outputs": true,
+    "ten_figures_present": true,
+    "current_document_links_resolve": true,
+    "unittest_passes": true
+  },
+  "notebook_code_cells": 8,
+  "test_output": "test_duplicate_audio_cannot_cross_split (test_eva2.DataTests.test_duplicate_audio_cannot_cross_split) ... ok\ntest_group_ignores_target_genre_and_id (test_eva2.DataTests.test_group_ignores_target_genre_and_id) ... ok\ntest_hash_rejects_changed_dataset (test_eva2.DataTests.test_hash_rejects_changed_dataset) ... ok\ntest_input_rejects_missing_columns_and_invalid_audio (test_eva2.DataTests.test_input_rejects_missing_columns_and_invalid_audio) ... ok\ntest_preprocessing_fits_only_training_values (test_eva2.DataTests.test_preprocessing_fits_only_training_values) ... ok\ntest_saved_pipeline_matches_predictions_and_handles_unknown_genre (test_eva2.DataTests.test_saved_pipeline_matches_predictions_and_handles_unknown_genre) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.123s\n\nOK\n",
+  "broken_links": [],
+  "measured_metrics": {
+    "mae": 11.242896573671649,
+    "mse": 263.3470976589633,
+    "rmse": 16.227972690972933,
+    "r2": 0.3685962782544363
+  },
+  "dataset_sha256": "335e5ee0a07a3f30b20ca9860c87562c98082a032e0ecd90e8ca0a86d965fe58"
+}
