@@ -16,7 +16,9 @@ Reservamos 17,715 canciones (19.79%) para prueba y seleccionamos el modelo media
 
 El modelo seleccionado, **HistGradientBoosting**, obtiene **MAE 11.24 puntos**, RMSE 16.23 y R² 0.369 en prueba. Reduce el MAE en **34.19%** frente a la media constante (17.08). Cumple las metas previas MAE <= 15 y mejora >= 10%. El IC bootstrap agrupado del MAE es [10.99, 11.46], condicionado a esta prueba y a este modelo.
 
-La comparación más exigente usa la media de popularidad por género calculada solo en entrenamiento: MAE 11.93. Frente a ella, la mejora del modelo completo es **5.74%**. La variante sin género registra MAE 15.29. La mayor parte de la señal proviene del género y no debe confundirse con un efecto causal del sonido.
+La comparación más exigente usa la media de popularidad por género calculada solo en entrenamiento: MAE 11.93. Frente a ella, la mejora del modelo completo es **5.74%**. La ablación que retira únicamente género, conservando las otras catorce variables e hiperparámetros, registra MAE 15.28. Esta evidencia indica una dependencia importante del género, sin demostrar un efecto causal del sonido.
+
+La auditoría encontró 720 IDs con distintas popularidades entre filas originales (0.80% de IDs); la diferencia mediana es 1 punto y la máxima 44. Se mantiene la primera observación como referencia reproducible por continuidad y falta de fechas autoritativas. Entrenar con mediana cambia el MAE de CV de 11.519 a 11.530, sin modificar etiquetas de test ni la selección. La incertidumbre de esas etiquetas sigue declarada.
 
 ## Segmentación para curaduría
 
@@ -31,6 +33,6 @@ Son nombres interpretativos, no etiquetas musicales verificadas. La silueta de p
 
 Recomendamos un piloto de exploración de catálogo con evaluación humana. No automatizar contratos ni presupuestos de promoción. El MAE para canciones de popularidad 81-100 es 44.91 en solo 105 casos: el modelo subestima los extremos. El percentil 95 del error absoluto es 37.30 puntos.
 
-No se puede calcular ROI con estos datos: faltan costos, resultados de campañas y una evaluación causal. Un siguiente piloto debería medir tiempo de revisión y diversidad de las selecciones, con metas acordadas por el responsable de negocio. Antes de uso real se requiere una muestra reciente, evaluación temporal, revisión de la etiqueta género y validación de derechos de uso.
+No se puede calcular ROI con estos datos: faltan costos, resultados de campañas y una evaluación causal. El [piloto propuesto](plan_piloto_negocio.md), aún no ejecutado, fija dos semanas y tres metas sujetas a aprobación: reducción mediana del tiempo >=15%, aceptación de recomendaciones >=70% y pérdida mediana de cobertura de géneros no mayor a 5 puntos porcentuales. Define fórmulas, responsables, doce pares de sesiones exploratorios y una plantilla vacía con calculadora validada. Antes de uso real se requiere una muestra reciente, evaluación temporal, revisión de la etiqueta género y validación de derechos de uso.
 
 El desarrollo completo, fórmulas, decisiones, riesgos y matriz de rúbrica están en [informe técnico](informe_tecnico_eva2.md). El [notebook integral](../notebooks/05_proyecto_completo_eva2.ipynb) reproduce las etapas desde el CSV original.

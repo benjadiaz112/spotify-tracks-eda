@@ -26,11 +26,11 @@ Experiencia 1 preparaba datos, pero dejaba pendiente el modelado. Completamos co
 
 ### 5. ¿Por qué conservaron solo 78,50% de las filas?
 
-Gran parte son apariciones repetidas del mismo `track_id` bajo distintos géneros. De 89.741 IDs originales conservamos 89.495, el 99,73%. La meta histórica de retener 95% de filas brutas no se cumple bajo esa definición. Lo declaramos y mostramos ambas medidas, sin sustituir una por otra para simular éxito.
+Gran parte son apariciones repetidas del mismo `track_id` bajo distintos géneros. De 89.741 IDs originales conservamos 89.495, el 99,73%. Los documentos antiguos usaban dos denominadores: filas en el problema e IDs en el informe. La referencia de 95% no se cumple sobre filas, pero sí sobre IDs. Mostramos ambas medidas sin sustituir una por otra para simular éxito ni afirmar que eso explique la nota anterior.
 
 ### 6. ¿Qué sesgo introduce quedarse con la primera fila por ID?
 
-El archivo está ordenado por género y un tema puede aparecer en varias etiquetas. La primera no tiene por qué representar su género principal. Afecta la interpretación y el modelo depende mucho de esa etiqueta. Una nueva versión debería validar una codificación multietiqueta y evaluarse con otro holdout.
+El archivo está dispuesto en bloques por género y un tema puede aparecer en varias etiquetas. Hay 16.299 IDs asociados a varios géneros. La primera etiqueta no tiene por qué representar el género principal. Afecta la interpretación y el modelo depende mucho de ella. Una nueva versión debería validar una codificación multietiqueta y evaluarse con otro holdout.
 
 ### 7. ¿Por qué no basta con quitar el ID de los predictores?
 
@@ -62,7 +62,7 @@ No. P95 del error absoluto es 37,30 puntos. Para popularidad 81-100 el MAE es 44
 
 ### 14. ¿La mejora de 34,19% cuenta toda la historia?
 
-Es contra la constante global. La referencia por género de train ya logra MAE 11,93, de modo que la mejora adicional del modelo es aproximadamente 5,74%. La variante de continuas de audio y explicit, sin reajuste, tiene MAE 15,29. El género aporta mucha señal. No estamos demostrando una relación causal entre sonido y éxito.
+Es contra la constante global. La referencia por género de train ya logra MAE 11,93, de modo que la mejora adicional del modelo es aproximadamente 5,74%. La ablación corregida retira únicamente género, conserva las otras catorce variables y los hiperparámetros, y da MAE 15,28. El género aporta mucha señal. No estamos demostrando una relación causal entre sonido y éxito.
 
 ### 15. ¿Por qué agregar una referencia de mediana?
 
@@ -111,3 +111,19 @@ Ejecutar `python -m src.eva2.run`, reiniciar y ejecutar completo el notebook 05,
 ## Preparación del equipo
 
 Cada integrante debe abrir el notebook ejecutado, explicar por qué se separan grupos y reproducir la inferencia. Debe poder localizar `selection.json`, las métricas, el manifiesto de partición y los gráficos de K/PCA. Practiquen responder con el dato y su límite, sin memorizar cifras sin entenderlas.
+
+### 26. ¿Cómo trataron las popularidades distintas del mismo ID?
+
+Hay 720 IDs afectados, el 0,802% del total. El rango mediano es un punto, el máximo 44 y diez IDs superan 20 puntos. Se conserva la primera fila por continuidad y trazabilidad, sin afirmar que sea el valor verdadero de una fecha concreta. No hay fecha autoritativa para elegir el máximo o la última fila. Medimos sensibilidad cambiando solo las etiquetas de ajuste por mediana en los folds originales de train: MAE 11,530 frente a 11,519 con primera fila. No se cambió el test ni se eligió una regla por ganar esa comparación. La referencia imperfecta sigue declarada.
+
+### 27. ¿Cuál es el KPI de negocio y qué queda por validar?
+
+El piloto propuesto compara sesiones manuales y asistidas durante dos semanas. Metas para aprobación por curaduría: reducción mediana de tiempo por par >=15%, aceptación agregada >=70% y delta mediano de cobertura de géneros >=-5 pp. Normalizamos el tiempo a 100 canciones y calculamos aceptación como suma de aceptadas / suma de recomendaciones. Son metas propuestas, no resultados observados. La plantilla está vacía; las pruebas de la calculadora son sintéticas.
+
+### 28. ¿Por qué 220 iteraciones y tasa 0,08?
+
+Son una configuración fija de alcance computacional moderado y actualizaciones graduales. No demostramos que sean óptimas. La grilla explora hojas 15/31 y regularización L2 1/10 en CV agrupada; no ajustamos por test. El informe explica qué controla cada parámetro y que el ganador llega a bordes de una búsqueda limitada. Para ampliar la búsqueda haría falta un protocolo nuevo de evaluación.
+
+### 29. ¿El profesor necesita Git para ejecutar el ZIP?
+
+No. La entrega incluye un manifiesto de hashes que el verificador utiliza antes de buscar Git. Verifica código e input, mientras permite regenerar resultados. Se prueba explícitamente la ruta sin `.git` y el rechazo de archivos alterados. El manifiesto no es una firma digital. El empaquetador sí está pensado para trabajar desde el repositorio versionado del equipo.

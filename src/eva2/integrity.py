@@ -28,7 +28,7 @@ def source_integrity(root: Path, expected_data_hash: str) -> dict:
             path = (root / name).resolve()
             if not path.is_relative_to(root):
                 raise ValueError("Ruta del manifiesto fuera de la entrega")
-            if name == data_name or name == "requirements.txt" or name.startswith(("src/", "scripts/", "tests/")):
+            if name == data_name or name in {"requirements.txt", "requirements-lock-windows-py314.txt"} or name.startswith(("src/", "scripts/", "tests/")):
                 if not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest() != spec.get("sha256"):
                     raise ValueError(f"Archivo de origen alterado: {name}")
                 checked.append(name)
@@ -44,8 +44,10 @@ def source_integrity(root: Path, expected_data_hash: str) -> dict:
         original = subprocess.check_output(["git", "show", f"HEAD:{data_name}"], cwd=root,
                                            stderr=subprocess.DEVNULL)
         commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root).decode().strip()
+        dirty = bool(subprocess.check_output(["git", "status", "--porcelain"], cwd=root).strip())
     except (FileNotFoundError, subprocess.CalledProcessError) as error:
         raise RuntimeError("Falta MANIFIESTO_ENTREGA.json y esta carpeta no contiene el repositorio de origen") from error
     if hashlib.sha256(original).hexdigest() != expected_data_hash:
         raise ValueError("Git no conserva los bytes originales del CSV")
-    return {"mode": "git_checkout", "commit": commit, "source_files_checked": 1, "data_hash": actual}
+    return {"mode": "git_checkout", "commit": commit, "working_tree_dirty_at_check": dirty,
+            "source_files_checked": 1, "data_hash": actual}

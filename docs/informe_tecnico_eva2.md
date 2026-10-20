@@ -26,9 +26,21 @@ Objetivos específicos: auditar el dataset y sus versiones repetidas; preparar v
 | Integridad de partición | Cero IDs y grupos de audio compartidos | 0 IDs, 0 grupos | Control contra fuga exacta |
 | Reproducibilidad | Notebook integral ejecutable y pruebas de contratos | Ver acta de verificación y notebook con salidas | Evidencia técnica, no impacto de negocio |
 
-La meta histórica de retención no se oculta ni se sustituye retroactivamente. Las filas brutas incluyen duplicaciones por género y no equivalen a canciones distintas. La retención de IDs es una métrica complementaria más informativa para esta limpieza.
+Los documentos de experiencia 1 usan denominadores distintos: `problema_negocio.md` formula calidad sobre registros totales, mientras `informe_tecnico.md` reporta retención de IDs únicos. No son indicadores equivalentes. Esta entrega muestra ambos: 78,50% sobre filas está por debajo de 95% bajo esa definición, y 99,73% sobre IDs supera 95% bajo la otra. Las filas brutas incluyen duplicaciones por género y no equivalen a canciones distintas. No se cambia el denominador después de evaluar para simular éxito ni se atribuye la nota anterior a esta diferencia.
 
-**KPIs comerciales propuestos, aún sin medición:** minutos de revisión por lote, diversidad de géneros entre canciones seleccionadas y aceptación del curador. Requieren un piloto con equipo real y metas acordadas. No hay base para afirmar ahorro ni ROI.
+### KPIs de negocio y reglas del piloto propuesto
+
+**Estado: no ejecutado.** Estas metas son propuestas de diseño para aprobación del responsable de curaduría, no resultados ni umbrales exigidos por el docente. El [plan del piloto](plan_piloto_negocio.md) define dos semanas, dos revisores y doce pares de sesiones exploratorios. Cada sesión revisaría 100 canciones y seleccionaría 20 de lotes distintos y comparables, con asignación aleatoria y orden contrabalanceado. El tamaño es propuesto, sin cálculo de potencia ni garantía de significancia.
+
+| KPI | Definición operativa | Meta propuesta a dos semanas | Responsable propuesto |
+|---|---|---|---|
+| Tiempo de curaduría | Minutos por 100 = segundos / 60 / revisadas x 100; reducción por par = 100 x (1 - tiempo_asistido / tiempo_manual) | Mediana de reducciones >=15% | Coordinador de curaduría registra; datos calcula |
+| Aceptación | 100 x suma(aceptadas) / suma(recomendaciones) en sesiones asistidas | >=70% | Revisores registran; coordinador revisa |
+| Cobertura de géneros | 100 x géneros distintos seleccionados / mínimo(géneros disponibles, seleccionadas); delta asistida - manual | Mediana del delta >= -5 pp | Datos audita; curaduría interpreta |
+
+Continuar el piloto exige las tres metas y revisión de calidad/derechos. Si solo mejora el tiempo, ajustar y repetir; si no hay utilidad o aparecen daños, detener. Registrar fallas y abandonos, sin ocultar sesiones desfavorables. La cobertura usa una etiqueta incompleta y no certifica diversidad cultural ni equidad.
+
+`data/examples/pilot_template.csv` contiene solo encabezados. `src/eva2/pilot.py` valida pares y calcula métricas cuando haya observaciones reales; rechaza la plantilla vacía. Sus pruebas usan ejemplos sintéticos identificados como tales. No hay base para afirmar ahorro comercial ni ROI.
 
 ## 2. Metodología CRISP-DM y gestión del trabajo
 
@@ -93,7 +105,23 @@ Se reutiliza `src/data/clean_data.py`: retirar índice, eliminar la fila sin met
 
 Resultado: 89,495 canciones con IDs únicos y cero nulos. No se eliminan canciones por popularidad extrema ni por un boxplot. Un valor extremo puede ser válido. Los imputadores dentro de cada pipeline son una defensa de la transformación; en los datos auditados no sustituyeron valores. La CLI rechaza faltantes en nuevas entradas para no esconder mala calidad.
 
-La deduplicación conserva el primer género del archivo, que está ordenado por género. No es necesariamente el género principal del artista. Puede sesgar la atribución de canciones con múltiples etiquetas. Se conserva para continuidad y se declara como limitación central. Una futura versión deberá tratar el género como multietiqueta o construir una regla validada con curadores antes de evaluar otro holdout.
+La deduplicación conserva el primer género del archivo, que está dispuesto en bloques por género. No es necesariamente el género principal del artista. Hay 16,299 IDs originales asociados a varios géneros. La regla puede sesgar su atribución. Se conserva para continuidad y se declara como limitación central. Una futura versión deberá tratar género como multietiqueta o construir una regla validada con curadores antes de evaluar otro holdout.
+
+### Auditoría específica de la variable objetivo
+
+Se agrupan las filas originales por `track_id` y se cuentan etiquetas distintas, primera observación, mediana, mínimo, máximo y rango. Hay **720 IDs retenidos con popularidad contradictoria**, equivalentes a 0.802% de IDs originales. El rango mediano es 1 punto y el máximo 44; 10 IDs superan 20 puntos de diferencia. Primera observación y mediana difieren en 517 canciones limpias. Detalle: `target_conflicts.csv`; resumen y criterio: `target_audit.json`.
+
+**Política:** mantener la primera fila por continuidad con experiencia 1 y como definición reproducible de la referencia, sin afirmar que sea la popularidad verdadera en una fecha concreta. Sin fecha autoritativa no se puede justificar que la última fila, el máximo o la mediana sean la verdad. No se cambia el target del test después de haber visto resultados ni se elige una política por mejorar ese score.
+
+Se añadió una sensibilidad limitada al entrenamiento original: mismo HGB y parámetros congelados, mismos tres folds agrupados, cambiar únicamente las etiquetas usadas para ajustar por la mediana de filas del mismo ID. Cada validación mantiene la referencia original para que la comparación mida la misma tarea. Los IDs de entrenamiento y validación permanecen separados; no se incluyen IDs de test en ajustes ni decisiones.
+
+| fold | validation_n | changed_fit_labels | mae_first_training | mae_median_training | delta_median_minus_first |
+| --- | --- | --- | --- | --- | --- |
+| 1 | 23758 | 284 | 11.271 | 11.256 | -0.015 |
+| 2 | 24087 | 269 | 11.787 | 11.821 | 0.033 |
+| 3 | 23935 | 271 | 11.499 | 11.513 | 0.014 |
+
+El MAE medio de CV es 11.5193 con primera observación y 11.5299 al entrenar con mediana, diferencia +0.0106 puntos; cambian 412 etiquetas de train. No demuestra que una regla sea la verdad temporal ni superior en otra población. Se mantiene la política por trazabilidad y ausencia de fuente autoritativa, no por elegir el menor número. La calidad imperfecta del objetivo sigue siendo una limitación medible.
 
 ### Hallazgos exploratorios
 
@@ -135,6 +163,8 @@ La búsqueda evalúa 13 configuraciones en los mismos 3 folds (39 ajustes de CV,
 
 Parámetros elegidos del árbol: `{'model__max_depth': 24, 'model__min_samples_leaf': 30}`. Del ensamble: `{'model__l2_regularization': 10.0, 'model__max_leaf_nodes': 31}`. Se desactiva early stopping interno en el ensamble para que no introduzca una validación por filas que mezcle grupos exactos. El número de iteraciones permanece fijo en la grilla predefinida.
 
+La profundidad 8/16/24 explora reglas de complejidad creciente y los mínimos de 10/30 observaciones por hoja limitan hojas muy específicas. En el ensamble, 15/31 hojas contrastan capacidad, y L2=1/10 contrasta regularización. Las 220 iteraciones y tasa 0,08 son una configuración fija de alcance computacional moderado y actualización gradual, no un óptimo descubierto ni una exigencia docente. La semilla 42 facilita repetir el experimento. El ganador de la grilla alcanza el mayor número de hojas y L2 probados: la búsqueda es limitada y no permite declarar optimalidad global. Los valores se fijaron sin buscar mejoras en el test; ampliar la búsqueda requeriría un protocolo nuevo de evaluación.
+
 ## 6. Evaluación e interpretación supervisada
 
 ### Fórmulas y unidades
@@ -143,11 +173,11 @@ Para errores e_i = y_i - pred_i: MAE = media(|e_i|); MSE = media(e_i²); RMSE = 
 
 | model | cv_mae | cv_std | train_mae | mae | rmse | r2 |
 | --- | --- | --- | --- | --- | --- | --- |
-| HistGradientBoosting | 11.519 | 0.211 | 10.002 | 11.243 | 16.228 | 0.369 |
-| Regresion_lineal | 12.183 | 0.203 | 12.094 | 11.908 | 16.679 | 0.333 |
-| Arbol_decision | 14.019 | 0.199 | 13.720 | 13.847 | 17.969 | 0.226 |
-| Dummy_mediana | 17.288 | 0.174 | 17.289 | 17.085 | 20.427 | -0.000 |
-| Dummy_media | 17.290 | 0.175 | 17.291 | 17.085 | 20.425 | -0.000 |
+| HistGradientBoosting | 11.5193 | 0.2112 | 10.0023 | 11.2429 | 16.2280 | 0.3686 |
+| Regresion_lineal | 12.1825 | 0.2025 | 12.0939 | 11.9083 | 16.6786 | 0.3330 |
+| Arbol_decision | 14.0186 | 0.1990 | 13.7197 | 13.8474 | 17.9688 | 0.2259 |
+| Dummy_mediana | 17.2885 | 0.1738 | 17.2893 | 17.0851 | 20.4274 | -0.0005 |
+| Dummy_media | 17.2902 | 0.1749 | 17.2906 | 17.0850 | 20.4248 | -0.0002 |
 
 MSE del modelo seleccionado: **263.347 puntos²**. La tabla se ordena por CV, no por test. Se reportan todos en el mismo holdout para comparación, pero la selección ya estaba congelada. CV_std expresa dispersión entre 3 folds y no es un intervalo de confianza.
 
@@ -167,11 +197,11 @@ Sesgo residual medio real - predicho: -0.47. P95 del error absoluto: 37.30 punto
 
 | target_band | n | mae | bias | actual_mean | predicted_mean |
 | --- | --- | --- | --- | --- | --- |
-| 0-20 | 4842.000 | 15.334 | -14.980 | 8.297 | 23.277 |
-| 21-40 | 5996.000 | 6.073 | -2.765 | 29.742 | 32.508 |
-| 41-60 | 5121.000 | 8.938 | 7.457 | 49.585 | 42.128 |
-| 61-80 | 1651.000 | 23.027 | 22.965 | 67.308 | 44.343 |
-| 81-100 | 105.000 | 44.909 | 44.909 | 84.400 | 39.491 |
+| 0-20 | 4842 | 15.334 | -14.980 | 8.297 | 23.277 |
+| 21-40 | 5996 | 6.073 | -2.765 | 29.742 | 32.508 |
+| 41-60 | 5121 | 8.938 | 7.457 | 49.585 | 42.128 |
+| 61-80 | 1651 | 23.027 | 22.965 | 67.308 | 44.343 |
+| 81-100 | 105 | 44.909 | 44.909 | 84.400 | 39.491 |
 
 El modelo sobreestima canciones poco populares y subestima las muy populares. El intervalo 81-100 tiene 105 casos y MAE 44.91. No se recomienda como detector automático de futuros éxitos. El error por banda se analiza después de predecir y usa el objetivo real exclusivamente para auditoría, no como información disponible en producción.
 
@@ -181,12 +211,12 @@ El modelo sobreestima canciones poco populares y subestima las muy populares. El
 
 Permutar `track_genre` aumenta el MAE en 7.82 puntos en una muestra fija de 2.500 filas de test, con cuatro repeticiones. Es importancia predictiva dependiente de este modelo y muestra, no causalidad. Las variables correlacionadas pueden compartir información y la permutación romper combinaciones realistas.
 
-Como auditoría posterior sin modificar la selección, se compara una media por género aprendida únicamente en train y una variante HGB sin género ni categorías tonales, conservando los hiperparámetros del HGB completo. La segunda es un contraste acotado con diez variables continuas y `explicit`, no una nueva búsqueda optimizada.
+Como auditoría posterior sin modificar la selección, se compara una media por género aprendida únicamente en train y una ablación HGB que **retira exclusivamente `track_genre`**. Conserva las diez continuas, `key`, `mode`, `time_signature` y `explicit`: catorce predictores. Mantiene hiperparámetros, folds y reglas de evaluación; los índices categóricos se ajustan a la nueva matriz para que tonalidad, modo y compás sigan siendo categorías. No vuelve a optimizar ni modifica la selección. `sensitivity_protocol.json` enumera las variables retenidas y la configuración común. Sustituye al contraste anterior que retiraba otras categorías y no aislaba el género.
 
 | model | cv_mae | mae | mse | rmse | r2 |
 | --- | --- | --- | --- | --- | --- |
 | Media_por_genero_train | 12.218 | 11.927 | 279.114 | 16.707 | 0.331 |
-| HGB_solo_audio_sin_reajuste | 15.574 | 15.288 | 368.240 | 19.190 | 0.117 |
+| HGB_sin_genero_14_variables | 15.581 | 15.277 | 367.251 | 19.164 | 0.119 |
 
 La mejora frente a la media por género es **5.74%**, mucho menor que 34.19% frente a la constante global. Por eso el valor incremental debe describirse con prudencia. El modelo depende de cómo el dataset asigna géneros y no demuestra que características acústicas causen popularidad. Los contrastes están en `sensitivity_genre.csv` y su protocolo confirma que no alteraron la selección.
 
@@ -202,27 +232,36 @@ StandardScaler se ajusta solo en train. Así la duración en milisegundos no dom
 
 | k | inertia | silhouette | smallest_cluster_pct |
 | --- | --- | --- | --- |
-| 1.000 | 717800.000 | N/A | 100.000 |
-| 2.000 | 578004.842 | 0.248 | 24.721 |
-| 3.000 | 517478.675 | 0.152 | 21.244 |
-| 4.000 | 472287.439 | 0.157 | 7.795 |
-| 5.000 | 432816.604 | 0.160 | 1.264 |
-| 6.000 | 398148.934 | 0.170 | 1.236 |
-| 7.000 | 367710.387 | 0.177 | 1.195 |
-| 8.000 | 350507.888 | 0.159 | 1.181 |
-| 9.000 | 335853.337 | 0.168 | 1.038 |
-| 10.000 | 321478.368 | 0.170 | 1.037 |
+| 1 | 717800.000 | N/A | 100.000 |
+| 2 | 578004.842 | 0.248 | 24.721 |
+| 3 | 517478.675 | 0.152 | 21.244 |
+| 4 | 472287.439 | 0.157 | 7.795 |
+| 5 | 432816.604 | 0.160 | 1.264 |
+| 6 | 398148.934 | 0.170 | 1.236 |
+| 7 | 367710.387 | 0.177 | 1.195 |
+| 8 | 350507.888 | 0.159 | 1.181 |
+| 9 | 335853.337 | 0.168 | 1.038 |
+| 10 | 321478.368 | 0.170 | 1.037 |
 
 La inercia siempre disminuye al aumentar K, por lo que su mínimo no selecciona un óptimo útil. El codo orientativo se calcula como la mayor distancia a la cuerda normalizada y sugiere **K=4**. No reemplaza la revisión de la curva. La regla fijada en código elige la mayor silueta de una muestra fija de 2.500 filas de train entre K=2..10, exigiendo que cada grupo cubra al menos 3% del entrenamiento. K=1 no tiene silueta definida.
 
-Se elige **K=2**, con silueta de train 0.248 y de prueba 0.237. Silueta va de -1 a 1: una cifra cercana a 0 indica fronteras poco claras. Estos valores reflejan perfiles amplios con superposición, no una taxonomía musical definitiva. El codo y la silueta difieren: se prioriza la regla explícita de separación y parsimonia para dos macroperfiles. K=4 queda como alternativa exploratoria que requeriría interpretación y validación por curadores antes de adoptarla, sin afirmar que sea incorrecto.
+Se elige **K=2**, con silueta de train 0.248 y de prueba 0.237. Silueta va de -1 a 1: una cifra cercana a 0 indica fronteras poco claras. Estos valores reflejan perfiles amplios con superposición, no una taxonomía musical definitiva. El codo y la silueta difieren: se prioriza la regla explícita de separación y parsimonia para dos macroperfiles. También se calcularon perfiles de la alternativa K=4 en train/test para sostener esa discusión con datos, sin cambiar la regla de selección:
+
+| cluster | n | pct | energy | acousticness | speechiness | instrumentalness | tempo |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 0 | 29917 | 41.679 | 0.683 | 0.272 | 0.089 | 0.044 | 119.222 |
+| 1 | 21609 | 30.104 | 0.794 | 0.080 | 0.077 | 0.254 | 135.460 |
+| 2 | 14659 | 20.422 | 0.263 | 0.792 | 0.051 | 0.355 | 109.401 |
+| 3 | 5595 | 7.795 | 0.746 | 0.364 | 0.214 | 0.071 | 120.188 |
+
+La alternativa aporta más detalle, pero su silueta en la misma muestra fija es 0.157, inferior a la del K elegido. Requiere interpretación de escucha antes de adoptarla. No se afirma que cuatro grupos sean incorrectos ni que la silueta decida por sí sola su valor comercial.
 
 Estabilidad entre semillas:
 
 | seed | ari_vs_42 |
 | --- | --- |
-| 7.000 | 0.997 |
-| 2026.000 | 0.997 |
+| 7 | 0.997 |
+| 2026 | 0.997 |
 
 ARI cercano a 1 sugiere asignaciones similares bajo estas inicializaciones, aun cuando los números de cluster se permuten. No evalúa estabilidad temporal ni cambios en la muestra. Popularidad se resume después de agrupar, exclusivamente para descripción, nunca para construir o elegir grupos.
 
@@ -230,8 +269,8 @@ ARI cercano a 1 sugiere asignaciones similares bajo estas inicializaciones, aun 
 
 | cluster | n | pct | energy | danceability | acousticness | instrumentalness | loudness | tempo | popularity |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 0.000 | 54035.000 | 75.279 | 0.747 | 0.595 | 0.187 | 0.122 | -6.482 | 126.202 | 33.883 |
-| 1.000 | 17745.000 | 24.721 | 0.296 | 0.463 | 0.756 | 0.327 | -14.549 | 109.931 | 30.893 |
+| 0 | 54035 | 75.279 | 0.747 | 0.595 | 0.187 | 0.122 | -6.482 | 126.202 | 33.883 |
+| 1 | 17745 | 24.721 | 0.296 | 0.463 | 0.756 | 0.327 | -14.549 | 109.931 | 30.893 |
 
 ![Perfiles](../images/eva2/08_cluster_profiles.png)
 
@@ -266,13 +305,13 @@ Que no haya datos de oyentes no implica que todos los nombres de artistas carezc
 
 | explicit | n | mae | baseline_mae | improvement_pct |
 | --- | --- | --- | --- | --- |
-| 0.000 | 16194.000 | 11.110 | 16.962 | 34.501 |
-| 1.000 | 1521.000 | 12.658 | 18.394 | 31.185 |
+| 0 | 16194 | 11.110 | 16.962 | 34.501 |
+| 1 | 1521 | 12.658 | 18.394 | 31.185 |
 
 | artist_seen | n | mae | baseline_mae | improvement_pct |
 | --- | --- | --- | --- | --- |
-| False | 4859.000 | 12.117 | 17.477 | 30.668 |
-| True | 12856.000 | 10.912 | 16.937 | 35.570 |
+| False | 4859 | 12.117 | 17.477 | 30.668 |
+| True | 12856 | 10.912 | 16.937 | 35.570 |
 
 No se interpreta una diferencia de MAE como causalidad o discriminación probada: las distribuciones de popularidad y tamaños también difieren. La referencia por grupo ayuda a contextualizarlo. `artist_seen` compara cadenas completas, no individuos tras separar colaboraciones. No es una prueba externa de artistas desconocidos.
 
@@ -282,11 +321,11 @@ Cinco géneros con mayor error entre los que tienen al menos 30 casos:
 
 | track_genre | n | mae | baseline_mae | improvement_pct |
 | --- | --- | --- | --- | --- |
-| pop | 77.000 | 33.015 | 36.375 | 9.237 |
-| dance | 173.000 | 32.887 | 35.623 | 7.679 |
-| electro | 103.000 | 31.332 | 33.580 | 6.692 |
-| alternative | 71.000 | 31.157 | 33.429 | 6.797 |
-| soul | 59.000 | 30.447 | 31.472 | 3.259 |
+| pop | 77 | 33.015 | 36.375 | 9.237 |
+| dance | 173 | 32.887 | 35.623 | 7.679 |
+| electro | 103 | 31.332 | 33.580 | 6.692 |
+| alternative | 71 | 31.157 | 33.429 | 6.797 |
+| soul | 59 | 30.447 | 31.472 | 3.259 |
 
 Los grupos con menos de 30 observaciones permanecen en el CSV completo con una bandera que impide presentarlos como evidencia estable. El umbral es una regla de reporte, no prueba de significancia ni garantía estadística. No se hicieron contrastes múltiples para declarar diferencias significativas.
 
@@ -299,6 +338,8 @@ El [README](../README.md) incluye instalación y comandos exactos. `python -m sr
 Semilla 42, hasta cuatro hilos, tres folds de grupos y grillas explícitas. Entorno medido: Python 3.14.4; las versiones de paquetes se fijan en requirements y en `environment.json`. Cambios de hardware o bibliotecas numéricas pueden producir diferencias pequeñas. Se incluye el CSV para ejecutar sin descargar datos; no se promete soporte de versiones que no se probaron.
 
 Pruebas automáticas: rechazo de hash distinto; huellas independientes de target/género/ID; separación reproducible de audio exacto; ajuste de escalado solo con train; validación de entradas inválidas; serialización e inferencia con género desconocido. La verificación final comprueba también ausencia de errores en notebook, coherencia de métricas y presencia de entregables. Consultar `reports/eva2/verification.json` para el resultado efectivo, sin asumirlo antes de ejecutarlo.
+
+Las pruebas de regresión adicionales cubren: ablación que conserva todas las variables excepto género; auditoría de etiquetas sin mutar la referencia; integridad del ZIP sin invocar Git; rechazo de fuentes o CSV alterados; fórmulas del piloto y rechazo de una plantilla sin observaciones. En el repositorio se valida el CSV contra Git; en el ZIP se utiliza primero `MANIFIESTO_ENTREGA.json`, aun si la carpeta está dentro de otro repositorio. El código y entradas deben coincidir con el manifiesto, mientras las salidas pueden regenerarse. No se requiere instalar Git para ejecutar la entrega extraída. El constructor del notebook crea un kernel privado con el mismo Python que lo ejecuta, evitando seleccionar accidentalmente otro entorno global.
 
 ## 10. Despliegue local y mantenimiento
 
@@ -322,6 +363,8 @@ K-Means aporta dos perfiles interpretables y estables ante semillas, pero la sep
 | IE6: supervisados, 30% | Secciones 5-6; lineal, árbol y ensamble; grillas, CV y selección persistida | Justificar algoritmos, parámetros, tipo de problema y prevención de fuga |
 | IE7: no supervisados, 30% | Sección 7; escalado, K=1..10, codo/silueta, perfiles, estabilidad y PCA | Justificar K=2 pese a codo=4, interpretar perfiles y pérdida de varianza |
 | IE8: interpretación, 20% | Secciones 6, 8 y 11; métricas, residuos, contraste por género y límites | Traducir MAE/RMSE/R², reconocer errores, sesgos y decisión de piloto |
+
+El cierre de revisión agrega evidencias específicas: protocolo de ablación controlada, auditoría de etiquetas y sensibilidad sin modificar el test, KPIs comerciales operativos propuestos y verificación portable del ZIP. El [plan de piloto](plan_piloto_negocio.md), la [guía de defensa](defensa_individual.md) y el [acta](acta_verificacion.md) complementan esta matriz. Las diapositivas quedan pendientes para Gamma por decisión del equipo.
 
 Entregables formales: informe Markdown, síntesis ejecutiva, notebook ejecutado, dataset, modelos, figuras, fuentes, guía de defensa y carpeta organizada. Esta matriz identifica evidencias; no asigna una nota ni sustituye el juicio del docente o la defensa individual.
 

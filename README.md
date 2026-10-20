@@ -10,6 +10,7 @@ Proyecto de MLY1101 que continúa la experiencia 1: estima popularidad observada
 - [Informe técnico y matriz de rúbrica](docs/informe_tecnico_eva2.md): desarrollo completo con CRISP-DM, EDA, modelos y ética.
 - [Notebook integral ejecutado](notebooks/05_proyecto_completo_eva2.ipynb): reproduce todo desde raw.
 - [Guía de defensa](docs/defensa_individual.md): preparación para preguntas cruzadas.
+- [Piloto y KPIs de negocio](docs/plan_piloto_negocio.md): fórmulas, metas propuestas, plazo y responsables.
 - [Resultados verificables](reports/eva2/): métricas, parámetros, particiones y predicciones.
 
 El dataset original **sí está incluido** en `data/raw/Spotify_Tracks_Dataset.csv`. No necesitas descargar otro ni una cuenta de Spotify. SHA-256: `335e5ee0a07a3f30b20ca9860c87562c98082a032e0ecd90e8ca0a86d965fe58`.
@@ -26,18 +27,23 @@ El dataset original **sí está incluido** en `data/raw/Spotify_Tracks_Dataset.c
 
 Prueba de 17.715 canciones separando grupos de audio idéntico. Mejora del MAE: 34,19% frente a la constante global y aproximadamente 5,74% frente a la media por género aprendida en train. El género aporta gran parte de la señal. Los errores crecen mucho para canciones de popularidad alta. El uso respaldado es exploración con revisión humana y no predicción de futuros éxitos.
 
+La ablación controlada retira solo el género y conserva las otras catorce variables: MAE 15,277. Se auditan 720 IDs con popularidades contradictorias; la sensibilidad a entrenar con mediana se mide únicamente en los folds de train, sin alterar la referencia de test ni volver a seleccionar el ganador. Los protocolos y cifras están en el informe.
+
 K-Means elige dos macroperfiles, energético y acústico, con una regla explícita de silueta y tamaño mínimo. Silueta de prueba: 0,237. El codo orientativo sugiere cuatro grupos. PCA en dos dimensiones conserva 44,44% de varianza. El informe explica estas limitaciones.
 
 ## Instalación local
 
-Entorno ejecutado: **Python 3.14.4 en Windows**, scikit-learn 1.8.0 y dependencias exactas en `requirements.txt`. No se han probado otros sistemas. Desde una terminal abierta en esta carpeta:
+Entorno ejecutado: **Python 3.14.4 en Windows**, scikit-learn 1.8.0. Se instaló un entorno virtual nuevo desde `requirements.txt`, se validaron sus versiones y `pip check`, y se congelaron las 104 dependencias resueltas en `requirements-lock-windows-py314.txt`. No se han probado otros sistemas. Desde una terminal abierta en esta carpeta:
 
 ```powershell
 python -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+.\.venv\Scripts\python.exe -m pip install -r requirements-lock-windows-py314.txt
+.\.venv\Scripts\python.exe scripts/validate_environment.py
 ```
 
 Se usa el ejecutable del entorno directamente para evitar problemas al activar scripts en PowerShell. No pegues los comandos en una celda Python.
+
+El lock incluye dependencias específicas de Windows y Python 3.14. Para revisar las dependencias directas consulta `requirements.txt`; el soporte de otras plataformas requeriría una verificación nueva. La ejecución del ZIP extraído no requiere Git: el verificador utiliza primero su `MANIFIESTO_ENTREGA.json`.
 
 ## Reproducir la evaluación completa
 
@@ -65,6 +71,8 @@ Abre `notebooks/05_proyecto_completo_eva2.ipynb`, selecciona el kernel del entor
 
 El notebook encuentra la raíz buscando el CSV en el directorio actual y sus padres. En Colab debes subir y descomprimir el proyecto completo y disponer de las dependencias indicadas. Esa plataforma no se probó en esta ejecución.
 
+El constructor por terminal usa un kernel privado apuntando al mismo ejecutable del entorno que invoca el script, sin depender del kernel global llamado `python3`.
+
 ## Comprobar inferencia
 
 ```powershell
@@ -72,6 +80,18 @@ El notebook encuentra la raíz buscando el CSV en el directorio actual y sus pad
 ```
 
 El ejemplo incluye tres canciones del holdout sin el objetivo. La salida contiene `predicted_popularity` entre 0 y 100 y `unknown_genre`. Un género nuevo permite ejecutar, pero requiere revisar cobertura. La herramienta rechaza entradas vacías, faltantes y valores inválidos. Carga únicamente los modelos propios del proyecto: joblib no es un formato seguro para archivos de procedencia desconocida.
+
+## KPIs comerciales: propuestos y aún sin mediciones
+
+El piloto propone dos semanas, reducción mediana del tiempo >=15%, aceptación de recomendaciones >=70% y pérdida mediana de cobertura de géneros no mayor a 5 pp. Son metas para validación y aprobación por curaduría, no resultados logrados. El plan define condiciones, responsables y reglas para continuar, ajustar o detener.
+
+`data/examples/pilot_template.csv` contiene únicamente encabezados. Una vez recogidas sesiones reales y completado un CSV siguiendo el plan:
+
+```powershell
+.\.venv\Scripts\python.exe -m src.eva2.pilot data/pilot_observations.csv --output reports/pilot/kpis_by_pair.csv
+```
+
+El programa guarda resultados por par y un resumen JSON. Rechaza una plantilla vacía para impedir que se confundan ejemplos de pruebas con impacto comercial.
 
 ## Estructura y continuidad
 
@@ -100,5 +120,7 @@ El [README anterior](docs/experiencia1/README_original.md) se conserva como ante
 [Hallazgos y decisiones](docs/hallazgos_y_decisiones.md). [Acta de verificación](docs/acta_verificacion.md).
 
 Para generar un ZIP con todos los archivos versionados, dataset, evidencias y un manifiesto de integridad, ejecuta `python scripts/package_delivery.py` después de registrar los cambios. El resultado queda en `output/entrega_spotify_eva2.zip`. El paquete no incluye la carpeta interna `.git`; su manifiesto identifica el commit y el historial de la entrega. Las diapositivas quedan pendientes para elaborarlas en Gamma.
+
+Desde el repositorio y con el entorno instalado, `python scripts/validate_archive.py --retrain` extrae ese ZIP en una carpeta temporal, retira Git del entorno de prueba y ejecuta instalación validada, entrenamiento, inferencia y controles. Guarda el recibo real en `output/validacion_zip.json`. El empaquetador y este control son herramientas del equipo para preparar la entrega, mientras que el entrenamiento y el verificador funcionan directamente dentro del ZIP extraído.
 
 La fuente pública y licencia son las declaradas en experiencia 1. Su versión y licencia actual no se pudieron confirmar independientemente. Validar derechos antes de publicar el dataset. No se conoce la fecha de extracción. El género conservado depende del orden del archivo. No se estiman costos ni ROI sin campañas. El informe propone monitoreo y una nueva evaluación temporal antes de uso comercial.

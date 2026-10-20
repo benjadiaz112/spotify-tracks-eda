@@ -1,5 +1,6 @@
 """Crear el cuaderno integral y opcionalmente ejecutarlo desde un kernel limpio."""
 import argparse
+import json
 import os
 from pathlib import Path
 import sys
@@ -40,7 +41,7 @@ if str(ROOT) not in sys.path:
 from src.eva2.data import prepare
 from src.eva2.supervised import fit_supervised
 from src.eva2.clustering import fit_clustering
-from src.eva2.sensitivity import audit_genre
+from src.eva2.sensitivity import audit_genre, audit_label_policy
 from src.eva2.plots import make_plots
 from src.eva2.reporting import build_reports
 from src.eva2.predict import predict
@@ -64,6 +65,12 @@ assert data['audit']['clean_missing_cells'] == 0""")
 display(pd.read_csv(ROOT / 'reports/eva2/genres.csv').sort_values('mean', ascending=False).head(10))
 display(pd.read_csv(ROOT / 'reports/eva2/explicit.csv'))
 display(pd.read_csv(ROOT / 'reports/eva2/correlations.csv', index_col=0)['popularity'].sort_values())""")
+    md("""### Auditoría de etiquetas y criterio de referencia
+
+No suponemos que duplicados del mismo ID tengan siempre idéntica popularidad. La auditoría cuantifica primera fila, mediana y rango. Se conserva la primera observación por continuidad y falta de fecha autoritativa. Esto define una referencia reproducible, sin convertirla en verdad temporal. En la sección 4 mediremos sensibilidad a entrenar con mediana usando solo train, sin cambiar el target de test ni seleccionar una regla por su score.""")
+    code("""display(json.loads((ROOT / 'reports/eva2/target_audit.json').read_text(encoding='utf-8')))
+display(pd.read_csv(ROOT / 'reports/eva2/target_conflicts.csv')
+        .sort_values('range', ascending=False).head(10))""")
     md("""## 2. Modelos supervisados
 
 Es una regresión: `popularity` es numérica entre 0 y 100. Comparamos referencias de media y mediana, regresión lineal, árbol de decisión y un ensamble HistGradientBoosting. Los dos primeros algoritmos aprendidos en clase cubren el mínimo supervisado y el ensamble amplía la comparación.
@@ -83,6 +90,7 @@ La prueba se transforma con el escalador y los centroides aprendidos. Repetimos 
 display(clusters['diagnostics'])
 display(pd.read_csv(ROOT / 'reports/eva2/cluster_profiles_train.csv'))
 display(pd.read_csv(ROOT / 'reports/eva2/cluster_profiles_test.csv'))
+display(pd.read_csv(ROOT / 'reports/eva2/cluster_profiles_elbow_train.csv'))
 display(pd.read_csv(ROOT / 'reports/eva2/cluster_stability.csv'))
 display(pd.read_csv(ROOT / 'reports/eva2/pca_variance.csv'))
 display(json.loads((ROOT / 'reports/eva2/clustering.json').read_text(encoding='utf-8')))""")
@@ -90,8 +98,10 @@ display(json.loads((ROOT / 'reports/eva2/clustering.json').read_text(encoding='u
 
 MAE es el error absoluto medio en puntos de popularidad. RMSE penaliza más los errores grandes. R² compara variación explicada frente a la media de prueba, y no mide porcentaje de canciones acertadas. El bootstrap por grupos mide incertidumbre condicionada a este modelo y a esta prueba, sin certificar rendimiento futuro.
 
-Comparamos también con una referencia que aprende la media por género solo en train y con una variante de audio que mantiene los parámetros del ensamble sin optimizarlos otra vez. Esta auditoría posterior no cambia la selección. Una dependencia fuerte del género exige prudencia porque la deduplicación conservó una sola etiqueta por ID.""")
+Comparamos también con una referencia que aprende la media por género solo en train y con una ablación que retira **solo género**, conservando las otras catorce variables y los parámetros del ensamble. La sensibilidad de etiquetas cambia únicamente y de ajuste por mediana en los folds de train y evalúa contra la misma referencia first. Estas auditorías no cambian la selección ni el objetivo de test. Una dependencia fuerte del género exige prudencia porque la deduplicación conservó una sola etiqueta por ID.""")
     code("""display(audit_genre(data, ROOT))
+display(audit_label_policy(data, ROOT))
+display(json.loads((ROOT / 'reports/eva2/label_sensitivity.json').read_text(encoding='utf-8')))
 for name in ['target_band', 'explicit', 'artist_seen']:
     print('Errores por', name)
     display(pd.read_csv(ROOT / f'reports/eva2/errors_by_{name}.csv'))
@@ -122,6 +132,19 @@ paths = build_reports(ROOT)
 print('Tiempo de cómputo del cuaderno (s):', round(time.perf_counter() - start, 2))
 print('Informes actualizados:', paths)
 display(Markdown((ROOT / 'docs/informe_ejecutivo.md').read_text(encoding='utf-8')))""")
+    md("""## 7. KPIs de negocio y piloto propuesto
+
+El piloto no se ha ejecutado. El plan propone dos semanas y doce pares exploratorios, con metas sujetas a aprobación de curaduría: reducción mediana del tiempo por par >=15%, aceptación agregada >=70% y delta mediano de cobertura de géneros >=-5 pp. Define responsables, condiciones comparables y reglas para continuar, ajustar o detener. Son objetivos de validación, no beneficios comerciales medidos.
+
+La calculadora `src/eva2/pilot.py` usa tiempos normalizados por 100 canciones, aceptación como razón de sumas y cobertura según géneros disponibles/cupos. Sus pruebas son sintéticas. Ver `docs/plan_piloto_negocio.md`. La plantilla siguiente debe permanecer vacía hasta recoger sesiones reales.""")
+    code("""from src.eva2.pilot import pilot_metrics
+pilot_template = pd.read_csv(ROOT / 'data/examples/pilot_template.csv')
+display(pilot_template)
+assert pilot_template.empty
+try:
+    pilot_metrics(pilot_template)
+except ValueError as error:
+    print('Control esperado, sin inventar mediciones:', error)""")
     md("""## Fuentes y reproducción
 
 Pauta y ocho PDF de clases entregados por el equipo, experiencia 1 y documentación primaria de scikit-learn. Referencias, enlaces y limitaciones de procedencia en `docs/fuentes_eva2.md`. El informe técnico contiene la matriz IE5/IE6/IE7/IE8 y las fórmulas.
@@ -144,10 +167,17 @@ def main():
         env = os.environ.copy()
         env.update({"JUPYTER_RUNTIME_DIR": str(runtime), "IPYTHONDIR": str(runtime / "ipython"),
                     "MPLCONFIGDIR": str(runtime / "matplotlib")})
-        client = NotebookClient(nb, timeout=600, kernel_name="python3",
+        kernel_dir = runtime / "kernels/spotify-eva2"
+        kernel_dir.mkdir(parents=True, exist_ok=True)
+        (kernel_dir / "kernel.json").write_text(json.dumps({
+            "argv": [sys.executable, "-m", "ipykernel_launcher", "-f", "{connection_file}"],
+            "display_name": "Spotify EVA2 (entorno actual)", "language": "python",
+        }), encoding="utf-8")
+        client = NotebookClient(nb, timeout=600, kernel_name="spotify-eva2",
                                 resources={"metadata": {"path": str(ROOT)}}, allow_errors=False,
                                 on_cell_start=lambda cell, cell_index, **kwargs: print(
                                     f"Celda {cell_index + 1}/{len(nb.cells)}: {cell.cell_type}", flush=True))
+        client.create_kernel_manager().kernel_spec_manager.kernel_dirs = [str(runtime / "kernels")]
         client.execute(env=env)
     nbf.write(nb, dest)
     print(dest)
