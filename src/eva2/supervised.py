@@ -35,15 +35,28 @@ def clipped_mae(y, prediction):
     return mean_absolute_error(y, clip_predictions(prediction))
 
 
-def preprocessor(native_categories=False):
+def preprocessor(native_categories=False, categorical_features=None):
+    categories = CAT if categorical_features is None else list(categorical_features)
     numeric = Pipeline([("impute", SimpleImputer(strategy="median")), ("scale", StandardScaler())])
     encode = (OrdinalEncoder(handle_unknown="use_encoded_value", unknown_value=-1)
               if native_categories else OneHotEncoder(handle_unknown="ignore", sparse_output=True))
     categorical = Pipeline([("impute", SimpleImputer(strategy="most_frequent")), ("encode", encode)])
     return ColumnTransformer([
-        ("numeric", numeric, NUM), ("category", categorical, CAT),
+        ("numeric", numeric, NUM), ("category", categorical, categories),
         ("binary", "passthrough", ["explicit"]),
     ], sparse_threshold=0.0 if native_categories else 1.0)
+
+
+def hgb_pipeline(parameters=None, include_genre=True):
+    """Mismo estimador para contrastes controlados que retiran SOLO género."""
+    categories = CAT if include_genre else [name for name in CAT if name != "track_genre"]
+    configured = {key.removeprefix("model__"): value for key, value in (parameters or {}).items()}
+    model = HistGradientBoostingRegressor(
+        categorical_features=list(range(len(NUM), len(NUM) + len(categories))),
+        max_iter=220, learning_rate=.08, early_stopping=False, random_state=SEED,
+        **configured,
+    )
+    return Pipeline([("prepare", preprocessor(True, categories)), ("model", model)])
 
 
 def candidates():
@@ -57,10 +70,8 @@ def candidates():
         "Arbol_decision": (pipe(DecisionTreeRegressor(random_state=SEED)), {
             "model__max_depth": [8, 16, 24], "model__min_samples_leaf": [10, 30],
         }),
-        "HistGradientBoosting": (pipe(HistGradientBoostingRegressor(
-            categorical_features=list(range(len(NUM), len(NUM) + len(CAT))),
-            max_iter=220, learning_rate=0.08, early_stopping=False, random_state=SEED,
-        ), native=True), {"model__max_leaf_nodes": [15, 31], "model__l2_regularization": [1.0, 10.0]}),
+        "HistGradientBoosting": (hgb_pipeline(), {
+            "model__max_leaf_nodes": [15, 31], "model__l2_regularization": [1.0, 10.0]}),
     }
 
 

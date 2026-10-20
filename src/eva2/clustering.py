@@ -73,6 +73,15 @@ def fit_clustering(data: dict, root: Path = ROOT) -> dict:
         means.insert(0, "n", part.groupby("cluster").size())
         means.insert(1, "pct", means.n / len(part) * 100)
         means.to_csv(out / f"cluster_profiles_{split}.csv")
+    # Contrastar la alternativa sugerida por el codo sin cambiar la regla de K.
+    elbow_profile = clean[AUDIO_NUM + ["popularity"]].copy()
+    elbow_profile["cluster"] = models[elbow].predict(scaler.transform(clean[AUDIO_NUM]))
+    for split, indices in [("train", tr), ("test", te)]:
+        part = elbow_profile.iloc[indices]
+        means = part.groupby("cluster")[AUDIO_NUM + ["popularity"]].mean()
+        means.insert(0, "n", part.groupby("cluster").size())
+        means.insert(1, "pct", means.n / len(part) * 100)
+        means.to_csv(out / f"cluster_profiles_elbow_{split}.csv")
     standardized_centers = pd.DataFrame(model.cluster_centers_, columns=AUDIO_NUM)
     standardized_centers.index.name = "cluster"
     standardized_centers.to_csv(out / "cluster_centers_standardized.csv")

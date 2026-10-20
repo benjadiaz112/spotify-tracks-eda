@@ -11,7 +11,7 @@ from sklearn.model_selection import train_test_split
 
 from src.data.clean_data import clean_spotify_data, validate_clean_data
 from src.features.prepare_features import (
-    BINARY_FEATURES, CATEGORICAL_FEATURES, CONTINUOUS_FEATURES, MODEL_FEATURES,
+    CONTINUOUS_FEATURES, MODEL_FEATURES,
 )
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -52,6 +52,38 @@ def grouped_split(clean: pd.DataFrame) -> tuple[np.ndarray, np.ndarray, pd.Serie
     return train_idx, test_idx, groups
 
 
+def audit_target_labels(raw: pd.DataFrame, clean: pd.DataFrame, train_idx, test_idx) -> tuple[dict, pd.DataFrame]:
+    """Cuantificar discrepancias sin cambiar las etiquetas o la partición vigente."""
+    grouped = raw.groupby("track_id", sort=True)
+    stats = grouped.popularity.agg(["first", "median", "min", "max", "size", "nunique"])
+    stats["range"] = stats["max"] - stats["min"]
+    stats["genre_count"] = grouped.track_genre.nunique()
+    stats["retained"] = stats.index.isin(clean.track_id)
+    conflicting = stats.loc[stats["nunique"] > 1].copy()
+    retained = clean.set_index("track_id")
+    conflicting["retained_target"] = conflicting.index.map(retained.popularity)
+    conflicting["retained_genre"] = conflicting.index.map(retained.track_genre)
+    assignments = dict.fromkeys(clean.iloc[train_idx].track_id, "train")
+    assignments.update(dict.fromkeys(clean.iloc[test_idx].track_id, "test"))
+    conflicting["split"] = conflicting.index.map(assignments)
+    conflicting["first_minus_median"] = conflicting["first"] - conflicting["median"]
+    conflicting.index.name = "track_id"
+    audit = {
+        "policy": "first_observed_row_by_track_id", "policy_changes_primary_target": False,
+        "justification": "Continuidad y definición reproducible de la referencia. Sin fecha ni fuente autoritativa no se infiere que máximo, última fila o mediana sea el valor verdadero. Se reporta sensibilidad solo en entrenamiento.",
+        "conflicting_ids_raw": len(conflicting),
+        "conflicting_ids_pct": 100 * len(conflicting) / len(stats),
+        "conflicting_ids_retained": int(conflicting.retained.sum()),
+        "median_range": float(conflicting["range"].median()) if len(conflicting) else 0.0,
+        "maximum_range": float(conflicting["range"].max()) if len(conflicting) else 0.0,
+        "range_greater_than_20": int((conflicting["range"] > 20).sum()),
+        "first_differs_from_median_retained": int((conflicting.retained & conflicting["first"].ne(conflicting["median"])).sum()),
+        "multi_genre_ids": int(stats.genre_count.gt(1).sum()),
+        "sensitivity_scope": "mismos tres folds del entrenamiento; validación contra referencia first; test sin alterar",
+    }
+    return audit, conflicting
+
+
 def prepare(root: Path = ROOT) -> dict:
     source = root / "data/raw/Spotify_Tracks_Dataset.csv"
     digest = hashlib.sha256(source.read_bytes()).hexdigest()
@@ -82,6 +114,9 @@ def prepare(root: Path = ROOT) -> dict:
     manifest["audio_group"] = groups
     manifest["split"] = np.where(np.isin(np.arange(len(clean)), tr), "train", "test")
     manifest.to_csv(out / "split_manifest.csv", index=False)
+    target_audit, conflicts = audit_target_labels(raw, clean, tr, te)
+    save_json(out / "target_audit.json", target_audit)
+    conflicts.to_csv(out / "target_conflicts.csv")
     qa = {
         "sha256": digest, "raw_rows": len(raw), "raw_columns": len(raw.columns),
         "raw_missing_cells": int(raw.isna().sum().sum()),

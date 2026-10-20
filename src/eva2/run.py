@@ -4,7 +4,7 @@ import time
 from .data import ROOT, prepare, save_json
 from .supervised import fit_supervised
 from .clustering import fit_clustering
-from .sensitivity import audit_genre
+from .sensitivity import audit_genre, audit_label_policy
 from .plots import make_plots
 from .reporting import build_reports
 from .predict import predict
@@ -17,6 +17,7 @@ def main():
     fit_supervised(data)
     fit_clustering(data)
     audit_genre(data)
+    audit_label_policy(data)
     make_plots(data)
     build_reports()
     dest = ROOT / "data/examples"
