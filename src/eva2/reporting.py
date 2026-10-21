@@ -48,7 +48,7 @@ def build_reports(root: Path = ROOT):
 
 **Evaluación Parcial N°2, MLY1101. Caso C. Continuación de experiencia 1.**
 
-Equipo: fluzxks, benjadiaz112 y Freymuth Christopher Isaac.
+Equipo: Benjamín Palomino, Benjamín Díaz y Freymuth Christopher Isaac.
 
 ## Decisión que apoya el proyecto
 
@@ -85,7 +85,7 @@ El desarrollo completo, fórmulas, decisiones, riesgos y matriz de rúbrica est�
 """
     report = f"""# Informe técnico - Spotify Tracks, Evaluación Parcial N°2
 
-**MLY1101 - Machine Learning. Caso C.** Equipo: fluzxks, benjadiaz112 y Freymuth Christopher Isaac.
+**MLY1101 - Machine Learning. Caso C.** Equipo: Benjamín Palomino, Benjamín Díaz y Freymuth Christopher Isaac.
 
 Este documento continúa la experiencia 1. Sus cifras se generan desde los CSV/JSON de `reports/eva2/`. Los antecedentes históricos permanecen en `docs/` y notebooks 01-04; este informe y el notebook 05 son la entrega vigente. La síntesis para decisión está en [informe ejecutivo](informe_ejecutivo.md).
 

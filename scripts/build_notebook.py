@@ -22,7 +22,7 @@ def build():
         cells.append(nbf.v4.new_code_cell(text))
     md("""# Spotify Tracks - Evaluación Parcial N°2
 
-**MLY1101, Caso C. Equipo: fluzxks, benjadiaz112 y Freymuth Christopher Isaac.**
+**MLY1101, Caso C. Equipo: Benjamín Palomino, Benjamín Díaz y Freymuth Christopher Isaac.**
 
 Continuamos la experiencia 1 y ejecutamos CRISP-DM completo: negocio, datos, preparación, modelos supervisados, segmentación y evaluación. Este cuaderno parte del CSV original, vuelve a entrenar y guarda evidencia. Usa **Restart Kernel and Run All Cells**. Instala `requirements.txt` desde terminal antes de ejecutarlo. Los scripts importados contienen la implementación y sus comentarios.
 

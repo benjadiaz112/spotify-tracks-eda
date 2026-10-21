@@ -2,7 +2,7 @@
 
 **Evaluación Parcial N°2, MLY1101. Caso C. Continuación de experiencia 1.**
 
-Equipo: fluzxks, benjadiaz112 y Freymuth Christopher Isaac.
+Equipo: Benjamín Palomino, Benjamín Díaz y Freymuth Christopher Isaac.
 
 ## Decisión que apoya el proyecto
 

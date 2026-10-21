@@ -1,6 +1,6 @@
 # Informe técnico - Spotify Tracks, Evaluación Parcial N°2
 
-**MLY1101 - Machine Learning. Caso C.** Equipo: fluzxks, benjadiaz112 y Freymuth Christopher Isaac.
+**MLY1101 - Machine Learning. Caso C.** Equipo: Benjamín Palomino, Benjamín Díaz y Freymuth Christopher Isaac.
 
 Este documento continúa la experiencia 1. Sus cifras se generan desde los CSV/JSON de `reports/eva2/`. Los antecedentes históricos permanecen en `docs/` y notebooks 01-04; este informe y el notebook 05 son la entrega vigente. La síntesis para decisión está en [informe ejecutivo](informe_ejecutivo.md).
 

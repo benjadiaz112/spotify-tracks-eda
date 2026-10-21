@@ -2,7 +2,7 @@
 
 Proyecto de MLY1101 que continúa la experiencia 1: estima popularidad observada con regresión y descubre perfiles musicales con K-Means y PCA.
 
-**Equipo:** fluzxks, benjadiaz112 y Freymuth Christopher Isaac. **Caso C.**
+**Equipo:** Benjamín Palomino, Benjamín Díaz y Freymuth Christopher Isaac. **Caso C.**
 
 ## Abrir la entrega
 
