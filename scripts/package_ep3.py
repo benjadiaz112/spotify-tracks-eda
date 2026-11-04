@@ -26,6 +26,7 @@ FOLDERS = ("src/eva3/", "src/data/", "src/features/", "docs/ep3/", "reports/eva3
            "images/eva3/", "models/eva3/", "tests/test_eva3", "tests/test_ep3")
 REQUIRED = FIXED | {
     "docs/ep3/README.md", "docs/ep3/informe_tecnico.md", "docs/ep3/informe_ejecutivo.md",
+    "docs/ep3/Spotify_EP3.pptx",
     "reports/eva3/selection.json", "reports/eva3/evaluation.json",
     "reports/eva3/test_predictions.csv", "reports/eva3/verification.json",
     "reports/eva3/prediction_input_example.csv", "models/eva3/popularity_pipeline.joblib",
@@ -49,7 +50,7 @@ def build_archive(root: Path, dest: Path) -> dict:
         "Abre la [guía de la EP3](docs/ep3/README.md), el [informe técnico](docs/ep3/informe_tecnico.md), "
         "el [informe ejecutivo](docs/ep3/informe_ejecutivo.md) o el "
         "[notebook reproducible](notebooks/06_evaluacion_3.ipynb).\n\n"
-        "El CSV bruto está incluido. La presentación se prepara por separado.\n"
+        "La [presentación de la EP3](docs/ep3/Spotify_EP3.pptx) y el CSV bruto están incluidos.\n"
     ).encode("utf-8")
     files = {"README.md": readme} | {n: (root / n).read_bytes() for n in names}
     manifest = {

@@ -2,10 +2,11 @@
 
 **MLY1101 — Machine Learning · Caso C · Equipo: Benjamín Palomino y Benjamín Díaz.**
 
-La EP3 continúa el caso de popularidad musical. La entrega técnica comprende la auditoría del CSV, preparación reproducible, regresión comparativa, optimización, ensambles, evaluación agrupada y segmentación exploratoria. La exposición y defensa individual de diez minutos se prepararán por separado.
+La EP3 continúa el caso de popularidad musical. La entrega comprende la auditoría del CSV, preparación reproducible, regresión comparativa, optimización, ensambles, evaluación agrupada, segmentación exploratoria y presentación de resultados.
 
 | Lectura | Contenido |
 |---|---|
+| [Presentación EP3](Spotify_EP3.pptx) | Once diapositivas con el problema, los resultados y la propuesta de piloto. |
 | [Informe ejecutivo](informe_ejecutivo.md) | Decisión propuesta, hallazgos y condiciones del piloto. |
 | [Informe técnico](informe_tecnico.md) | CRISP-DM, datos, optimización, ensambles, generalización, ética y matriz de la pauta. |
 | [Protocolo de evaluación](protocolo.md) | Métricas, tolerancias, reglas de selección y alcance. |
