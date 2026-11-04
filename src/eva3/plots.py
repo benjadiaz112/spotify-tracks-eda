@@ -19,6 +19,44 @@ LABELS = {
     "dummy_mediana": "Mediana global",
 }
 
+EDA_FEATURES = {
+    "danceability": "Bailabilidad", "energy": "Energía", "loudness": "Volumen (dB)",
+    "speechiness": "Presencia de habla", "acousticness": "Acústica",
+    "instrumentalness": "Instrumentalidad", "liveness": "Sonido en vivo",
+    "valence": "Valencia", "tempo": "Tempo (BPM)", "duration_ms": "Duración (min)",
+}
+
+
+def make_audio_eda(development: pd.DataFrame, out: Path, images: Path) -> pd.DataFrame:
+    """Describir las variables acústicas continuas del conjunto de desarrollo."""
+    images.mkdir(parents=True, exist_ok=True)
+    audio = development[list(EDA_FEATURES)].copy()
+    audio["duration_ms"] /= 60_000
+    fig, axes = plt.subplots(2, 5, figsize=(13, 5.1), layout="constrained")
+    for ax, (name, label) in zip(axes.flat, EDA_FEATURES.items()):
+        ax.hist(audio[name], bins=30, color="#345c90")
+        ax.set(xlabel=label)
+    fig.suptitle("Distribuciones de audio en desarrollo")
+    fig.supylabel("Canciones por intervalo")
+    fig.savefig(images / "05_audio_distribuciones.png", dpi=145, facecolor="white")
+    plt.close(fig)
+
+    correlations = audio.corrwith(development.popularity, method="spearman")
+    correlations = correlations.sort_values()
+    table = correlations.rename("spearman_popularity").rename_axis("feature").reset_index()
+    table.to_csv(out / "eda_audio_correlations.csv", index=False)
+    fig, ax = plt.subplots(figsize=(8.5, 5), layout="constrained")
+    ax.barh(correlations.index.map(EDA_FEATURES), correlations,
+            color=np.where(correlations < 0, "#345c90", "#087f5b"))
+    ax.axvline(0, color="#243647", linewidth=1)
+    limit = max(.2, float(correlations.abs().max()) * 1.15)
+    ax.set(xlim=(-limit, limit), xlabel="Correlación de Spearman (ρ, escala ampliada)",
+           title="Relación de cada variable de audio con popularidad en desarrollo")
+    fig.savefig(images / "06_audio_popularidad.png", dpi=145, facecolor="white")
+    plt.close(fig)
+    return table
+
+
 def make_plots(data: dict, out: Path, images: Path) -> None:
     images.mkdir(parents=True, exist_ok=True)
     green, blue, gold = "#087f5b", "#345c90", "#cc7300"

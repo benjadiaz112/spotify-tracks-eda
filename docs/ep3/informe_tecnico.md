@@ -63,6 +63,12 @@ Las distribuciones por banda del objetivo y género permiten detectar desequilib
 
 ![Distribución del objetivo por partición](../../images/eva3/01_objetivo.png)
 
+En las **71.582 canciones de desarrollo**, el 33,51% tiene instrumentalidad igual a cero y la duración mediana es 3,56 minutos. Los histogramas muestran la concentración en cero y la dispersión por variable en sus unidades originales, con duración expresada en minutos. La mayor asociación individual con popularidad en valor absoluto corresponde a instrumentalidad (Spearman **−0,122**). Estas asociaciones son débiles y se usan para describir el catálogo. Se conserva la comparación de modelos del protocolo para evaluar predicciones con varias variables e interacciones. Los coeficientes están en [la tabla de EDA](../../reports/eva3/eda_audio_correlations.csv).
+
+![Distribuciones de audio en desarrollo](../../images/eva3/05_audio_distribuciones.png)
+
+![Asociaciones de audio con popularidad en desarrollo](../../images/eva3/06_audio_popularidad.png)
+
 ## 4. CRISP-DM y avance entre entregas
 
 | Fase | Aplicación en esta entrega | Evidencia |

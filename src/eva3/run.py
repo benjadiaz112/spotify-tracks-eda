@@ -61,8 +61,12 @@ def finish_run(data: dict, root: Path, selection: dict, *, refitted: bool, start
 
 def run(root: Path = ROOT, *, reuse_supervised: bool = False, n_threads: int = 4) -> dict:
     from .data import prepare
+    from .plots import make_audio_eda
+
     start = time.perf_counter()
-    data = prepare(root, root / "reports/eva3")
+    out = root / "reports/eva3"
+    data = prepare(root, out)
+    make_audio_eda(data["clean"].iloc[data["train_idx"]], out, root / "images/eva3")
     selection = train_supervised(data, root, reuse=reuse_supervised, n_threads=n_threads)
     return finish_run(data, root, selection, refitted=not reuse_supervised, start=start)
 

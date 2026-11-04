@@ -73,6 +73,6 @@
   },
   "dataset_sha256": "335e5ee0a07a3f30b20ca9860c87562c98082a032e0ecd90e8ca0a86d965fe58",
   "test_rows": 17913,
-  "notebook_code_cells": 6,
+  "notebook_code_cells": 10,
   "scope": "verificación de evidencias sin reentrenar"
 }

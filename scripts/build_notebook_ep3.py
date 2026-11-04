@@ -31,6 +31,7 @@ ROOT = next(p for p in (Path.cwd(), *Path.cwd().parents)
 sys.path.insert(0, str(ROOT))
 OUT = ROOT / 'reports/eva3'
 from src.eva3.data import prepare
+from src.eva3.plots import EDA_FEATURES, make_audio_eda
 from src.eva3.run import train_supervised, finish_run
 reuse = os.environ.get('SPOTIFY_EP3_REUSE') == '1'
 start = time.perf_counter()
@@ -46,7 +47,41 @@ assert not any(data['audit'][name] for name in
                ['shared_tracks', 'shared_groups', 'shared_audio_groups', 'shared_recording_keys'])
 display(pd.Series(data['audit'], name='auditoría').to_frame())
 display(pd.read_csv(OUT / 'cleaning.csv'))
-display(pd.read_csv(OUT / 'target_bands.csv'))"""),
+schema = pd.read_csv(OUT / 'schema.csv')
+display(schema.loc[schema.raw_missing.gt(0) | schema.clean_dtype.eq('removed'),
+                   ['column', 'raw_missing', 'clean_dtype', 'role']])"""),
+        md("""### Del registro original al conjunto de desarrollo
+
+El manifiesto asigna una partición a cada canción retenida. La tabla de linaje permite auditar también las filas descartadas, que nunca llegan al ajuste."""),
+        code("""split = pd.read_csv(OUT / 'split_manifest.csv')
+display(split.groupby('split').agg(canciones=('track_id', 'size'),
+                                   familias=('group_id', 'nunique')))
+assert split.groupby('group_id').split.nunique().eq(1).all()
+display(pd.read_csv(OUT / 'row_lineage.csv.gz', nrows=5))
+development = data['clean'].iloc[data['train_idx']]
+assert len(development) == split.split.eq('train').sum()"""),
+        md("""### Distribuciones de audio
+
+Se usan exclusivamente las canciones de desarrollo. Cada panel conserva las unidades de la variable. El porcentaje en cero ayuda a distinguir concentración en un valor de una distribución más repartida. Esto orienta la inspección de variables sesgadas y evita interpretar sus promedios como un valor típico universal."""),
+        code("""correlations = make_audio_eda(development, OUT, ROOT / 'images/eva3')
+audio = development[list(EDA_FEATURES)]
+summary = audio.quantile([.25, .5, .75]).T.rename(columns={.25: 'P25', .5: 'Mediana', .75: 'P75'})
+summary['% en cero'] = audio.eq(0).mean().mul(100)
+summary.loc['duration_ms', ['P25', 'Mediana', 'P75']] /= 60_000
+display(summary.rename(index=EDA_FEATURES).round(2))
+most_zero = summary['% en cero'].idxmax()
+print(f"Mayor concentración en cero: {EDA_FEATURES[most_zero]} "
+      f"({summary.loc[most_zero, '% en cero']:.2f}% de desarrollo).")
+display(Image(filename=str(ROOT / 'images/eva3/05_audio_distribuciones.png'), width=1100))"""),
+        md("""### Asociación con popularidad
+
+Spearman mide si los rangos de dos variables tienden a subir o bajar juntos. Es un diagnóstico descriptivo. Se mantienen las variables del protocolo y se evalúa su aporte dentro del modelo, donde pueden existir interacciones que la correlación por pares no capta."""),
+        code("""ranked = correlations.sort_values('spearman_popularity', key=lambda rho: rho.abs(), ascending=False)
+display(ranked.assign(feature=ranked.feature.map(EDA_FEATURES)).round(3))
+strongest = ranked.iloc[0]
+print(f"Mayor asociación individual: {EDA_FEATURES[strongest.feature]}, "
+      f"ρ = {strongest.spearman_popularity:.3f}.")
+display(Image(filename=str(ROOT / 'images/eva3/06_audio_popularidad.png'), width=820))"""),
         md("""## 2. Optimización y ensambles
 
 El MAE agrupado de desarrollo ordena modelos y configuraciones. Las transformaciones que usan popularidad histórica se reconstruyen dentro de cada fold; una canción no aporta su objetivo a su propio predictor. Se compara el boosting de referencia con su versión ajustada, la agregación de árboles con un árbol y la combinación de predictores con sus componentes."""),
@@ -55,6 +90,11 @@ assert decision['test_used_for_selection'] is False
 display({name: decision[name] for name in ['selected_model', 'criterion', 'best_params', 'blend_weights']})
 display(pd.read_csv(OUT / 'cv_summary.csv'))
 display(pd.read_csv(OUT / 'search_summary.csv'))"""),
+        code("""trials = pd.read_csv(OUT / 'search_trials.csv')
+assert trials.groupby(['model', 'trial']).fold.nunique().eq(5).all()
+best_trial = decision['best_trials'][decision['selected_model']]
+print('Registro de configuración ganadora:', best_trial)
+display(trials.pivot(index=['model', 'trial'], columns='fold', values='mae').round(3))"""),
         md("""## 3. Generalización y umbral del 80%
 
 La reserva no decide el modelo. MAE y RMSE miden puntos; R² no equivale a aciertos. Además se informa la fracción de predicciones a ±5/10/15/20 puntos, con ±15 como referencia operativa propuesta. El 80% solo puede interpretarse a partir de una métrica definida. Re-muestrear familias completas estima incertidumbre de la reserva, no resultados futuros."""),
@@ -72,7 +112,8 @@ K-Means usa diez atributos de audio escalados en desarrollo, sin popularidad ni 
         code("""display(evidence('clustering.json'))
 display(pd.read_csv(OUT / 'segment_business_profiles.csv'))
 display(Image(filename=str(ROOT / 'images/eva3/04_segmentos.png'), width=820))
-display(evidence('business.json'))
+display(pd.read_csv(OUT / 'business_candidates.csv')[
+    ['candidate', 'songs', 'hits', 'precision_at_budget', 'genres']])
 display(pd.read_csv(OUT / 'prediction_example.csv'))
 print('Ajuste supervisado rehecho en esta ejecución:', result['supervised_refit'])"""),
         md("""## Figuras complementarias

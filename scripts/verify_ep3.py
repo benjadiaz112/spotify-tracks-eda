@@ -35,7 +35,8 @@ MODELS = {
     "arbol_metadatos", "extra_trees_metadatos", "ridge_metadatos",
     "mezcla_uniforme", "mezcla_calibrada",
 }
-FIGURES = ("01_objetivo.png", "02_modelos_cv.png", "03_reserva.png", "04_segmentos.png")
+FIGURES = ("01_objetivo.png", "02_modelos_cv.png", "03_reserva.png", "04_segmentos.png",
+           "05_audio_distribuciones.png", "06_audio_popularidad.png")
 
 
 def digest(path: Path) -> str:
