@@ -1,0 +1,22 @@
+column,raw_dtype,raw_missing,raw_unique_nonmissing,clean_dtype,role
+Unnamed: 0,int64,0,114000,removed,audit_only
+track_id,str,0,89741,str,audit_only
+artists,str,1,31437,str,audit_only
+album_name,str,1,46589,str,audit_only
+track_name,str,1,73608,str,audit_only
+popularity,int64,0,101,int64,target
+duration_ms,int64,0,50697,int64,feature
+explicit,bool,0,2,int8,feature
+danceability,float64,0,1174,float64,feature
+energy,float64,0,2083,float64,feature
+key,int64,0,12,int64,feature
+loudness,float64,0,19480,float64,feature
+mode,int64,0,2,int64,feature
+speechiness,float64,0,1489,float64,feature
+acousticness,float64,0,5061,float64,feature
+instrumentalness,float64,0,5346,float64,feature
+liveness,float64,0,1722,float64,feature
+valence,float64,0,1790,float64,feature
+tempo,float64,0,45653,float64,feature
+time_signature,int64,0,5,int64,feature
+track_genre,str,0,114,str,feature

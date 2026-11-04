@@ -1,0 +1,7 @@
+paso,filas_antes,filas_despues,filas_eliminadas
+Eliminar columna de indice exportado,114000,114000,0
+"Eliminar registros sin artista, album o cancion",114000,113999,1
+Conservar un registro por track_id,113999,89740,24259
+Conservar duraciones entre 30 segundos y 20 minutos,89740,89653,87
+Eliminar tempo o compas no validos,89653,89495,158
+Validar caracteristicas de audio entre 0 y 1,89495,89495,0
