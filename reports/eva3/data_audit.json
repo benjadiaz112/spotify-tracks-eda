@@ -61,6 +61,48 @@
     "median_range_points": 1.0,
     "maximum_range_points": 44
   },
+  "row_lineage": {
+    "file": "row_lineage.csv.gz",
+    "csv_sha256": "1cc303c8d219677bb9afed43b08cbdef7e29b48aca26abc91d91ea726e4d429c",
+    "gzip_sha256": "f8779e319d43b0a18829b8000d1d38439a6b8c21d7cbd78e0e5096b67478daa0",
+    "raw_rows": 114000,
+    "retained_rows": 89495,
+    "excluded_rows": 24505,
+    "raw_row_origin": "Posición 0-based en los datos CSV sin encabezado; no es la columna de índice exportado.",
+    "retained_encoding": "decision=retained y cleaning_step=0; split y group_id solo para conservadas.",
+    "rule_counts": [
+      {
+        "cleaning_step": 2,
+        "decision": "missing_metadata",
+        "rule": "Eliminar registros sin artista, album o cancion",
+        "excluded_rows": 1
+      },
+      {
+        "cleaning_step": 3,
+        "decision": "duplicate_track_id",
+        "rule": "Conservar un registro por track_id",
+        "excluded_rows": 24259
+      },
+      {
+        "cleaning_step": 4,
+        "decision": "invalid_duration",
+        "rule": "Conservar duraciones entre 30 segundos y 20 minutos",
+        "excluded_rows": 87
+      },
+      {
+        "cleaning_step": 5,
+        "decision": "invalid_tempo_or_meter",
+        "rule": "Eliminar tempo o compas no validos",
+        "excluded_rows": 158
+      },
+      {
+        "cleaning_step": 6,
+        "decision": "invalid_audio",
+        "rule": "Validar caracteristicas de audio entre 0 y 1",
+        "excluded_rows": 0
+      }
+    ]
+  },
   "ep2_overlap": {
     "available": true,
     "ep2_test_rows": 17715,

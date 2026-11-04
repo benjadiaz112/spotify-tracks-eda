@@ -1,6 +1,7 @@
 """Procedencia, calidad y partición de EP3 sin ajustar modelos."""
 from __future__ import annotations
 
+import gzip
 import hashlib
 import json
 import re
@@ -11,7 +12,7 @@ import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
-from src.data.clean_data import REQUIRED_TEXT_COLUMNS, clean_spotify_data, validate_clean_data
+from src.data.clean_data import AUDIO_FEATURES, REQUIRED_TEXT_COLUMNS, clean_spotify_data, validate_clean_data
 from src.eva2.data import EXPECTED_SHA256, audio_groups, save_json
 from src.features.prepare_features import CONTINUOUS_FEATURES, MODEL_FEATURES
 
@@ -162,6 +163,55 @@ def _shared(train: pd.DataFrame, test: pd.DataFrame, key: str) -> int:
     return len((set(train[key]) & set(test[key])) - {""})
 
 
+def _write_lineage(raw: pd.DataFrame, retained_positions: np.ndarray, steps: pd.DataFrame,
+                   manifest: pd.DataFrame, out: Path) -> dict:
+    """Traza la primera exclusión, reconciliada contra la función histórica intacta."""
+    lineage = pd.DataFrame({"raw_row": np.arange(len(raw)), "track_id": raw.track_id,
+                            "decision": "retained", "cleaning_step": 0, "split": "", "group_id": ""})
+    masks = [
+        ("missing_metadata", lambda active: active[REQUIRED_TEXT_COLUMNS].isna().any(axis=1)),
+        ("duplicate_track_id", lambda active: active.track_id.duplicated(keep="first")),
+        ("invalid_duration", lambda active: ~active.duration_ms.between(30_000, 1_200_000)),
+        ("invalid_tempo_or_meter", lambda active: ~((active.tempo > 0) & active.time_signature.between(1, 5))),
+        ("invalid_audio", lambda active: ~active[AUDIO_FEATURES].apply(lambda col: col.between(0, 1)).all(axis=1)),
+    ]
+    if len(steps) != len(masks) + 1 or int(steps.iloc[0].filas_eliminadas) != 0:
+        raise ValueError("Los pasos históricos de limpieza no coinciden con el trazado EP3")
+    active = raw
+    rule_counts = []
+    # El paso 1 elimina una columna, nunca una observación.
+    for step, (decision, excluded_mask) in enumerate(masks, start=2):
+        before = len(active)
+        excluded = excluded_mask(active)
+        removed = active.index[excluded]
+        active = active.loc[~excluded]
+        original = steps.iloc[step - 1]
+        if (before, len(active), len(removed)) != (original.filas_antes, original.filas_despues, original.filas_eliminadas):
+            raise ValueError(f"El trazado no reconcilia el paso histórico {step}")
+        lineage.loc[removed, ["decision", "cleaning_step"]] = [decision, step]
+        rule_counts.append({"cleaning_step": step, "decision": decision, "rule": original.paso, "excluded_rows": len(removed)})
+
+    if not np.array_equal(active.index.to_numpy(), retained_positions):
+        raise ValueError("Las filas retenidas no coinciden con la limpieza histórica")
+    if not np.array_equal(raw.loc[retained_positions, "track_id"].to_numpy(), manifest.track_id.to_numpy()):
+        raise ValueError("Los IDs retenidos no coinciden con el manifiesto de partición")
+    lineage.loc[retained_positions, "split"] = manifest.split.to_numpy()
+    lineage.loc[retained_positions, "group_id"] = manifest.group_id.to_numpy()
+    content = lineage.to_csv(index=False, lineterminator="\n").encode("utf-8")
+    path = out / "row_lineage.csv.gz"
+    # Evitar fecha y nombre de archivo dentro del gzip; el CSV tiene LF canónico.
+    with path.open("wb") as stream:
+        with gzip.GzipFile(filename="", mode="wb", fileobj=stream, mtime=0, compresslevel=6) as compressed:
+            compressed.write(content)
+    return {
+        "file": path.name, "csv_sha256": _sha256(content), "gzip_sha256": _sha256(path.read_bytes()),
+        "raw_rows": len(lineage), "retained_rows": len(retained_positions), "excluded_rows": len(lineage) - len(retained_positions),
+        "raw_row_origin": "Posición 0-based en los datos CSV sin encabezado; no es la columna de índice exportado.",
+        "retained_encoding": "decision=retained y cleaning_step=0; split y group_id solo para conservadas.",
+        "rule_counts": rule_counts,
+    }
+
+
 def _target_conflicts(raw: pd.DataFrame, manifest: pd.DataFrame) -> tuple[pd.DataFrame, dict]:
     by_id = raw.groupby("track_id", sort=True)["popularity"]
     table = by_id.agg(first_raw="first", median_raw="median", min_raw="min", max_raw="max",
@@ -224,7 +274,8 @@ def prepare(root: Path = ROOT, out: Path | None = None) -> dict:
     if raw.track_id.isna().any() or raw.popularity.isna().any():
         raise ValueError("IDs o etiquetas originales ausentes")
 
-    clean, steps = clean_spotify_data(raw)
+    clean, steps = clean_spotify_data(raw.assign(_ep3_raw_row=np.arange(len(raw))))
+    retained_positions = clean.pop("_ep3_raw_row").to_numpy(dtype=int)
     validate_clean_data(clean)
     if not isinstance(clean.index, pd.RangeIndex) or not clean.index.equals(pd.RangeIndex(len(clean))):
         raise ValueError("La limpieza debe devolver un índice posicional continuo")
@@ -260,11 +311,21 @@ def prepare(root: Path = ROOT, out: Path | None = None) -> dict:
 
     out.mkdir(parents=True, exist_ok=True)
     _write_csv(steps, out / "cleaning.csv")
+    role_overrides = {
+        "artists": ("context_feature_and_split_key", "Primer crédito para agrupar y contexto para candidatos con historial ajustado dentro de train."),
+        "album_name": ("context_feature", "Contexto para candidatos con historial ajustado dentro de train."),
+        "track_name": ("split_key_only", "Clave conservadora junto al primer artista; no predictor."),
+        "track_id": ("identifier_audit_only", "Linaje e identificación de filas; no predictor."),
+        "Unnamed: 0": ("discarded_export_index", "Columna exportada eliminada en el primer paso."),
+    }
+    roles = [role_overrides.get(col, ("target", "Objetivo de regresión; nunca predictor.") if col == "popularity"
+                               else ("feature", "Predictor de catálogo/audio.") if col in MODEL_FEATURES
+                               else ("audit_only", "Solo auditoría.")) for col in raw.columns]
     schema = pd.DataFrame({
         "column": raw.columns, "raw_dtype": raw.dtypes.astype(str).to_numpy(),
         "raw_missing": raw.isna().sum().to_numpy(), "raw_unique_nonmissing": raw.nunique().to_numpy(),
         "clean_dtype": [str(clean[col].dtype) if col in clean else "removed" for col in raw.columns],
-        "role": ["target" if col == "popularity" else "feature" if col in MODEL_FEATURES else "audit_only" for col in raw.columns],
+        "role": [role for role, _ in roles], "role_note": [note for _, note in roles],
     })
     _write_csv(schema, out / "schema.csv")
     _write_csv(clean[CONTINUOUS_FEATURES + ["popularity"]].describe().rename_axis("statistic").reset_index(), out / "descriptive.csv")
@@ -279,6 +340,7 @@ def prepare(root: Path = ROOT, out: Path | None = None) -> dict:
     target_table, target = _target_conflicts(raw, manifest)
     _write_csv(target_table, out / "target_conflicts.csv")
     save_json(out / "target_audit.json", target)
+    lineage = _write_lineage(raw, retained_positions, steps, manifest, out)
     legacy = _legacy_overlap(root, manifest, out)
     component_sizes = groups.value_counts()
     train_artists = set(clean.iloc[train_idx].artists.map(primary_artist)) - {""}
@@ -314,6 +376,7 @@ def prepare(root: Path = ROOT, out: Path | None = None) -> dict:
         "test_primary_artist_seen_rows": int(test_artists.isin(train_artists).sum()),
         "test_primary_artist_seen_pct_of_all_test_rows": float(100 * test_artists.isin(train_artists).mean()),
         "target_conflicts": target,
+        "row_lineage": lineage,
         "ep2_overlap": legacy,
         "assessment_scope": "Generalización interna a componentes de grabación no vistos de la misma fuente, con artistas posiblemente vistos; sin fecha confirmada ni prueba externa.",
         "eda_scope": "Descripción global y por partición; no se ajustan transformaciones ni se seleccionan modelos en esta etapa.",
