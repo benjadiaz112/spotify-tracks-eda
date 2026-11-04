@@ -46,6 +46,7 @@
     "deltas de contrastes por fold reproducidos": true,
     "deltas de contrastes en reserva reproducidos": true,
     "bootstrap de grupos con puntos reproducidos": true,
+    "incertidumbre separada por disponibilidad de historial": true,
     "cada auditoría cubre toda la reserva": true,
     "KPI de negocio reproducido": true,
     "búsqueda y regla de K reproducidas": true,
@@ -58,7 +59,7 @@
     "integrantes EP3 en documentación y cuaderno": true,
     "enlaces internos de EP3": true
   },
-  "check_count": 56,
+  "check_count": 57,
   "model": "hgb_metadatos_ajustado",
   "metrics": {
     "mae": 5.020411187981475,

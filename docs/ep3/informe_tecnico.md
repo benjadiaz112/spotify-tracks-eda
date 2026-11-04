@@ -124,6 +124,8 @@ La tabla comparativa y sus predicciones están en [`supervised_metrics.csv`](../
 
 **IE12 — KPI de decisión.** En 3.582 revisiones (20% de la reserva), se define popularidad alta como ≥49, percentil 75 de entrenamiento. El ganador identifica 3.065 canciones altas (**85,57%** de su lista y **67,78%** de las altas presentes), frente a 62,00% de la referencia EP2 y 25,24% esperado con selección uniforme. La media de la lista es **58,92** y aparecen **82/113 géneros**. La mezcla uniforme obtiene 85,68% de precisión de lista, pero el ranking comercial no decidió el ganador ni representa un piloto. Véase [comparación a igual presupuesto](../../reports/eva3/business_candidates.csv).
 
+**Robustez del umbral.** En 600 remuestreos de familias, el IC95% del R² global es **[0,820; 0,839]**. En artistas no vistos, es **[0,561; 0,652]**; incluso su cobertura a ±15 (81,68% puntual) tiene un IC95% de **[79,72%; 83,41%]**, que incluye 80%. Estos intervalos son condicionales al modelo ya ajustado y a la reserva del mismo origen. Para el piloto, mostrar si existe historial y enviar canciones de artistas sin historial a revisión manual sin penalizarlas por la predicción. No se ha medido el efecto de esa regla operativa. Ver [auditoría por artista](../../reports/eva3/bootstrap_artist_seen.json).
+
 ![Comparación de modelos en validación](../../images/eva3/02_modelos_cv.png)
 
 ![Cobertura y predicciones en reserva](../../images/eva3/03_reserva.png)

@@ -34,25 +34,35 @@ def grouped_bootstrap(frame: pd.DataFrame, *, n_boot: int = 600) -> dict:
         values[f"within_{tolerance}"] = abs_error.le(tolerance).astype(int)
     if "baseline_median" in frame:
         values["mae_gain_baseline"] = frame.baseline_median.sub(frame.popularity).abs() - abs_error
+    values["sse"] = abs_error.pow(2)
+    values["sum_y"] = frame.popularity
+    values["sum_y2"] = frame.popularity.astype(float).pow(2)
     by_group = values.groupby("group", sort=True).sum()
     sums = by_group.to_numpy(dtype=float)
     if len(sums) < 2:
         raise ValueError("Se necesitan dos o más grupos para estimar incertidumbre.")
     rng = np.random.default_rng(SEED)
-    reps = np.empty((n_boot, sums.shape[1] - 1))
+    def scores(total):
+        n, *_, sse, sum_y, sum_y2 = total
+        sst = sum_y2 - sum_y ** 2 / n
+        if sst <= 0:
+            raise ValueError("La muestra bootstrap no tiene variabilidad del objetivo.")
+        return np.r_[total[1:-3] / n, 1 - sse / sst]
+
+    reps = np.empty((n_boot, sums.shape[1] - 3))
     for i in range(n_boot):
         total = sums[rng.integers(0, len(sums), size=len(sums))].sum(axis=0)
-        reps[i] = total[1:] / total[0]
-    point = sums.sum(axis=0)
+        reps[i] = scores(total)
+    point = scores(sums.sum(axis=0))
     return {
         "seed": SEED, "resamples": n_boot, "groups": len(sums),
         "unit": "grupo de canciones relacionadas, no fila",
         "interpretation": "Incertidumbre de muestreo en la reserva del mismo origen, no garantía temporal.",
         "intervals": {
-            col: {"point": float(point[i + 1] / point[0]),
+            col: {"point": float(point[i]),
                   "lo_95": float(np.quantile(reps[:, i], 0.025)),
                   "hi_95": float(np.quantile(reps[:, i], 0.975))}
-            for i, col in enumerate(by_group.columns[1:])
+            for i, col in enumerate([*by_group.columns[1:-3], "r2"])
         },
     }
 
@@ -92,6 +102,11 @@ def audit_business(data: dict, out: Path) -> dict:
     pd.DataFrame(rows).to_csv(out / "holdout_subgroups.csv", index=False)
     bootstrap = grouped_bootstrap(predictions)
     save_json(out / "bootstrap.json", bootstrap)
+    by_artist = {
+        str(seen): {"rows": len(group), **grouped_bootstrap(group)}
+        for seen, group in predictions.groupby("artist_seen", observed=True)
+    }
+    save_json(out / "bootstrap_artist_seen.json", by_artist)
 
     threshold = float(train_frame.popularity.quantile(HIGH_QUANTILE))
     budget = max(1, int(BUDGET_FRACTION * len(predictions)))

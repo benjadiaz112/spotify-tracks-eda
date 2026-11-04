@@ -258,7 +258,21 @@ def verify(root: Path = ROOT) -> dict:
           and bootstrap["resamples"] > 0 and all(
               np.isclose(bootstrap["intervals"][metric]["point"], winner_metrics[metric])
               and bootstrap["intervals"][metric]["lo_95"] <= bootstrap["intervals"][metric]["hi_95"]
-              for metric in ("mae", *(f"within_{d}" for d in TOLERANCES))
+              for metric in ("mae", "r2", *(f"within_{d}" for d in TOLERANCES))
+          ))
+    artist_bootstrap = load("bootstrap_artist_seen.json")
+    check("incertidumbre separada por disponibilidad de historial", set(artist_bootstrap) == {"True", "False"}
+          and all(
+              artist_bootstrap[str(seen)]["rows"] == len(part)
+              and artist_bootstrap[str(seen)]["groups"] == part.audio_group.nunique()
+              and all(
+                  np.isclose(artist_bootstrap[str(seen)]["intervals"][name]["point"], measured[name])
+                  and artist_bootstrap[str(seen)]["intervals"][name]["lo_95"]
+                  <= artist_bootstrap[str(seen)]["intervals"][name]["hi_95"]
+                  for name in ("r2", "mae", "within_15")
+              )
+              for seen, part in predictions.groupby("artist_seen", observed=True)
+              for measured in [metrics(part.popularity, part.prediction)]
           ))
     subgroups = csv("holdout_subgroups.csv")
     check("cada auditoría cubre toda la reserva", set(subgroups.dimension) ==

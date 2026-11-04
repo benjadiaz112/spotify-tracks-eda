@@ -22,13 +22,14 @@ class BusinessEvidenceTests(unittest.TestCase):
 
     def test_paired_bootstrap_keeps_constant_difference_across_groups(self):
         rows = pd.DataFrame({
-            "audio_group": ["A", "A", "B"], "popularity": [20, 20, 20],
-            "prediction": [22, 25, 30], "baseline_median": [26, 29, 34],
+            "audio_group": ["A", "A", "B", "B"], "popularity": [20, 40, 20, 40],
+            "prediction": [22, 45, 30, 43], "baseline_median": [26, 49, 34, 47],
         })
         result = grouped_bootstrap(rows, n_boot=40)
         self.assertEqual(result["groups"], 2)
         self.assertEqual(result["intervals"]["mae_gain_baseline"], {"point": 4.0, "lo_95": 4.0, "hi_95": 4.0})
         self.assertEqual(result["intervals"]["within_10"]["point"], 1.0)
+        self.assertAlmostEqual(result["intervals"]["r2"]["point"], 1 - (4 + 25 + 100 + 9) / 400)
 
 
 if __name__ == "__main__":

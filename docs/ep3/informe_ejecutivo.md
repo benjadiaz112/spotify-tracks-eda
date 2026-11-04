@@ -20,6 +20,8 @@ La selección usa el error absoluto medio (MAE) en validación agrupada. Se info
 
 ## Próximo paso
 
+El IC95% agrupado para R² global es **[0,820; 0,839]**. Para artistas no vistos, la cobertura a ±15 tiene un intervalo de **79,72% a 83,41%**: el resultado global no justifica aplicar el mismo umbral a ese subgrupo. En el piloto, las canciones sin historial pasan a revisión manual, sin descartarlas por su puntuación.
+
 Proponer un piloto de dos semanas, con revisión manual y asistida de lotes comparables. Metas propuestas: reducción mediana ≥15% en minutos por 100 canciones, aceptación ≥70% y pérdida de cobertura de géneros ≤5 puntos porcentuales. No se ha ejecutado el piloto. Antes de ampliar uso se necesita validar los derechos de los datos, medir errores con datos recientes y evaluar efectos en géneros y catálogos con poca exposición.
 
 [Informe técnico](informe_tecnico.md) · [Protocolo](protocolo.md) · [Resultados de la EP3](../../reports/eva3/)
