@@ -1,0 +1,24 @@
+{
+  "scope": "Simulación retrospectiva de una lista para revisión humana; no es un piloto comercial.",
+  "budget_fraction": 0.2,
+  "budget_songs": 3582,
+  "threshold_quantile_train": 0.75,
+  "threshold_train": 49.0,
+  "selected_model": {
+    "songs": 3582,
+    "hits": 3065,
+    "precision_at_budget": 0.8556672250139586,
+    "recall_at_budget": 0.6777974347633791,
+    "mean_popularity": 58.920156337241764,
+    "genres": 82,
+    "genres_total_holdout": 113
+  },
+  "uniform_reference": {
+    "precision_expected": 0.252442360296991,
+    "mean_popularity_expected": 33.32669011332552,
+    "explanation": "Valor esperado de una muestra uniforme del mismo tamaño, sin ranking."
+  },
+  "precision_gain_pp": 60.322486471696756,
+  "mean_popularity_gain_points": 25.593466223916245,
+  "candidate_rankings": 9
+}

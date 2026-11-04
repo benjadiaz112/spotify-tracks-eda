@@ -1,0 +1,8 @@
+{
+  "completed": true,
+  "supervised_refit": true,
+  "selected_model": "hgb_metadatos_ajustado",
+  "selected_k": 2,
+  "elapsed_seconds": 402.306,
+  "model_sha256": "d80934d22d45931690cd084fc6caab47dac5bfcab383279bad53b1729a1e1df6"
+}
