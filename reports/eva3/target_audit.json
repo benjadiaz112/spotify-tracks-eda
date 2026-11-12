@@ -1,0 +1,10 @@
+{
+  "policy": "first_observed_valid_row_by_track_id_ep2",
+  "conflicting_ids_raw": 720,
+  "conflicting_ids_pct": 0.8023088666272941,
+  "conflicting_ids_retained": 720,
+  "conflicting_ids_train": 570,
+  "conflicting_ids_test": 150,
+  "median_range_points": 1.0,
+  "maximum_range_points": 44
+}

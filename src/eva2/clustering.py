@@ -15,8 +15,12 @@ from .data import ROOT, SEED, save_json
 from src.features.prepare_features import CONTINUOUS_FEATURES as AUDIO_NUM
 
 
-def fit_clustering(data: dict, root: Path = ROOT) -> dict:
-    out = root / "reports/eva2"
+def fit_clustering(
+    data: dict, root: Path = ROOT, *, out: Path | None = None,
+    model_dir: Path | None = None,
+) -> dict:
+    out = out if out is not None else root / "reports/eva2"
+    out.mkdir(parents=True, exist_ok=True)
     clean, tr, te = data["clean"], data["train_idx"], data["test_idx"]
     # Popularidad y género se excluyen: no definir grupos por el resultado ni por etiquetas.
     train = clean.iloc[tr][AUDIO_NUM]
@@ -100,7 +104,7 @@ def fit_clustering(data: dict, root: Path = ROOT) -> dict:
         "pca_components_for_80pct": int(np.searchsorted(np.cumsum(pca.explained_variance_ratio_), .8) + 1),
         "stability": stability, "seed": SEED,
     })
-    model_dir = root / "models/eva2"
+    model_dir = model_dir if model_dir is not None else root / "models/eva2"
     model_dir.mkdir(parents=True, exist_ok=True)
     joblib.dump({"pipeline": Pipeline([("scale", scaler), ("kmeans", model)]),
                  "pca": pca, "features": AUDIO_NUM}, model_dir / "music_segments.joblib", compress=3)

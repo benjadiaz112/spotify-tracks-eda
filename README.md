@@ -1,4 +1,14 @@
-# Spotify Tracks - Evaluación Parcial N°2
+# Spotify Tracks
+
+**Entrega vigente: Evaluación Parcial 3 · Benjamín Palomino y Benjamín Díaz.**
+
+- [Guía de la EP3](docs/ep3/README.md) y [protocolo del experimento](docs/ep3/protocolo_prerregistro.md).
+- [Informe ejecutivo](docs/ep3/informe_ejecutivo.md) e [informe técnico con matriz de la pauta](docs/ep3/informe_tecnico.md).
+- [Notebook reproducible de la EP3](notebooks/06_evaluacion_3.ipynb), [evidencias](reports/eva3/) y [figuras](images/eva3/).
+
+La documentación siguiente conserva el historial de la entrega previa.
+
+## Archivo histórico: Evaluación Parcial N°2
 
 Proyecto de MLY1101 que continúa la experiencia 1: estima popularidad observada con regresión y descubre perfiles musicales con K-Means y PCA.
 

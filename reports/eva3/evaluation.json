@@ -1,0 +1,49 @@
+{
+  "selected_model": "hgb_metadatos_ajustado",
+  "metrics": {
+    "mae": 5.020411187981475,
+    "mse": 72.26589794907058,
+    "rmse": 8.500935122036315,
+    "r2": 0.8297743954314558,
+    "within_5": 0.7009992742700831,
+    "within_10": 0.8612739351309106,
+    "within_15": 0.919723106124044,
+    "within_20": 0.9516552224641321
+  },
+  "baseline_median_metrics": {
+    "mae": 17.266454530229442,
+    "mse": 424.6368559146988,
+    "rmse": 20.60671870809855,
+    "r2": -0.00025139895317738414,
+    "within_5": 0.1551387260648691,
+    "within_10": 0.3351755708144923,
+    "within_15": 0.5268240942332384,
+    "within_20": 0.6337855188968905
+  },
+  "baseline_ep2_metrics": {
+    "mae": 11.380983496173945,
+    "mse": 267.90230192499024,
+    "rmse": 16.367721341866442,
+    "r2": 0.36894396105580196,
+    "within_5": 0.39228493273041926,
+    "within_10": 0.6151398425724335,
+    "within_15": 0.7312566292636633,
+    "within_20": 0.8161112041534081
+  },
+  "test_rows": 17913,
+  "train_rows": 71582,
+  "improvement_vs_median_pct": 70.92390230320919,
+  "improvement_vs_ep2_pct": 55.887721042129314,
+  "coverage_target_met": true,
+  "coverage_target": {
+    "points": 15,
+    "target_fraction": 0.8,
+    "comparison": ">",
+    "status": "meta de trabajo, no métrica confirmada por el docente"
+  },
+  "residual_bias": 0.7524916213411851,
+  "residual_p95_absolute": 19.587221416626132,
+  "elapsed_seconds": 358.97445350000635,
+  "train_artists_seen_test_fraction": 0.8957740188689778,
+  "train_albums_seen_test_fraction": 0.4637972422263161
+}

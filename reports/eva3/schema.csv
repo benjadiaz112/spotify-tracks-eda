@@ -1,0 +1,22 @@
+column,raw_dtype,raw_missing,raw_unique_nonmissing,clean_dtype,role,role_note
+Unnamed: 0,int64,0,114000,removed,discarded_export_index,Columna exportada eliminada en el primer paso.
+track_id,str,0,89741,str,identifier_audit_only,Linaje e identificación de filas; no predictor.
+artists,str,1,31437,str,context_feature_and_split_key,Primer crédito para agrupar y contexto para candidatos con historial ajustado dentro de train.
+album_name,str,1,46589,str,context_feature,Contexto para candidatos con historial ajustado dentro de train.
+track_name,str,1,73608,str,split_key_only,Clave conservadora junto al primer artista; no predictor.
+popularity,int64,0,101,int64,target,Objetivo de regresión; nunca predictor.
+duration_ms,int64,0,50697,int64,feature,Predictor de catálogo/audio.
+explicit,bool,0,2,int8,feature,Predictor de catálogo/audio.
+danceability,float64,0,1174,float64,feature,Predictor de catálogo/audio.
+energy,float64,0,2083,float64,feature,Predictor de catálogo/audio.
+key,int64,0,12,int64,feature,Predictor de catálogo/audio.
+loudness,float64,0,19480,float64,feature,Predictor de catálogo/audio.
+mode,int64,0,2,int64,feature,Predictor de catálogo/audio.
+speechiness,float64,0,1489,float64,feature,Predictor de catálogo/audio.
+acousticness,float64,0,5061,float64,feature,Predictor de catálogo/audio.
+instrumentalness,float64,0,5346,float64,feature,Predictor de catálogo/audio.
+liveness,float64,0,1722,float64,feature,Predictor de catálogo/audio.
+valence,float64,0,1790,float64,feature,Predictor de catálogo/audio.
+tempo,float64,0,45653,float64,feature,Predictor de catálogo/audio.
+time_signature,int64,0,5,int64,feature,Predictor de catálogo/audio.
+track_genre,str,0,114,str,feature,Predictor de catálogo/audio.

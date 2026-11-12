@@ -1,0 +1,7 @@
+{
+  "features": "diez atributos de audio; no usa popularidad, género ni artista",
+  "selection": "K=1..10, silueta y tamaño mínimo en desarrollo; evaluación separada en reserva",
+  "business_usage": "exploración editorial; no son segmentos de usuarios ni estimaciones causales",
+  "selected_k": 2,
+  "largest_test_shift_pp": 0.3775348152793079
+}

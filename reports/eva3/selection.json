@@ -1,0 +1,237 @@
+{
+  "selected_model": "hgb_metadatos_ajustado",
+  "criterion": "menor MAE medio en cinco folds agrupados del entrenamiento; empate por nombre",
+  "test_used_for_selection": false,
+  "seed": 3103,
+  "features": [
+    "duration_ms",
+    "danceability",
+    "energy",
+    "loudness",
+    "speechiness",
+    "acousticness",
+    "instrumentalness",
+    "liveness",
+    "valence",
+    "tempo",
+    "track_genre",
+    "key",
+    "mode",
+    "time_signature",
+    "explicit",
+    "artists",
+    "album_name"
+  ],
+  "input_columns": [
+    "duration_ms",
+    "danceability",
+    "energy",
+    "loudness",
+    "speechiness",
+    "acousticness",
+    "instrumentalness",
+    "liveness",
+    "valence",
+    "tempo",
+    "track_genre",
+    "key",
+    "mode",
+    "time_signature",
+    "explicit",
+    "artists",
+    "album_name"
+  ],
+  "historical_metadata": true,
+  "selection_cv_optimism": "La búsqueda y la selección reutilizan los folds de entrenamiento; la cifra final del holdout es la comprobación independiente.",
+  "best_params": {
+    "hgb_metadatos_ajustado": {
+      "l2_regularization": 2.0,
+      "learning_rate": 0.07,
+      "loss": "absolute_error",
+      "max_iter": 340,
+      "max_leaf_nodes": 63,
+      "min_samples_leaf": 14
+    },
+    "extra_trees_metadatos": {
+      "max_features": 0.85,
+      "max_samples": 0.9,
+      "min_samples_leaf": 3,
+      "n_estimators": 100
+    },
+    "ridge_metadatos": {
+      "alpha": 2.0
+    }
+  },
+  "best_parameters": {
+    "hgb_metadatos_ajustado": {
+      "l2_regularization": 2.0,
+      "learning_rate": 0.07,
+      "loss": "absolute_error",
+      "max_iter": 340,
+      "max_leaf_nodes": 63,
+      "min_samples_leaf": 14
+    },
+    "extra_trees_metadatos": {
+      "max_features": 0.85,
+      "max_samples": 0.9,
+      "min_samples_leaf": 3,
+      "n_estimators": 100
+    },
+    "ridge_metadatos": {
+      "alpha": 2.0
+    }
+  },
+  "best_trials": {
+    "hgb_metadatos_ajustado": 6,
+    "extra_trees_metadatos": 2,
+    "ridge_metadatos": 1
+  },
+  "hgb_base_params": {
+    "loss": "squared_error",
+    "max_iter": 200,
+    "learning_rate": 0.08,
+    "max_leaf_nodes": 31,
+    "min_samples_leaf": 20,
+    "l2_regularization": 1.0
+  },
+  "bag_fixed_params": {
+    "n_estimators": 100,
+    "min_samples_leaf": 5,
+    "max_features": 0.8,
+    "max_samples": 0.85
+  },
+  "ridge_fixed_params": {
+    "alpha": 6.0
+  },
+  "cv_folds": [
+    {
+      "fold": 1,
+      "train_rows": 57304,
+      "val_rows": 14278,
+      "train_groups": 51456,
+      "val_groups": 12864,
+      "group_intersection": 0
+    },
+    {
+      "fold": 2,
+      "train_rows": 57286,
+      "val_rows": 14296,
+      "train_groups": 51456,
+      "val_groups": 12864,
+      "group_intersection": 0
+    },
+    {
+      "fold": 3,
+      "train_rows": 57185,
+      "val_rows": 14397,
+      "train_groups": 51456,
+      "val_groups": 12864,
+      "group_intersection": 0
+    },
+    {
+      "fold": 4,
+      "train_rows": 57311,
+      "val_rows": 14271,
+      "train_groups": 51456,
+      "val_groups": 12864,
+      "group_intersection": 0
+    },
+    {
+      "fold": 5,
+      "train_rows": 57242,
+      "val_rows": 14340,
+      "train_groups": 51456,
+      "val_groups": 12864,
+      "group_intersection": 0
+    }
+  ],
+  "metadata_history_inner_folds": 4,
+  "history_keys_and_smoothing": {
+    "genre": 12.0,
+    "artist_primary": 5.0,
+    "artist_full": 5.0,
+    "album": 4.0,
+    "artist_album": 2.0,
+    "artist_genre": 4.0
+  },
+  "tolerances": [
+    5,
+    10,
+    15,
+    20
+  ],
+  "blend_weights": {
+    "mezcla_uniforme": {
+      "hgb_metadatos_ajustado": 0.3333333333333333,
+      "extra_trees_metadatos": 0.3333333333333333,
+      "ridge_metadatos": 0.3333333333333333
+    },
+    "mezcla_calibrada": {
+      "hgb_metadatos_base": 0.4,
+      "extra_trees_fijo": 0.6,
+      "ridge_fijo": 0.0
+    }
+  },
+  "calibration_by_fold": [
+    {
+      "fold": 1,
+      "weights": {
+        "hgb_metadatos_base": 0.3,
+        "extra_trees_fijo": 0.7,
+        "ridge_fijo": 0.0
+      },
+      "fit_rows": 44679,
+      "calibration_rows": 12625
+    },
+    {
+      "fold": 2,
+      "weights": {
+        "hgb_metadatos_base": 0.3,
+        "extra_trees_fijo": 0.7,
+        "ridge_fijo": 0.0
+      },
+      "fit_rows": 44680,
+      "calibration_rows": 12606
+    },
+    {
+      "fold": 3,
+      "weights": {
+        "hgb_metadatos_base": 0.3,
+        "extra_trees_fijo": 0.7,
+        "ridge_fijo": 0.0
+      },
+      "fit_rows": 44557,
+      "calibration_rows": 12628
+    },
+    {
+      "fold": 4,
+      "weights": {
+        "hgb_metadatos_base": 0.4,
+        "extra_trees_fijo": 0.6,
+        "ridge_fijo": 0.0
+      },
+      "fit_rows": 44680,
+      "calibration_rows": 12631
+    },
+    {
+      "fold": 5,
+      "weights": {
+        "hgb_metadatos_base": 0.4,
+        "extra_trees_fijo": 0.6,
+        "ridge_fijo": 0.0
+      },
+      "fit_rows": 44697,
+      "calibration_rows": 12545
+    }
+  ],
+  "tolerance_diagnostic": {
+    "points": 15,
+    "target_fraction": 0.8,
+    "comparison": ">",
+    "status": "meta de trabajo, no métrica confirmada por el docente"
+  },
+  "prediction_range": [
+    0,
+    100
+  ]
+}

@@ -1,0 +1,6 @@
+track_id,artists,album_name,track_name,duration_ms,explicit,danceability,energy,key,loudness,mode,speechiness,acousticness,instrumentalness,liveness,valence,tempo,time_signature,track_genre
+1EzrEOXmMH3G43AXT1y7pA,Jason Mraz,We Sing. We Dance. We Steal Things.,I'm Yours,242946,0,0.703,0.444,11,-9.331,1,0.0417,0.559,0.0,0.0973,0.712,150.96,4,acoustic
+3S0OXQeoh0w6AY8WQVckRW,Jason Mraz,We Sing. We Dance. We Steal Things.,I'm Yours,242946,0,0.703,0.444,11,-9.331,1,0.0417,0.559,0.0,0.0973,0.712,150.96,4,acoustic
+0dzKBptH2P5j5a0MifBMwM,Jason Mraz,Feeling Good - Adult Pop Favorites,If It Kills Me,273653,0,0.633,0.429,4,-6.784,0,0.0381,0.0444,0.0,0.132,0.52,143.793,4,acoustic
+3H36x7buZdQD4687VmFrwY,Brandi Carlile;Sam Smith,Human - Best Adult Pop Tunes,Party of One,259558,0,0.296,0.206,0,-11.799,1,0.0412,0.782,0.000225,0.0959,0.202,165.4,4,acoustic
+0xbMRcMFqxJq1Wa7tvWPtn,Brandi Carlile;Sam Smith,Feeling Good - Adult Pop Favorites,Party of One,259558,0,0.296,0.206,0,-11.799,1,0.0412,0.782,0.000225,0.0959,0.202,165.4,4,acoustic
