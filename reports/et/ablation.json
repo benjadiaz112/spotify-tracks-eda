@@ -1,0 +1,89 @@
+{
+  "protocol": "Ablación retrospectiva. Mantiene el género, su historial y todas las entradas estáticas.",
+  "selected_model": "hgb_metadatos_ajustado",
+  "used_for_selection": false,
+  "reference_reproduced_at_atol": 1e-08,
+  "parameters": {
+    "l2_regularization": 2.0,
+    "learning_rate": 0.07,
+    "loss": "absolute_error",
+    "max_iter": 340,
+    "max_leaf_nodes": 63,
+    "min_samples_leaf": 14
+  },
+  "static_features_kept": [
+    "duration_ms",
+    "danceability",
+    "energy",
+    "loudness",
+    "speechiness",
+    "acousticness",
+    "instrumentalness",
+    "liveness",
+    "valence",
+    "tempo",
+    "track_genre",
+    "key",
+    "mode",
+    "time_signature",
+    "explicit"
+  ],
+  "history_keys_removed": [
+    "artist_primary",
+    "artist_full",
+    "album",
+    "artist_album",
+    "artist_genre"
+  ],
+  "variants": {
+    "sin_historial_artista_album": {
+      "cv_mae": 10.922430062586756,
+      "reserve": {
+        "mae": 10.920097213582979,
+        "mse": 295.4132995421217,
+        "rmse": 17.187591440982118,
+        "r2": 0.30414055675907026,
+        "within_5": 0.5043264668118127,
+        "within_10": 0.6591302406073801,
+        "within_15": 0.7440406408753419,
+        "within_20": 0.8053369061575392
+      }
+    },
+    "con_historial_artista_album": {
+      "cv_mae": 5.129027919236352,
+      "reserve": {
+        "mae": 5.020411187981475,
+        "mse": 72.26589794907058,
+        "rmse": 8.500935122036315,
+        "r2": 0.8297743954314558,
+        "within_5": 0.7009992742700831,
+        "within_10": 0.8612739351309106,
+        "within_15": 0.919723106124044,
+        "within_20": 0.9516552224641321
+      }
+    }
+  },
+  "reserve_rows": 17913,
+  "reserve_mae_reduction_with_history": 5.899686025601507,
+  "reserve_reduction_ci95": [
+    5.608523010560938,
+    6.172236716763616
+  ],
+  "reserve_bootstrap_replicates": 800,
+  "by_artist_history": {
+    "visto": {
+      "n": 16046,
+      "mae": {
+        "sin_historial_artista_album": 10.83702805565425,
+        "con_historial_artista_album": 4.6907601858888235
+      }
+    },
+    "no_visto": {
+      "n": 1867,
+      "mae": {
+        "sin_historial_artista_album": 11.63403813919863,
+        "con_historial_artista_album": 7.853608820321422
+      }
+    }
+  }
+}
