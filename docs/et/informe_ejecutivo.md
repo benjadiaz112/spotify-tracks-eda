@@ -18,6 +18,8 @@ Con **3.582 canciones** por revisar, el HGB ajustado identificó **3.065** de po
 
 ## Condiciones para el piloto
 
+El contraste con los mismos hiperparámetros y las mismas canciones muestra que incorporar el historial de artista y álbum reduce el MAE de reserva de **10,92 a 5,02 puntos**. La mejora depende de disponer de historiales comparables. K=2 ofrece mayor separación que K=4 y permite comparar el error entre el perfil acústico (**4,80**) y el activo (**5,09**) antes de definir cupos por segmento. [Ablación](../../reports/et/ablation.json) · [Auditoría de segmentos](../../reports/et/cluster_business.csv).
+
 El error sube de **4,69 a 7,85 puntos** cuando el artista carece de historial en desarrollo. Este grupo representa **7,71%** de la lista al cupo de 20% y **10,42%** de la reserva. Ampliar el cupo al 30% recupera más canciones de popularidad alta (83,59% frente a 67,78%), a cambio de más revisión y menor proporción de canciones altas en la lista (70,35% frente a 85,57%). Para proteger el acceso a revisión, se propone atender manualmente los casos sin historial y controlar la diversidad por género. La evaluación viene de una sola fuente sin fecha confirmada. El equipo debe verificar derechos de uso y obtener datos recientes antes de ampliar el alcance. [Auditoría de subgrupos](../../reports/eva3/holdout_subgroups.csv) · [Sensibilidad al cupo en el notebook](../../notebooks/07_examen_transversal.ipynb).
 
 El piloto propuesto dura dos semanas. Comparará lotes similares de revisión manual y asistida. Las metas son **reducir ≥15%** el tiempo mediano por 100 canciones, **alcanzar ≥70%** de aceptación y **limitar a 5 puntos porcentuales** la pérdida de cobertura por género. Son metas pendientes de medición en un entorno operativo.

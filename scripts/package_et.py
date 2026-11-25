@@ -26,7 +26,11 @@ ET_DOCS = ("README.md", "docs/et/README.md", "docs/et/informe_tecnico.md",
            "docs/et/informe_ejecutivo.md")
 ET_NOTEBOOK = "notebooks/07_examen_transversal.ipynb"
 ET_DECK = "docs/et/Spotify_ET.pptx"
-ET_REQUIRED = {*ET_DOCS, ET_NOTEBOOK, ET_DECK, "scripts/package_et.py"}
+ET_REQUIRED = {
+    *ET_DOCS, ET_NOTEBOOK, ET_DECK, "scripts/package_et.py",
+    "src/et/ablation.py", "src/et/cluster_business.py",
+    "reports/et/ablation.json", "reports/et/ablation_folds.csv", "reports/et/cluster_business.csv",
+}
 
 
 def delivery_members(root: Path) -> dict[str, bytes]:

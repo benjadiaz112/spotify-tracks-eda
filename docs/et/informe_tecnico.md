@@ -37,6 +37,8 @@ El antecedente de procedencia identifica el catálogo Spotify Tracks Dataset atr
 
 **Git y GitHub.** Git registra cambios revisables en reglas de limpieza, código, resultados e informes. Las ramas permiten adaptar la entrega final desde EP3 y comparar diferencias sin mezclar el trabajo de evaluaciones previas. GitHub da al equipo un historial compartido y permite que una revisión identifique la versión exacta de los archivos. El notebook comunica decisiones y resultados. Los módulos Python concentran la lógica para que el cuaderno y la ejecución por terminal usen las mismas reglas. Las evidencias CSV y JSON permiten revisar métricas y particiones con herramientas independientes del notebook.
 
+El repositorio conserva las ramas de [EP2](https://github.com/benjadiaz112/spotify-tracks-eda/tree/feat/spotify-popularidad-clustering), [EP3](https://github.com/benjadiaz112/spotify-tracks-eda/tree/feat/spotify-ep3) y [ET](https://github.com/benjadiaz112/spotify-tracks-eda/tree/feat/spotify-et). El [historial del ET](https://github.com/benjadiaz112/spotify-tracks-eda/commits/feat/spotify-et) permite revisar los cambios de presentación, informes, notebook y empaquetado.
+
 ## 4. Preparación y análisis exploratorio
 
 Pandas representa la tabla de entrada como un DataFrame y aplica máscaras booleanas para auditar faltantes y rangos. La limpieza deduplica por `track_id` y conserva el índice de origen para rastrear descartes. Las tablas de conteo se obtienen por agregaciones y las estadísticas de categoría se recalculan en los subconjuntos correspondientes de cada fold. En Ridge, la codificación one-hot dispersa preserva una representación eficiente de las categorías. La columna `Unnamed: 0` se elimina porque el índice exportado refleja el orden del archivo.
@@ -82,7 +84,7 @@ Las entradas de contexto de los árboles se construyen con estadísticas de popu
 
 La búsqueda comparó **14 configuraciones** en los mismos cinco folds agrupados. Ocho opciones de HGB varían la pérdida, tasa, número de iteraciones, hojas, mínimo por hoja y penalización L2. Tres de ExtraTrees exploran la fracción de variables y filas y el mínimo por hoja. Tres de Ridge comparan la penalización L2. La pérdida absoluta se alinea con MAE. Las hojas y su tamaño mínimo limitan la complejidad y la tasa se considera junto con el número de iteraciones. El HGB seleccionado usa pérdida absoluta, tasa 0,07, 340 iteraciones, máximo 63 hojas, mínimo 14 muestras por hoja y L2 de 2. Su MAE medio pasa de **5,483 a 5,129** frente al HGB fijo y mejora en **5/5 folds**. En reserva, reduce 0,257 puntos de MAE, con IC del 95% por grupos de **[0,221, 0,293]** puntos. Su RMSE en reserva aumenta de 8,285 a 8,501. El contraste conserva los predictores y el esquema de evaluación. [Grilla](../../reports/eva3/search_trials.csv) · [Contrastes](../../reports/eva3/controlled_contrasts.csv).
 
-ExtraTrees promedia **100 árboles**. Frente a su primer árbol de la misma realización, baja el MAE en reserva de **6,942 a 5,251**, una reducción de **24,35%** (IC del 95% de la reducción **[1,602, 1,779]** puntos). Esta comparación controla datos, entradas y configuración. Un único árbol de referencia limita las conclusiones sobre la variabilidad de los árboles individuales. La mezcla uniforme empeora 0,554 puntos de MAE frente a su mejor componente. La calibrada prueba pesos no negativos que suman uno en pasos de 0,1 y escoge según MAE en predicciones de desarrollo. En cada fold calibra en una división agrupada interna de ajuste y, para reserva, aprende de predicciones fuera de fold sobre todo desarrollo. La calibrada y la uniforme combinan configuraciones distintas. [Contrastes por fold](../../reports/eva3/controlled_contrasts_folds.csv).
+HGB construye un ensamble secuencial en el que cada árbol corrige parte del error acumulado. ExtraTrees promedia **100 árboles**. Frente a su primer árbol de la misma realización, baja el MAE en reserva de **6,942 a 5,251**, una reducción de **24,35%** (IC del 95% de la reducción **[1,602, 1,779]** puntos). Esta comparación controla datos, entradas y configuración. Un único árbol de referencia limita las conclusiones sobre la variabilidad de los árboles individuales. La mezcla uniforme empeora 0,554 puntos de MAE frente a su mejor componente. La calibrada prueba pesos no negativos que suman uno en pasos de 0,1 y escoge según MAE en predicciones de desarrollo. En cada fold calibra en una división agrupada interna de ajuste y, para reserva, aprende de predicciones fuera de fold sobre todo desarrollo. La calibrada y la uniforme combinan configuraciones distintas. [Contrastes por fold](../../reports/eva3/controlled_contrasts_folds.csv).
 
 ## 7. Generalización, selección e impacto retrospectivo
 
@@ -100,9 +102,24 @@ Antes de evaluar la reserva se seleccionó el menor MAE medio de cinco folds agr
 | HGB de EP2 reentrenado | 11,442 | 11,381 | 16,368 | 0,369 | 73,13% |
 | Mediana global | 17,244 | 17,266 | 20,607 | −0,0003 | 52,68% |
 
-**Por qué HGB ajustado.** Minimiza el error absoluto medio y se ajusta al criterio previo. La mezcla calibrada tiene menor RMSE y mayor R² en reserva, una ventaja para problemas en que importa especialmente penalizar errores grandes. La comparación con EP2 reentrenado reduce el MAE **55,89%**. Esa mejora refleja cambios de representación y configuración. El bootstrap por componentes da un IC del 95% para MAE global de **[4,916, 5,136]**, R² de **[0,820, 0,839]** y cobertura ±15 de **[91,58%, 92,39%]**. Son estimaciones de incertidumbre de la reserva para los modelos ajustados. [Métricas de todos los modelos](../../reports/eva3/supervised_metrics.csv) · [Bootstrap](../../reports/eva3/bootstrap.json).
+**Por qué HGB ajustado.** Tiene el menor MAE de validación y cumple el criterio definido antes de evaluar la reserva. La mezcla calibrada obtiene menor RMSE (**8,21 frente a 8,50**) y mayor R² (**0,841 frente a 0,830**) en reserva. HGB conserva la ventaja en MAE (**5,02 frente a 5,22**). Si curaduría asigna mayor costo a los errores grandes, el RMSE puede ser un criterio para una evaluación posterior. La comparación con EP2 reentrenado reduce el MAE **55,89%**. Esa mejora refleja cambios de representación y configuración. El bootstrap por componentes da un IC del 95% para MAE global de **[4,916, 5,136]**, R² de **[0,820, 0,839]** y cobertura ±15 de **[91,58%, 92,39%]**. Son estimaciones de incertidumbre de la reserva para los modelos ajustados. [Métricas de todos los modelos](../../reports/eva3/supervised_metrics.csv) · [Bootstrap](../../reports/eva3/bootstrap.json).
 
-**Valor a cupo constante.** Entre las primeras 3.582 canciones priorizadas, el HGB ajustado encuentra **3.065** cuya popularidad observada alcanza el umbral de desarrollo. El 85,57% de la lista supera el 62,00% de EP2 y el 25,24% esperado por selección uniforme. La lista cubre 82 de 113 géneros. La mezcla uniforme alcanza 85,68% de precisión de lista, pero tiene mayor MAE de desarrollo. La decisión de modelo responde al criterio predefinido. El ahorro de tiempo y la aceptación requieren el piloto. [Comparación de priorización](../../reports/eva3/business_candidates.csv).
+### Aporte del historial de artista y álbum
+
+Se reajustaron dos versiones del HGB con **los mismos hiperparámetros, cinco folds agrupados y reserva**. Ambas conservan el audio, el género, otras variables musicales estáticas y las estadísticas de popularidad por género. La versión reducida retira solo las estadísticas de artista y álbum, incluidas sus interacciones. La versión completa reproduce las predicciones publicadas por canción, tanto en validación como en reserva, con tolerancia absoluta de 10⁻⁸.
+
+| Versión del HGB | MAE CV | MAE reserva | RMSE reserva | R² reserva | Cobertura ±15 |
+|---|---:|---:|---:|---:|---:|
+| Sin historial de artista y álbum | 10,922 | 10,920 | 17,188 | 0,304 | 74,40% |
+| Con historial de artista y álbum | 5,129 | 5,020 | 8,501 | 0,830 | 91,97% |
+
+El historial reduce el MAE de reserva en **5,90 puntos**. El IC del 95% para la mejora pareada es **[5,61, 6,17]**, con 800 remuestreos de familias. La mejora aparece en los cinco folds. El MAE baja de **10,84 a 4,69** para canciones de artistas vistos y de **11,63 a 7,85** para artistas sin historial, una categoría definida por el artista principal.
+
+Las estadísticas se calculan dentro del conjunto de ajuste y las familias se mantienen juntas en cada partición. El experimento mide cuánto aporta el historial disponible en este catálogo histórico. Para usar esas estadísticas en operación se requiere que los datos del historial sean previos al momento de predicción, una condición que este CSV sin fechas deja pendiente de validación. Se mantiene la revisión humana de canciones de artistas ausentes del historial. [Resultados de ablación](../../reports/et/ablation.json) · [MAE por fold](../../reports/et/ablation_folds.csv).
+
+### Valor para la revisión editorial
+
+Entre las primeras 3.582 canciones priorizadas, el HGB ajustado encuentra **3.065** cuya popularidad observada alcanza el umbral de desarrollo. El 85,57% de la lista supera el 62,00% de EP2 y el 25,24% esperado por selección uniforme. La lista cubre 82 de 113 géneros. La mezcla uniforme alcanza 85,68% de precisión de lista, pero tiene mayor MAE de desarrollo. La decisión de modelo responde al criterio predefinido. El ahorro de tiempo y la aceptación requieren el piloto. [Comparación de priorización](../../reports/eva3/business_candidates.csv).
 
 **Sensibilidad al cupo.** Manteniendo el modelo y el umbral de 49, se recalcularon tres listas sobre la misma reserva. Con más revisiones se recuperan más canciones de popularidad alta y se cubren más géneros, mientras disminuye la proporción de canciones altas por lista. El 20% sigue siendo el cupo de referencia fijado en el protocolo.
 
@@ -126,6 +143,21 @@ K-Means se aplica a diez atributos continuos de audio con escalado de desarrollo
 | Activo | 74,64% | 0,75 y 0,18 | 126,3 BPM | Explorar listas de escucha activa. |
 
 Los atributos identifican perfiles de canciones y ofrecen un criterio adicional para navegar el catálogo. La popularidad se excluye del ajuste. Curaduría debe validar si esos perfiles son útiles en sus listas. [Perfiles medidos](../../reports/eva3/segment_business_profiles.csv) · [Diagnóstico de K](../../reports/eva3/clustering_diagnostics.csv).
+
+### Comparación de perfiles en la misma reserva
+
+Se aplicó cada segmentación ajustada en desarrollo a las mismas 17.913 canciones. Se cruzaron las asignaciones con las predicciones congeladas del HGB para ver dónde se concentra el error. El MAE ponderado por el tamaño de los grupos reproduce el MAE global en ambas configuraciones.
+
+| K | Grupo | Canciones | Popularidad media | P75 del grupo | MAE del HGB | Género más frecuente |
+|---:|---:|---:|---:|---:|---:|---|
+| 2 | 0 · Acústico | 4.543 | 30,39 | 47 | 4,80 | classical (3,79%) |
+| 2 | 1 · Activo | 13.370 | 34,33 | 49 | 5,09 | alt-rock (1,60%) |
+| 4 | 0 | 1.439 | 33,48 | 45 | 3,45 | comedy (12,37%) |
+| 4 | 1 | 5.400 | 33,31 | 49 | 5,26 | grindcore (3,35%) |
+| 4 | 2 | 3.755 | 29,76 | 47 | 4,84 | classical (4,39%) |
+| 4 | 3 | 7.319 | 35,13 | 51 | 5,25 | dancehall (2,38%) |
+
+K=2 conserva mejor silueta en desarrollo (**0,243 frente a 0,160**) y en reserva (**0,242 frente a 0,156**). K=4 aporta un perfil adicional con mayor presencia de sonido en vivo, pero la menor separación dificulta usar cuatro colas estables. La propuesta es mantener dos perfiles para explorar el catálogo y medir el error por perfil en el piloto. El perfil activo concentra más canciones y tiene un MAE descriptivo algo mayor, así que conviene asegurar presencia de ambos perfiles en los lotes y registrar el error de cada uno antes de fijar cuotas distintas. Los géneros más frecuentes representan fracciones bajas de sus grupos. Las diferencias de MAE observadas y los P75 por grupo son descriptivos de la reserva. [Auditoría por segmento](../../reports/et/cluster_business.csv).
 
 ![Diagnóstico de agrupamiento y proyección PCA](../../images/eva3/04_segmentos.png)
 
@@ -153,10 +185,10 @@ La **finalidad** se limita a revisión de catálogo. Como medida de **minimizaci
 | IE4 · Sesgos, ética y privacidad | 5% | Sección 9. Métricas por subgrupo, riesgos, límites, minimización, acceso y revisión humana. |
 | IE5 · Metodología | 10% | Sección 5. Seis fases CRISP-DM y mejoras verificables desde las entregas previas. |
 | IE6 · Modelos supervisados | 10% | Sección 6. Regresores, referencias, entradas, configuración y propósito de cada familia. |
-| IE7 · Modelo no supervisado | 10% | Sección 8. Selección de K, perfil e interpretación de la utilidad editorial. |
+| IE7 · Modelo no supervisado | 10% | Sección 8. Selección de K, comparación K=2/K=4, perfiles y auditoría de error para la revisión editorial. |
 | IE8 · Interpretación | 10% | Secciones 2, 7 y 9. MAE, RMSE, R² y cobertura traducidos en condiciones de uso. |
 | IE9 · Optimización | 10% | Sección 6. Grilla, parámetros elegidos y contraste controlado con HGB fijo. |
 | IE10 · Ensamble | 10% | Sección 6. Comparación con un árbol de ExtraTrees y análisis de las dos mezclas. |
-| IE11 · Generalización | 10% | Sección 7. Cinco folds agrupados, reserva, intervalos y alcance de la muestra. |
-| IE12 · Selección y justificación | 10% | Secciones 7 y 9. Criterio previo, alternativas, simulación con mismo cupo y piloto. |
+| IE11 · Generalización | 10% | Sección 7. Cinco folds agrupados, reserva, ablación de historial, intervalos y alcance de la muestra. |
+| IE12 · Selección y justificación | 10% | Secciones 7 y 9. Criterio previo, aporte del historial, simulación con mismo cupo y piloto. |
 | **Total** | **100%** | |

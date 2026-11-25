@@ -12,6 +12,7 @@ Estimamos la popularidad observada de canciones y exploramos perfiles acústicos
 | [Notebook ejecutado](../../notebooks/07_examen_transversal.ipynb) | Recorrido reproducible desde el CSV hasta la interpretación. |
 | [Datos originales](../../data/raw/Spotify_Tracks_Dataset.csv) | Archivo de la asignatura incluido en la entrega. |
 | [Evidencias del modelo](../../reports/eva3/) y [figuras](../../images/eva3/) | Resultados, particiones, búsqueda, comparación de modelos y gráficos. |
+| [Auditorías del ET](../../reports/et/) | Ablación de historial y comparación operativa de segmentos. |
 
 ## Abrir la entrega
 
@@ -40,6 +41,8 @@ Desde la raíz puedes comprobar las evidencias y reproducir cinco predicciones c
 ```
 
 La salida de inferencia queda en `output/predictions_ep3.csv`. Los registros de ejemplo pertenecen a la reserva. La carpeta `reports/eva3/` identifica la etapa en que se midió la evidencia reutilizada en el examen.
+
+El notebook recalcula las auditorías de historial y segmentos en su carpeta de reproducción. En el modo de ajuste guardado, la ablación vuelve a entrenar sus dos variantes con parámetros y particiones fijos.
 
 ## Generar los archivos de entrega
 

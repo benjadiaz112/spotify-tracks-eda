@@ -5,6 +5,8 @@
 
 Estimamos la popularidad observada de las canciones para priorizar la revisión editorial de un catálogo. La evaluación final integra las mejoras del semestre y reúne la evidencia de los **12 indicadores de la pauta**.
 
+La rama del ET reúne la entrega final y su historial de cambios. [Repositorio en GitHub](https://github.com/benjadiaz112/spotify-tracks-eda/tree/feat/spotify-et) · [Commits del ET](https://github.com/benjadiaz112/spotify-tracks-eda/commits/feat/spotify-et)
+
 | Entregable | Contenido |
 |---|---|
 | [Informe ejecutivo](docs/et/informe_ejecutivo.md) | Decisión, resultados, riesgos y piloto propuesto. |
@@ -14,6 +16,7 @@ Estimamos la popularidad observada de las canciones para priorizar la revisión 
 | [Guía de ejecución](docs/et/README.md) | Entorno, instrucciones de reproducción e inferencia de ejemplo. |
 | [Datos originales](data/raw/Spotify_Tracks_Dataset.csv) | CSV de la asignatura. |
 | [Resultados](reports/eva3/) y [gráficos](images/eva3/) | Evidencia del protocolo de EP3 que se reutiliza en el examen. |
+| [Auditorías del ET](reports/et/) | Ablación de historial y diagnóstico de error por segmento. |
 
 ## Resultado y alcance
 
